@@ -1,0 +1,239 @@
+<!doctype html>
+<html class="light" lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <title>Daily LLM Ideas — te9.dev/ideas</title>
+        <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@400;500;600&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            .material-symbols-outlined {
+                font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+            }
+            body { font-family: "Inter", sans-serif; background-color: #f9f9f9; color: #1a1c1c; }
+            h1, h2, h3, h4, .headline { font-family: "Manrope", sans-serif; }
+        </style>
+        <script id="tailwind-config">
+            tailwind.config = {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        colors: {
+                            "secondary-container": "#e3e2e2",
+                            "on-secondary-container": "#646464",
+                            "tertiary-fixed-dim": "#ffb693",
+                            "surface-container-lowest": "#ffffff",
+                            "tertiary-container": "#ff6b00",
+                            "error-container": "#ffdad6",
+                            "primary-container": "#999999",
+                            "surface-dim": "#dadada",
+                            "on-tertiary": "#ffffff",
+                            outline: "#8e7164",
+                            "on-primary-fixed-variant": "#474747",
+                            "primary-fixed": "#e2e2e2",
+                            "on-tertiary-fixed-variant": "#7a3000",
+                            primary: "#5e5e5e",
+                            "on-secondary": "#ffffff",
+                            tertiary: "#a04100",
+                            "surface-tint": "#5e5e5e",
+                            "inverse-on-surface": "#f1f1f1",
+                            "on-secondary-fixed-variant": "#464747",
+                            "surface-bright": "#f9f9f9",
+                            "on-background": "#1a1c1c",
+                            "surface-variant": "#e2e2e2",
+                            "surface-container-highest": "#e2e2e2",
+                            "tertiary-fixed": "#ffdbcc",
+                            "surface-container-high": "#e8e8e8",
+                            "on-tertiary-fixed": "#351000",
+                            secondary: "#5e5e5e",
+                            "on-primary-container": "#313131",
+                            "secondary-fixed-dim": "#c7c6c6",
+                            "surface-container-low": "#f3f3f3",
+                            "outline-variant": "#e2bfb0",
+                            "on-secondary-fixed": "#1b1c1c",
+                            "on-surface-variant": "#5a4136",
+                            "on-primary-fixed": "#1b1b1b",
+                            error: "#ba1a1a",
+                            background: "#f9f9f9",
+                            "on-primary": "#ffffff",
+                            surface: "#f9f9f9",
+                            "on-tertiary-container": "#572000",
+                            "primary-fixed-dim": "#c6c6c6",
+                            "inverse-surface": "#2f3131",
+                            "surface-container": "#eeeeee",
+                            "inverse-primary": "#c6c6c6",
+                            "secondary-fixed": "#e3e2e2",
+                            "on-error-container": "#93000a",
+                            "on-surface": "#1a1c1c",
+                            "on-error": "#ffffff",
+                        },
+                        borderRadius: { DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.5rem", full: "0.75rem" },
+                        fontFamily: { headline: ["Manrope"], body: ["Inter"], label: ["Inter"] },
+                    },
+                },
+            };
+        </script>
+    </head>
+    <body class="bg-surface selection:bg-tertiary-container selection:text-white">
+
+        <!-- Nav -->
+        <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl flex justify-between items-center px-8 py-4 border-b border-stone-100">
+            <div class="text-xl font-black tracking-tighter text-stone-900 font-manrope">
+                te9.dev<span class="text-tertiary-container">/ideas</span>
+            </div>
+            <div class="hidden md:flex items-center gap-8">
+                <a class="text-stone-500 hover:text-orange-600 transition-colors font-bold text-sm tracking-tight" href="#ideas">All Ideas</a>
+                <a class="text-stone-500 hover:text-orange-600 transition-colors font-bold text-sm tracking-tight" href="mailto:creatuluw@gmail.com">Contact</a>
+            </div>
+            <div class="flex items-center gap-2 text-sm text-stone-400 font-medium">
+                <span class="material-symbols-outlined text-tertiary-container text-base">schedule</span>
+                Daily
+            </div>
+        </nav>
+
+        <main class="pt-20 pb-32">
+
+            <!-- Hero -->
+            <section class="px-8 md:px-24 py-20 bg-surface-container-low">
+                <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 items-end">
+                    <div class="md:col-span-8">
+                        <span class="text-tertiary-container font-bold tracking-widest text-xs uppercase mb-4 block">Started April 2026</span>
+                        <h1 class="text-5xl md:text-7xl font-black tracking-tighter text-on-surface leading-none mb-8">
+                            Daily LLM<br/>Webapp Ideas
+                        </h1>
+                        <div class="p-8 bg-surface-container-lowest border-l-4 border-tertiary-container">
+                            <h2 class="text-xs font-bold uppercase tracking-widest text-primary mb-2">Mission</h2>
+                            <p class="text-xl text-on-surface leading-relaxed font-medium italic">
+                                "One deeply researched LLM webapp idea per day — valuable for humans to build and for AI agents to consume."
+                            </p>
+                        </div>
+                    </div>
+                    <div class="md:col-span-4">
+                        <div class="space-y-4">
+                            <div class="bg-surface-container-highest p-6 flex items-center justify-between">
+                                <span class="text-xs font-bold text-stone-400 uppercase tracking-widest">Ideas Published</span>
+                                <span class="text-3xl font-black text-tertiary-container">1</span>
+                            </div>
+                            <div class="bg-surface-container-highest p-6 flex items-center justify-between">
+                                <span class="text-xs font-bold text-stone-400 uppercase tracking-widest">Cadence</span>
+                                <span class="font-bold">Daily · 9 AM</span>
+                            </div>
+                            <div class="bg-surface-container-highest p-6 flex items-center justify-between">
+                                <span class="text-xs font-bold text-stone-400 uppercase tracking-widest">Format</span>
+                                <span class="font-bold">HTML · MD · JSON</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ideas Archive -->
+            <section class="px-8 md:px-24 py-24 bg-surface" id="ideas">
+                <div class="max-w-6xl mx-auto">
+                    <div class="flex justify-between items-baseline mb-16">
+                        <h2 class="text-4xl font-black tracking-tighter">All Ideas</h2>
+                        <span class="text-sm font-bold text-tertiary-container uppercase tracking-widest">1 Published</span>
+                    </div>
+
+                    <!-- IDEA CARDS START -->
+
+                    <!-- #001 LivingDocs -->
+                    <a href="001-living-docs.html" class="group flex flex-col md:flex-row items-start md:items-center gap-8 p-10 bg-surface-container-lowest hover:bg-surface-container transition-colors mb-1 border-b border-stone-100">
+                        <div class="shrink-0 w-16 text-center">
+                            <span class="text-4xl font-black text-stone-200 group-hover:text-tertiary-container transition-colors">001</span>
+                        </div>
+                        <div class="flex-grow">
+                            <div class="flex flex-wrap items-center gap-3 mb-3">
+                                <span class="text-xs font-bold text-stone-400 uppercase tracking-widest">April 10, 2026</span>
+                                <span class="text-xs font-bold bg-tertiary-container text-white px-2 py-0.5 uppercase tracking-widest">Developer Tools / AI Infra</span>
+                                <span class="text-xs font-bold text-stone-400 uppercase tracking-widest">B2B SaaS</span>
+                            </div>
+                            <h3 class="text-2xl font-black tracking-tight mb-2 group-hover:text-tertiary-container transition-colors">LivingDocs</h3>
+                            <p class="text-secondary leading-relaxed">Auto-generated, always-fresh agent-readable knowledge layers for any website or product. Generates llms.txt, llms-full.txt, and a hosted MCP server endpoint — all kept in sync automatically.</p>
+                        </div>
+                        <div class="shrink-0 flex items-center gap-2 text-stone-300 group-hover:text-tertiary-container transition-colors">
+                            <span class="font-bold text-sm">Read</span>
+                            <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                        </div>
+                    </a>
+
+                    <!-- IDEA CARDS END -->
+
+                    <!-- Coming soon placeholder -->
+                    <div class="flex items-center gap-8 p-10 bg-surface-container-low border-b border-stone-100 opacity-40">
+                        <div class="shrink-0 w-16 text-center">
+                            <span class="text-4xl font-black text-stone-200">002</span>
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold text-stone-400 uppercase tracking-widest block mb-2">Tomorrow · April 11, 2026</span>
+                            <p class="text-secondary italic">Next idea drops at 9:00 AM Amsterdam time.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- What's inside -->
+            <section class="px-8 md:px-24 py-24 bg-surface-container-low">
+                <div class="max-w-6xl mx-auto">
+                    <h2 class="text-3xl font-black tracking-tighter mb-12 text-center">What Each Idea Includes</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="bg-surface-container-lowest p-8 min-h-[220px] flex flex-col justify-between border-b-4 border-stone-100 hover:border-tertiary-container transition-all">
+                            <span class="material-symbols-outlined text-stone-300">description</span>
+                            <div>
+                                <p class="text-lg font-bold leading-tight mb-2">The Problem & Idea</p>
+                                <p class="text-secondary text-sm leading-relaxed">A clear problem statement, the proposed webapp solution, and why now is the right time to build it.</p>
+                            </div>
+                            <div class="w-8 h-1 bg-stone-200"></div>
+                        </div>
+                        <div class="bg-surface-container-lowest p-8 min-h-[220px] flex flex-col justify-between border-b-4 border-stone-100 hover:border-tertiary-container transition-all">
+                            <span class="material-symbols-outlined text-stone-300">build</span>
+                            <div>
+                                <p class="text-lg font-bold leading-tight mb-2">How to Build It</p>
+                                <p class="text-secondary text-sm leading-relaxed">Week-by-week MVP roadmap with concrete stack recommendations — SvelteKit, TypeScript, Railway, and modern AI tooling.</p>
+                            </div>
+                            <div class="w-8 h-1 bg-stone-200"></div>
+                        </div>
+                        <div class="bg-surface-container-lowest p-8 min-h-[220px] flex flex-col justify-between border-b-4 border-stone-100 hover:border-tertiary-container transition-all">
+                            <span class="material-symbols-outlined text-stone-300">campaign</span>
+                            <div>
+                                <p class="text-lg font-bold leading-tight mb-2">How to Pitch It</p>
+                                <p class="text-secondary text-sm leading-relaxed">One-liner, ICP, go-to-market strategy, pricing tiers, and the investor angle — ready to use.</p>
+                            </div>
+                            <div class="w-8 h-1 bg-stone-200"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dark CTA -->
+            <section class="px-8 md:px-24 py-32 bg-stone-950 text-white">
+                <div class="max-w-3xl mx-auto text-center">
+                    <span class="text-xs font-bold text-stone-500 uppercase tracking-widest mb-4 block">Delivered daily to your inbox</span>
+                    <h2 class="text-4xl md:text-5xl font-black tracking-tighter mb-6 leading-tight text-tertiary-container">
+                        One idea. Every morning.
+                    </h2>
+                    <p class="text-stone-400 mb-10 text-lg">Also published here, on GitHub, and in a structured JSON file — machine-readable for agents too.</p>
+                    <a class="inline-flex items-center gap-4 bg-tertiary-container text-white px-10 py-5 font-bold hover:scale-105 transition-transform group" href="001-living-docs.html">
+                        <span>READ IDEA #001</span>
+                        <span class="material-symbols-outlined group-hover:translate-x-2 transition-transform">arrow_forward</span>
+                    </a>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- FAB -->
+        <a href="#ideas" class="fixed bottom-8 right-8 w-14 h-14 bg-tertiary-container text-white flex items-center justify-center shadow-2xl hover:scale-110 transition-transform z-50">
+            <span class="material-symbols-outlined">format_list_bulleted</span>
+        </a>
+
+    </body>
+</html>
