@@ -14,8 +14,11 @@ devdb/
 │   ├── tip-001.md
 │   ├── tip-002.md
 │   └── ...
-└── tips-data/
-    └── dev-tips.json   # All tips as structured JSON (appended with each new tip)
+├── tips-data/
+│   └── dev-tips.json   # All tips as structured JSON (appended with each new tip)
+└── tips-digests/     # Weekly digest HTML emails (every Monday)
+    ├── digest-2026-04-14.html
+    └── ...
 ```
 
 ## Tips Index
