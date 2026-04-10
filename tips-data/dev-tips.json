@@ -36,9 +36,11 @@
       "In 5 Years From Now",
       "LLM Data & Logs",
       "LLM Hooks",
-      "LLM Integrations"
+      "LLM Integrations",
+      "Agent Fitness Functions",
+      "Guidelines from Karpathy & Peers"
     ],
-    "category_count": 33
+    "category_count": 35
   },
   "tips": [
     {

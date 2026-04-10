@@ -29,7 +29,7 @@ devdb/
 
 ---
 
-## Categories (rotating — 33 total)
+## Categories (rotating — 35 total)
 
 Each tip belongs to one of 30 categories, cycling in order by tip number. Every category has a defined **purpose** — the problem it addresses — and a **definition** — the precise scope of what belongs in it.
 
@@ -230,3 +230,15 @@ Each tip belongs to one of 30 categories, cycling in order by tip number. Every 
 ### 32 · LLM Integrations
 **Purpose:** An LLM sitting in isolation is a demo. An LLM wired into your database, your auth layer, your external APIs, and your UI state is a product. Most integration complexity is not in the LLM call itself — it's in the plumbing around it. This category teaches you to build that plumbing cleanly.
 **Definition:** Connecting LLMs to the rest of your stack — integrating with third-party APIs (Stripe, Resend, GitHub, Notion), database-backed context injection, auth-aware prompt construction, streaming responses into SvelteKit UI, webhook-triggered agent workflows, and the patterns that keep integrations loosely coupled and easy to swap. Covers the adapter pattern for LLM providers, so switching models doesn't break your app.
+
+---
+
+### 33 · Agent Fitness Functions
+**Purpose:** You cannot improve what you cannot measure. Most teams evaluate agent output subjectively — "does this look right?" — which means they can never systematically make it better. Fitness functions borrow from evolutionary computing and ML evaluation to give agent quality a number, so you can optimize it like any other engineering metric.
+**Definition:** Designing quantitative evaluation functions for agent outputs — correctness scores, style adherence metrics, output completeness checks, semantic similarity against a gold standard, latency/cost trade-off scoring, and composite fitness functions that weight multiple dimensions. Covers how to build an automated evaluation harness in TypeScript, how to generate gold-standard datasets from your own codebase, how to run fitness evaluations in CI, and how to use fitness scores to drive prompt improvement loops. Includes techniques from RLHF, constitutional AI, and LLM-as-judge patterns — translated into practical tooling any dev team can ship.
+
+---
+
+### 34 · Guidelines from Karpathy & Peers
+**Purpose:** A small number of people have thought about LLMs more rigorously and more practically than almost anyone else. Andrej Karpathy, Rich Sutton, Ilya Sutskever, the Anthropic alignment team, François Chollet, and a handful of others have published ideas — in blog posts, talks, papers, and tweets — that are directly actionable for working developers but rarely make it into mainstream tooling advice. This category distills that signal.
+**Definition:** Translating foundational insights from leading LLM researchers and practitioners into concrete, implementable dev tips. Covers Karpathy's "Software 2.0" framing and what it means for how you architect a codebase, Sutton's "bitter lesson" and its implications for prompt engineering, Anthropic's constitutional AI principles applied to output guardrails, Chollet's work on abstraction and what it tells us about LLM reasoning limits, and the emerging consensus on agent reliability from researchers actively building at the frontier. Each tip credits the source, explains the original idea clearly, and ends with a specific implementation pattern a SvelteKit developer can ship this week.
