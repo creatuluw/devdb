@@ -36,3 +36,8 @@ devdb/
 5. Design Systems
 6. DevOps & Infra
 7. Testing & Quality
+8. Knowledge Bases
+9. Documentation
+10. Webdesign & Styling
+11. Best Dev Tools (monthly spotlight)
+12. Agent Workflow & Context
