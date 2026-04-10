@@ -1,7 +1,7 @@
 {
   "meta": {
-    "total_categories": 35,
-    "rotation_formula": "(tip_number - 1) modulo 35",
+    "total_categories": 36,
+    "rotation_formula": "(tip_number - 1) modulo 36",
     "last_updated": "2026-04-11"
   },
   "categories": [
@@ -214,6 +214,12 @@
       "name": "Guidelines from Karpathy & Peers",
       "purpose": "Apply the most battle-tested mental models from the practitioners shipping at the frontier.",
       "definition": "Distilled, actionable principles from Andrej Karpathy, Simon Willison, Geoffrey Litt, and other leading AI practitioners. Prompt discipline, LLM mental models, scaling intuitions, production readiness heuristics. Standing on the shoulders of the researchers who are thinking and shipping hardest in this space."
+    },
+    {
+      "index": 35,
+      "name": "Unconventional Experiments with LLMs",
+      "purpose": "Break the rules deliberately — the most interesting capabilities are found outside normal use patterns.",
+      "definition": "Using LLMs in ways they weren't explicitly designed for: as compilers, state machines, game engines, theorem provers, diff generators, linters, or runtime validators. Misuse as method — intentionally pushing models into unexpected roles to discover emergent capabilities, reveal failure boundaries, and uncover shortcuts that shave weeks off standard development paths. The best LLM trick you'll use this year probably hasn't been documented yet."
     }
   ]
 }

@@ -29,7 +29,7 @@ devdb/
 
 ---
 
-## Categories (rotating — 35 total)
+## Categories (rotating — 36 total)
 
 Each tip belongs to one of 30 categories, cycling in order by tip number. Every category has a defined **purpose** — the problem it addresses — and a **definition** — the precise scope of what belongs in it.
 
@@ -242,3 +242,9 @@ Each tip belongs to one of 30 categories, cycling in order by tip number. Every 
 ### 34 · Guidelines from Karpathy & Peers
 **Purpose:** A small number of people have thought about LLMs more rigorously and more practically than almost anyone else. Andrej Karpathy, Rich Sutton, Ilya Sutskever, the Anthropic alignment team, François Chollet, and a handful of others have published ideas — in blog posts, talks, papers, and tweets — that are directly actionable for working developers but rarely make it into mainstream tooling advice. This category distills that signal.
 **Definition:** Translating foundational insights from leading LLM researchers and practitioners into concrete, implementable dev tips. Covers Karpathy's "Software 2.0" framing and what it means for how you architect a codebase, Sutton's "bitter lesson" and its implications for prompt engineering, Anthropic's constitutional AI principles applied to output guardrails, Chollet's work on abstraction and what it tells us about LLM reasoning limits, and the emerging consensus on agent reliability from researchers actively building at the frontier. Each tip credits the source, explains the original idea clearly, and ends with a specific implementation pattern a SvelteKit developer can ship this week.
+
+---
+
+### 35 · Unconventional Experiments with LLMs
+**Purpose:** Break the rules deliberately — the most interesting capabilities are found outside normal use patterns. Deliberate misuse is a discovery method.
+**Definition:** Using LLMs in ways they weren't explicitly designed for: as compilers, state machines, game engines, theorem provers, diff generators, linters, or runtime validators. Misuse as method — intentionally pushing models into unexpected roles to discover emergent capabilities, reveal failure boundaries, and uncover shortcuts that shave weeks off standard development paths. Topics include using an LLM as a Zod schema generator from freeform text, as a git conflict resolver, as a CSS-to-Tailwind transpiler, as a type-safe SQL query builder, or as a live test oracle. The best LLM trick you'll use this year probably hasn't been documented yet — this category finds it first.

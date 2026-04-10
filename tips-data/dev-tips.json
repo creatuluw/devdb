@@ -38,9 +38,10 @@
       "LLM Hooks",
       "LLM Integrations",
       "Agent Fitness Functions",
-      "Guidelines from Karpathy & Peers"
+      "Guidelines from Karpathy & Peers",
+      "Unconventional Experiments with LLMs"
     ],
-    "category_count": 35
+    "category_count": 36
   },
   "tips": [
     {
