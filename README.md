@@ -29,7 +29,7 @@ devdb/
 
 ---
 
-## Categories (rotating — 30 total)
+## Categories (rotating — 33 total)
 
 Each tip belongs to one of 30 categories, cycling in order by tip number. Every category has a defined **purpose** — the problem it addresses — and a **definition** — the precise scope of what belongs in it.
 
@@ -212,3 +212,21 @@ Each tip belongs to one of 30 categories, cycling in order by tip number. Every 
 ### 29 · In 5 Years From Now
 **Purpose:** The decisions you make today compound. A developer who understands where agentic tooling is heading in 5 years makes better architectural choices right now — not because they're building for the future, but because they understand the direction of travel.
 **Definition:** Forward-looking analysis of where LLM-assisted development is heading — emerging agent capabilities, the skills that will compound in value, the patterns being built today that will be standard practice in 2030, and the things that feel experimental now but will be table stakes soon. Each tip is grounded in current trajectory, not speculation.
+
+---
+
+### 30 · LLM Data & Logs
+**Purpose:** LLMs produce a stream of observable signal — token counts, latencies, input/output pairs, confidence patterns, failure signatures — that almost no team captures systematically. The teams that do build compounding advantages: they know what's expensive, what's failing, and what's improving over time. Without logs, you are flying blind in production.
+**Definition:** Capturing, storing, and making sense of LLM runtime data — structured logging of prompts and completions, token usage tracking, latency profiling, cost attribution per feature or user, error rate monitoring, and building dashboards that make this data actionable. Covers the schema design for LLM log tables, retention strategies, and how to use historical data to improve prompts and reduce cost.
+
+---
+
+### 31 · LLM Hooks
+**Purpose:** Most LLM integrations are fire-and-forget. Hooks let you intercept the LLM lifecycle — before a prompt is sent, after a response arrives, when an error occurs — and attach logic at each stage. This is how you build observability, guardrails, caching, rate limiting, and fallback strategies without tangling that logic into your application code.
+**Definition:** Designing and implementing lifecycle hooks around LLM calls — pre-request hooks (prompt mutation, context injection, PII scrubbing), post-response hooks (output validation, logging, caching, formatting), and error hooks (fallback model routing, retry logic, alerting). Covers the middleware patterns, TypeScript interfaces, and SvelteKit integration points that make hooks composable and testable.
+
+---
+
+### 32 · LLM Integrations
+**Purpose:** An LLM sitting in isolation is a demo. An LLM wired into your database, your auth layer, your external APIs, and your UI state is a product. Most integration complexity is not in the LLM call itself — it's in the plumbing around it. This category teaches you to build that plumbing cleanly.
+**Definition:** Connecting LLMs to the rest of your stack — integrating with third-party APIs (Stripe, Resend, GitHub, Notion), database-backed context injection, auth-aware prompt construction, streaming responses into SvelteKit UI, webhook-triggered agent workflows, and the patterns that keep integrations loosely coupled and easy to swap. Covers the adapter pattern for LLM providers, so switching models doesn't break your app.
