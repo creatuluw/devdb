@@ -1,0 +1,219 @@
+{
+  "meta": {
+    "total_categories": 35,
+    "rotation_formula": "(tip_number - 1) modulo 35",
+    "last_updated": "2026-04-11"
+  },
+  "categories": [
+    {
+      "index": 0,
+      "name": "Context Management",
+      "purpose": "Ensure every agent call starts with the right, complete picture of the codebase.",
+      "definition": "Structuring codebases so any feature's full picture fits a single coherent context window. AGENTS.md living contracts, feature-co-located folders, barrel exports as agent manifests, context budgeting. Most agent failures are context failures."
+    },
+    {
+      "index": 1,
+      "name": "API Design",
+      "purpose": "Make your API surface machine-readable so agents can navigate and call it without guessing.",
+      "definition": "Designing SvelteKit APIs for agent legibility. Zod schemas as source of truth, derived TypeScript types, 1:1 REST-to-service naming, typed ApiSuccess<T>/ApiError envelopes, auto-generated OpenAPI. A well-typed API is a machine-readable spec."
+    },
+    {
+      "index": 2,
+      "name": "Prompt Engineering",
+      "purpose": "Treat prompts as first-class code artifacts — versioned, testable, and composable.",
+      "definition": "Composable, testable, version-controlled prompts. Prompt chains, few-shot templates, system prompt conventions, design-system priming, chain-of-thought structuring. Prompts are code — treat them with the same rigor."
+    },
+    {
+      "index": 3,
+      "name": "Agent Tooling",
+      "purpose": "Expand what agents can do by giving them well-designed, reliable tools.",
+      "definition": "Building and configuring agent tools. MCP servers, custom function schemas, tool-use patterns, multi-agent orchestration, tool interface design. An agent is only as powerful as the tools it can call."
+    },
+    {
+      "index": 4,
+      "name": "Data Architecture",
+      "purpose": "Give agents a stable, principled data layer so their output is consistent and trustworthy.",
+      "definition": "PostgreSQL schema design, DuckDB analytics, Drizzle ORM patterns, migrations, analytics pipelines for LLM-assisted apps. Agents that touch data without a principled data layer produce inconsistent results."
+    },
+    {
+      "index": 5,
+      "name": "Design Systems",
+      "purpose": "Prevent agent-generated UI from becoming a visual snowflake graveyard.",
+      "definition": "Tailwind token architecture, component library conventions, design-to-code workflows, prompt patterns for on-brand component generation. Without a design system every agent-generated component is a snowflake."
+    },
+    {
+      "index": 6,
+      "name": "DevOps & Infra",
+      "purpose": "Build infra clean enough for an agent to reason about and deploy into.",
+      "definition": "CI/CD pipelines with agents, Railway/Docker/monorepo deployment, environment management, infra-as-code for agent-navigable stacks. Agents can deploy code — but only if your infra is clean enough to reason about."
+    },
+    {
+      "index": 7,
+      "name": "Testing & Quality",
+      "purpose": "Turn agent-written code from liability to asset with systematic test coverage.",
+      "definition": "Agent-assisted test generation, snapshot testing, type coverage, Playwright E2E, regression detection, prompting for testable code. Agent-written code without tests is liability, not an asset."
+    },
+    {
+      "index": 8,
+      "name": "Knowledge Bases",
+      "purpose": "Give agents persistent, retrievable memory so they stop repeating themselves.",
+      "definition": "RAG pipelines, vector stores, embedding strategies, chunking, retrieval quality, agent memory architectures. Agents with no persistent memory repeat themselves and forget decisions."
+    },
+    {
+      "index": 9,
+      "name": "Documentation",
+      "purpose": "Generate docs that stay accurate because they're written by the same agent that wrote the code.",
+      "definition": "Auto-generating JSDoc, OpenAPI specs, READMEs, ADRs, and living docs that stay in sync with the codebase. Documentation written by the agent that wrote the code is accurate by construction."
+    },
+    {
+      "index": 10,
+      "name": "Webdesign & Styling",
+      "purpose": "Close the gap between agent-generated code that works and UI that looks intentional.",
+      "definition": "Guiding agents through visual design. Tailwind best practices, responsive patterns, component aesthetics, spacing systems, prompts for design-system-compliant output. Agent-generated UI tends toward functional but ugly."
+    },
+    {
+      "index": 11,
+      "name": "Best Dev Tools",
+      "purpose": "Monthly spotlight on the tools that give the highest leverage in an agentic workflow.",
+      "definition": "Monthly spotlight on the highest-value tools for agentic development. Editors, IDE extensions, CLIs, SaaS services, open-source utilities, evaluated on problem solved, agent workflow fit, and switching cost."
+    },
+    {
+      "index": 12,
+      "name": "Agent Workflow & Context",
+      "purpose": "Design reliable multi-step pipelines that survive real-world complexity.",
+      "definition": "Multi-step agent workflow design. Task decomposition, state handoff, human-in-the-loop checkpoints, error recovery, context preservation across sessions. Production agentic work is a pipeline, not a one-shot."
+    },
+    {
+      "index": 13,
+      "name": "Innovation",
+      "purpose": "Stay ahead by adopting patterns that work now but haven't entered mainstream practice yet.",
+      "definition": "Cutting-edge techniques, emerging paradigms, early-adopter patterns. Novel use cases, experimental toolchains, ideas that feel like they shouldn't work yet — but do."
+    },
+    {
+      "index": 14,
+      "name": "Pure Creativity",
+      "purpose": "Push agents to the edge of what's possible — generative, experimental, unexpected.",
+      "definition": "Unconventional, generative, experimental agent use. Generative UI, procedural content, creative coding, unexpected capability combinations, projects at the edge of what's possible."
+    },
+    {
+      "index": 15,
+      "name": "Agent Self-Learning",
+      "purpose": "Build systems where every agent interaction makes the next one smarter.",
+      "definition": "Self-reflection loops, output evaluation pipelines, meta-prompting, fine-tuning feedback collection, workflows where each agent interaction makes the next one smarter."
+    },
+    {
+      "index": 16,
+      "name": "Agent-to-Agent Interactions",
+      "purpose": "Architect multi-agent systems that divide work intelligently without collapsing into chaos.",
+      "definition": "Orchestrator/sub-agent patterns, inter-agent message schemas, capability delegation, conflict resolution, failure modes unique to multi-agent pipelines."
+    },
+    {
+      "index": 17,
+      "name": "Optimizing DX",
+      "purpose": "Compound small friction reductions into large, permanent productivity gains.",
+      "definition": "Reducing friction in agent-assisted development. Faster feedback loops, better editor integration, smarter defaults, CLI ergonomics, small decisions that compound into large productivity gains."
+    },
+    {
+      "index": 18,
+      "name": "Build Internal Tools for LLM",
+      "purpose": "Build the observability and control layer your LLM-powered product actually needs.",
+      "definition": "Prompt management UIs, cost dashboards, output inspection portals, evaluation harnesses, SvelteKit + TypeScript patterns for internal LLM tooling."
+    },
+    {
+      "index": 19,
+      "name": "Failure Archaeology",
+      "purpose": "Mine every agent failure for signal — turn breakdowns into a regression library.",
+      "definition": "Typed error taxonomies, regression suites from real failure cases, extracting implicit prompt requirements from bad outputs, maintaining a failure library. Every agent failure is a lesson — mine it."
+    },
+    {
+      "index": 20,
+      "name": "Cognitive Load Engineering",
+      "purpose": "Structure agent output so developers can review and approve it in seconds, not minutes.",
+      "definition": "Structured diff outputs, typed return shapes that parse at a glance, self-documenting code, prompt patterns that produce outputs a developer can approve in seconds not minutes."
+    },
+    {
+      "index": 21,
+      "name": "Temporal Reasoning & State Drift",
+      "purpose": "Prevent agents from confidently answering questions about a past state of your system.",
+      "definition": "Versioned context injection, freshness signals, stale assumption detection, time-aware prompts. Agents confidently produce answers anchored to a past state of your system — this category fixes that."
+    },
+    {
+      "index": 22,
+      "name": "The Economics of Agent Time",
+      "purpose": "Measure and communicate the real cost and ROI of every agent-assisted workflow.",
+      "definition": "Token budgeting, cost-per-feature measurement, latency profiling, human review time accounting, ROI decision frameworks, presenting agent value to non-technical stakeholders."
+    },
+    {
+      "index": 23,
+      "name": "Adversarial Prompting as a Design Tool",
+      "purpose": "Use adversarial inputs to surface hidden assumptions before they hit production.",
+      "definition": "Systematic edge case generation, input fuzzing for prompts, assumption surfacing, pre-production adversarial test suites, defending against confident wrongness and context poisoning."
+    },
+    {
+      "index": 24,
+      "name": "Comprehension Debt",
+      "purpose": "Reclaim the codebase comprehension that agentic velocity silently erodes.",
+      "definition": "Detecting code with high complexity but zero tests, orphaned types, undocumented side effects; strategies for systematic comprehension paydown. Agent-written code accelerates comprehension debt accumulation."
+    },
+    {
+      "index": 25,
+      "name": "Updating Devs in a Smart Way",
+      "purpose": "Replace noisy notifications with updates that actually transfer understanding.",
+      "definition": "Intent-first PR summaries, semantic changelogs that explain why not just what, architecture decision digests, diff formats that communicate in 60 seconds. Most updates notify; this category informs."
+    },
+    {
+      "index": 26,
+      "name": "Semantic Tooling",
+      "purpose": "Make your codebase queryable by meaning, not just by syntax.",
+      "definition": "Embedding-based codebase search, meaning-preserving refactoring agents, concept graphs mapping feature relationships, making your codebase queryable by meaning not syntax."
+    },
+    {
+      "index": 27,
+      "name": "How to Ideate with LLMs",
+      "purpose": "Use agents to escape your own blind spots and explore the full solution space.",
+      "definition": "Divergent/convergent prompt patterns, spec generation from rough intent, assumption stress-testing, competing-spec generation from the same brief, using agents to escape your own blind spots."
+    },
+    {
+      "index": 28,
+      "name": "Deterministic Design",
+      "purpose": "Engineer the stochasticity out of agent pipelines that cannot afford to be random.",
+      "definition": "Temperature and sampling discipline, strict Zod output schemas, idempotency patterns, seed management, regression-testable generation pipelines. Agents are stochastic by default; production systems cannot be."
+    },
+    {
+      "index": 29,
+      "name": "In 5 Years From Now",
+      "purpose": "Identify which skills and patterns to invest in today for compounding returns by 2030.",
+      "definition": "Forward-looking analysis of where LLM-assisted development is heading. Emerging capabilities, skills that will compound in value, patterns being built today that will be standard in 2030. Grounded in current trajectory, not speculation."
+    },
+    {
+      "index": 30,
+      "name": "LLM Data & Logs",
+      "purpose": "Stop flying blind in LLM production — make every prompt and completion observable.",
+      "definition": "Structured logging of prompts and completions, token usage tracking, latency profiling, cost attribution per feature/user, error rate monitoring, LLM log table schema design, retention strategies, dashboards that make runtime data actionable. Most teams fly blind in LLM production — this category fixes that."
+    },
+    {
+      "index": 31,
+      "name": "LLM Hooks",
+      "purpose": "Separate cross-cutting concerns (logging, caching, validation) from application logic via composable middleware.",
+      "definition": "Pre-request hooks (prompt mutation, context injection, PII scrubbing), post-response hooks (output validation, logging, caching, formatting), error hooks (fallback model routing, retry logic, alerting). TypeScript interfaces and SvelteKit integration points for composable, testable LLM middleware. Hooks let you separate cross-cutting concerns from application logic."
+    },
+    {
+      "index": 32,
+      "name": "LLM Integrations",
+      "purpose": "Wire LLMs into the full stack so they become a product feature, not just a demo.",
+      "definition": "Connecting LLMs to the rest of the stack. Third-party API integration (Stripe, Resend, GitHub, Notion), database-backed context injection, auth-aware prompt construction, streaming responses into SvelteKit UI, webhook-triggered agent workflows, the adapter pattern for LLM providers. An LLM in isolation is a demo; wired into your stack it's a product."
+    },
+    {
+      "index": 33,
+      "name": "Agent Fitness Functions",
+      "purpose": "Quantify agent output quality so you can improve it systematically instead of by feel.",
+      "definition": "Quantitative evaluation of agent output quality. Scoring rubrics, automated eval pipelines, benchmark suites, regression detection, fitness metrics for code quality, correctness, and style adherence. If you can't measure it, you can't improve it. Inspired by Karpathy's and peer researchers' frameworks for evaluating LLM and agent behavior systematically."
+    },
+    {
+      "index": 34,
+      "name": "Guidelines from Karpathy & Peers",
+      "purpose": "Apply the most battle-tested mental models from the practitioners shipping at the frontier.",
+      "definition": "Distilled, actionable principles from Andrej Karpathy, Simon Willison, Geoffrey Litt, and other leading AI practitioners. Prompt discipline, LLM mental models, scaling intuitions, production readiness heuristics. Standing on the shoulders of the researchers who are thinking and shipping hardest in this space."
+    }
+  ]
+}
