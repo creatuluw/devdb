@@ -21,8 +21,8 @@
         "AGENTS.md living contract file"
       ],
       "files": {
-        "html": "html/tip-001.html",
-        "markdown": "markdown/tip-001.md"
+        "html": "tips-html/tip-001.html",
+        "markdown": "tips-markdown/tip-001.md"
       },
       "subject": "DevTip #001 — Context Windows as Architecture"
     },
@@ -43,8 +43,8 @@
         "Auto-generate OpenAPI spec from Zod at build time"
       ],
       "files": {
-        "html": "html/tip-002.html",
-        "markdown": "markdown/tip-002.md"
+        "html": "tips-html/tip-002.html",
+        "markdown": "tips-markdown/tip-002.md"
       },
       "subject": "DevTip #002 — Agent-First API Design"
     },
@@ -64,8 +64,8 @@
         "agent-ui-context.md reusable prompt prefix"
       ],
       "files": {
-        "html": "html/tip-003.html",
-        "markdown": "markdown/tip-003.md"
+        "html": "tips-html/tip-003.html",
+        "markdown": "tips-markdown/tip-003.md"
       },
       "subject": "DevTip #003 — Prompt Chaining for UI Generation"
     }

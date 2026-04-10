@@ -6,15 +6,15 @@ Daily tips for SvelteKit + TypeScript developers on using LLM coding agents effe
 
 ```
 devdb/
-├── html/           # Gmail-compatible HTML email bodies per tip
+├── tips-html/        # Gmail-compatible HTML email bodies per tip
 │   ├── tip-001.html
 │   ├── tip-002.html
 │   └── ...
-├── markdown/       # Full tip content as Markdown
+├── tips-markdown/    # Full tip content as Markdown
 │   ├── tip-001.md
 │   ├── tip-002.md
 │   └── ...
-└── data/
+└── tips-data/
     └── dev-tips.json   # All tips as structured JSON (appended with each new tip)
 ```
 
