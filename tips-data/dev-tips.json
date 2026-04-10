@@ -22,9 +22,14 @@
       "Agent Self-Learning",
       "Agent-to-Agent Interactions",
       "Optimizing DX",
-      "Build Internal Tools for LLM"
+      "Build Internal Tools for LLM",
+      "Failure Archaeology",
+      "Cognitive Load Engineering",
+      "Temporal Reasoning & State Drift",
+      "The Economics of Agent Time",
+      "Adversarial Prompting as a Design Tool"
     ],
-    "category_count": 19
+    "category_count": 24
   },
   "tips": [
     {
