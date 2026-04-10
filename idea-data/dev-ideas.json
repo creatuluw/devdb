@@ -1,0 +1,63 @@
+{
+  "meta": {
+    "description": "Daily LLM Webapp Ideas — one researched idea per day, valuable for humans and AI agents",
+    "last_updated": "2026-04-10",
+    "total_ideas": 1
+  },
+  "ideas": [
+    {
+      "id": "001",
+      "number": 1,
+      "title": "LivingDocs",
+      "tagline": "Auto-generated, always-fresh agent-readable knowledge layers for any website or product",
+      "market": "Developer Tools / AI Infra",
+      "model": "B2B SaaS",
+      "effort": "Medium",
+      "date": "2026-04-10",
+      "slug": "living-docs",
+      "one_liner": "robots.txt was for Google. LivingDocs is for AI agents. One line of code and your product is readable by every AI in the world.",
+      "problem": "AI agents are blind to most of the web. Only 5–15% of websites have implemented llms.txt, and most implementations are static, manually maintained files that go stale within weeks. Google, AWS, and Microsoft have all shipped MCP servers for their own docs — mid-size SaaS and open-source projects have the same need but no budget to build this themselves.",
+      "idea": "A webapp that takes any URL, sitemap, or GitHub repo and automatically generates a continuously-synced agent-readable knowledge layer: a structured llms.txt, llms-full.txt, and an optional hosted MCP server endpoint — all kept fresh via webhooks or scheduled re-indexing.",
+      "value": {
+        "for_humans": "Product shows up accurately in Cursor, Claude, and Copilot. Higher AI-referred conversion (ChatGPT converts at 15.9%).",
+        "for_agents": "Clean, token-efficient, semantic MCP entry point. No HTML parsing, no stale snapshots.",
+        "for_builders": "Gartner says 30%+ of new API demand in 2026 comes from LLM tools — this is infrastructure for that wave.",
+        "moat": "Value compounds — the longer a site is indexed, the richer the version history."
+      },
+      "build": {
+        "timeline": "4-week MVP",
+        "weeks": [
+          "Week 1: SvelteKit + URL crawler → chunk + embed with OpenAI text-embedding-3-small → Postgres/pgvector",
+          "Week 2: LLM pass (GPT-4o-mini) to generate versioned llms.txt + llms-full.txt",
+          "Week 3: MCP-compatible endpoint (search_document + get_document tools), deploy via Railway",
+          "Week 4: Webhook sync (GitHub, Notion, Gitbook) + agent traffic analytics dashboard"
+        ],
+        "stack": ["SvelteKit", "TypeScript", "Postgres + pgvector", "OpenAI Embeddings", "MCP SDK", "Railway", "Firecrawl API", "GPT-4o-mini"]
+      },
+      "pitch": {
+        "icp": "Developer tools, SaaS products with public docs, open-source maintainers, internal tooling teams at 50–500 person companies",
+        "gtm": "Product Hunt + Hacker News Show HN. Open-source the llms.txt generator. Monetize MCP hosting, sync automation, and analytics.",
+        "pricing": {
+          "free": "1 site, manual refresh",
+          "pro": "$19/mo — 5 sites, auto-sync, analytics",
+          "team": "$79/mo — unlimited sites, MCP endpoint, webhook triggers, version history"
+        },
+        "investor_angle": "API infra for the agent economy. Comparable to how Algolia became essential for search — LivingDocs becomes essential for agent discoverability."
+      },
+      "signals": [
+        "Fern, Mintlify, and Scalar compete on llms.txt generation — but only for API docs platforms, not the general web",
+        "Google launched its Developer Knowledge API (MCP) in Feb 2026. AWS and Microsoft followed.",
+        "Only 5–15% of websites have llms.txt today"
+      ],
+      "files": {
+        "html": "idea-html/001-living-docs.html",
+        "markdown": "idea-markdown/001-living-docs.md",
+        "data": "idea-data/dev-ideas.json"
+      },
+      "links": {
+        "one_pager": "https://www.perplexity.ai/computer/a/daily-llm-idea-001-livingdocs-Dop_AUn6QASrbugNwa8.6w",
+        "live_page": "http://te9.dev/ideas/living-docs.html"
+      }
+    }
+  ]
+}

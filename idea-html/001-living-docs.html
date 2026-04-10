@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Idea #1 — LivingDocs: Auto-Generated Agent-Ready Knowledge Layers</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f4f4f0; color: #1a1a1a; }
+  .wrapper { max-width: 680px; margin: 0 auto; background: #fff; }
+  .header { background: #0f0f0f; padding: 40px 48px 36px; }
+  .header .label { color: #666; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+  .header h1 { color: #fff; font-size: 28px; font-weight: 700; line-height: 1.25; }
+  .header .tagline { color: #999; font-size: 14px; margin-top: 10px; }
+  .meta { background: #1a1a1a; padding: 16px 48px; display: flex; gap: 32px; }
+  .meta .pill { font-size: 11px; color: #aaa; letter-spacing: 1px; text-transform: uppercase; }
+  .meta .pill span { color: #e8e040; font-weight: 600; }
+  .body { padding: 40px 48px; }
+  .section { margin-bottom: 36px; }
+  .section h2 { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #888; margin-bottom: 12px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
+  .section p { font-size: 15px; line-height: 1.7; color: #333; }
+  .section ul { padding-left: 18px; margin-top: 8px; }
+  .section ul li { font-size: 15px; line-height: 1.7; color: #333; margin-bottom: 4px; }
+  .highlight-box { background: #f9f9f6; border-left: 3px solid #e8e040; padding: 16px 20px; margin: 16px 0; }
+  .highlight-box p { font-size: 14px; color: #444; font-style: italic; }
+  .stack { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .stack .tag { background: #f0f0f0; border-radius: 4px; padding: 4px 10px; font-size: 12px; color: #555; font-family: 'Courier New', monospace; }
+  .pitch-table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+  .pitch-table td { padding: 10px 12px; font-size: 14px; border-bottom: 1px solid #eee; vertical-align: top; }
+  .pitch-table td:first-child { font-weight: 600; color: #555; width: 120px; white-space: nowrap; }
+  .footer { background: #0f0f0f; padding: 24px 48px; text-align: center; }
+  .footer p { color: #555; font-size: 12px; }
+  .footer a { color: #e8e040; text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div class="header">
+    <div class="label">Daily Idea · April 10, 2026 · #001</div>
+    <h1>LivingDocs</h1>
+    <div class="tagline">Auto-generated, always-fresh agent-readable knowledge layers for any website or product</div>
+  </div>
+
+  <div class="meta">
+    <div class="pill">Market <span>Developer Tools / AI Infra</span></div>
+    <div class="pill">Effort <span>Medium</span></div>
+    <div class="pill">Model <span>B2B SaaS</span></div>
+  </div>
+
+  <div class="body">
+
+    <div class="section">
+      <h2>The Problem</h2>
+      <p>
+        AI agents are blind to most of the web. They either hallucinate outdated API details, fail to find the right page, or burn thousands of tokens parsing HTML noise just to answer one question. The <code>llms.txt</code> standard exists — but only 5–15% of websites have implemented it, and most implementations are static, manually maintained files that go stale within weeks.
+      </p>
+      <div class="highlight-box">
+        <p>"Without a dedicated machine-readable entry point, coding assistants fall back on generic web scraping, which frequently produces hallucinations or outdated patterns." — Fern, 2026</p>
+      </div>
+      <p>
+        Meanwhile, <strong>Google, AWS, and Microsoft have all shipped MCP servers</strong> for their own docs in early 2026. Every mid-size SaaS, open-source project, or internal tool has the same problem — and zero budget to build this themselves.
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>The Idea</h2>
+      <p>
+        <strong>LivingDocs</strong> is a webapp that takes any URL, sitemap, or GitHub repo and automatically generates a continuously-synced, agent-readable knowledge layer: a structured <code>llms.txt</code>, a full-context <code>llms-full.txt</code>, and an optional hosted MCP server endpoint — all kept fresh via webhooks or scheduled re-indexing.
+      </p>
+      <p style="margin-top:12px;">
+        Users paste their domain. LivingDocs crawls their content, uses an LLM to extract structure (endpoints, concepts, relationships, changelog entries), and serves the result at a permanent, versioned URL that AI agents can query directly. Humans get a clean dashboard. Agents get clean JSON or Markdown. Both win.
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>Why It's Valuable</h2>
+      <ul>
+        <li><strong>For humans:</strong> Your product shows up accurately in AI-assisted search, Cursor, Claude, and Copilot — instead of being hallucinated or ignored. Higher AI-referred conversion traffic (ChatGPT converts at 15.9%).</li>
+        <li><strong>For agents:</strong> A clean, structured, token-efficient entry point. No HTML parsing, no stale snapshots. Semantic search over your content via a standard MCP endpoint.</li>
+        <li><strong>For builders:</strong> Gartner says 30%+ of new API demand in 2026 comes from LLM tools. This is infrastructure for that wave.</li>
+        <li><strong>Moat:</strong> The value compounds — the longer a site is indexed, the richer the version history. Agents can ask "what changed in v2.3?" and get a real answer.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>How to Build It</h2>
+      <p>This is a 4-week MVP for a solo full-stack developer:</p>
+      <ul style="margin-top:10px;">
+        <li><strong>Week 1 — Crawler + Extractor:</strong> SvelteKit frontend, URL input → sitemap parser → Firecrawl or Playwright for content fetch → chunk + embed with OpenAI <code>text-embedding-3-small</code>, store in PGLite or Postgres with pgvector.</li>
+        <li><strong>Week 2 — Generator:</strong> LLM pass (GPT-4o-mini) to produce structured <code>llms.txt</code> and <code>llms-full.txt</code>. Version each generation. Expose at <code>yourdomain.livingdocs.io/llms.txt</code>.</li>
+        <li><strong>Week 3 — MCP Server:</strong> Expose a minimal MCP-compatible endpoint: <code>search_document</code> + <code>get_document</code> tools over the embedded knowledge base. Deployable via Railway in one click.</li>
+        <li><strong>Week 4 — Sync + Dashboard:</strong> Webhook support for GitHub, Notion, Gitbook. Dashboard showing agent traffic (bot vs. human), most-queried pages, staleness indicators. Auto re-index on schedule.</li>
+      </ul>
+      <div class="stack">
+        <span class="tag">SvelteKit</span>
+        <span class="tag">TypeScript</span>
+        <span class="tag">Postgres + pgvector</span>
+        <span class="tag">OpenAI Embeddings</span>
+        <span class="tag">MCP SDK</span>
+        <span class="tag">Railway</span>
+        <span class="tag">Firecrawl API</span>
+        <span class="tag">GPT-4o-mini</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>How to Pitch It</h2>
+      <table class="pitch-table">
+        <tr>
+          <td>One-liner</td>
+          <td>"robots.txt was for Google. LivingDocs is for AI agents. One line of code and your product is readable by every AI in the world."</td>
+        </tr>
+        <tr>
+          <td>Target ICP</td>
+          <td>Developer tools, SaaS products with public docs, open-source maintainers, internal tooling teams at 50–500 person companies.</td>
+        </tr>
+        <tr>
+          <td>Go-to-market</td>
+          <td>Launch on Product Hunt + Hacker News "Show HN". Open-source the llms.txt generator. Monetize the MCP hosting, sync automation, and analytics dashboard.</td>
+        </tr>
+        <tr>
+          <td>Pricing</td>
+          <td>Free tier: 1 site, manual refresh. Pro ($19/mo): 5 sites, auto-sync, analytics. Team ($79/mo): unlimited sites, MCP endpoint, webhook triggers, version history.</td>
+        </tr>
+        <tr>
+          <td>Investor angle</td>
+          <td>API infra for the agent economy. Comparable to how Algolia became essential for search — LivingDocs becomes essential for agent discoverability. Market: every website that wants to exist in an AI-first world.</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="section">
+      <h2>Comparable Signals</h2>
+      <ul>
+        <li>Fern, Mintlify, and Scalar are already competing on llms.txt generation — but only for API docs platforms, not for the general web.</li>
+        <li>Google launched its Developer Knowledge API (MCP) in Feb 2026. AWS and Microsoft followed. The race for agent-readable content is on.</li>
+        <li>Only 5–15% of websites have llms.txt today. That's a massive greenfield.</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <p>Daily LLM Webapp Idea · Researched &amp; written by <a href="#">Perplexity Computer</a> · Delivered to creatuluw@gmail.com</p>
+  </div>
+</div>
+</body>
+</html>
