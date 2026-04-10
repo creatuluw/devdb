@@ -1,0 +1,239 @@
+<div style="font-family:Manrope,Inter,-apple-system,sans-serif;background:#ffffff;max-width:680px;margin:0 auto;padding:0;">
+
+  <!-- HEADER -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;">
+    <tr>
+      <td style="padding:48px 48px 32px 48px;">
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:11px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:#ff6b00;margin:0 0 16px 0;">DEVTIP #002</p>
+        <h1 style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:32px;font-weight:800;color:#1a1c1c;margin:0 0 12px 0;line-height:1.15;letter-spacing:-0.03em;">Agent-First API Design</h1>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:16px;font-weight:400;color:#5e5e5e;margin:0;line-height:1.5;">Types Are the Spec</p>
+      </td>
+    </tr>
+  </table>
+
+  <!-- WHY THIS MATTERS -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;">
+    <tr>
+      <td style="padding:0 48px 32px 48px;">
+        <div style="background:#ffffff;border-left:4px solid #ff6b00;padding:24px;margin-bottom:24px;">
+          <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:11px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:#ff6b00;margin:0 0 10px 0;">WHY THIS MATTERS</p>
+          <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#1a1c1c;line-height:1.7;margin:0;">A well-typed, self-documenting TypeScript API surface lets an LLM agent reason about, extend, and debug your routes without ever needing you to explain business logic — your code <em>is</em> the documentation.</p>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <!-- SECTION: The Agent's Mental Model of Your API -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f9f9f9;">
+    <tr>
+      <td style="padding:36px 48px;">
+        <h2 style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:20px;font-weight:800;color:#1a1c1c;margin:0 0 12px 0;letter-spacing:-0.03em;">The Agent's Mental Model of Your API</h2>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.7;margin:0 0 14px 0;">When an agent reads a SvelteKit <span style="background:#e8e8e8;color:#1a1c1c;font-family:monospace,monospace;padding:2px 6px;border-radius:3px;font-size:13px;">+server.ts</span> route, it constructs an internal model of: what comes in, what goes out, what can fail, and what the business intent is. The more ambiguity it encounters — untyped request bodies, <span style="background:#e8e8e8;color:#1a1c1c;font-family:monospace,monospace;padding:2px 6px;border-radius:3px;font-size:13px;">any</span> returns, unnamed magic strings — the more it will fill gaps with plausible-but-wrong assumptions.</p>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.7;margin:0;">Your job is to make that mental model construction <strong style="color:#1a1c1c;">deterministic</strong>.</p>
+      </td>
+    </tr>
+  </table>
+
+  <!-- SECTION: Consistent Naming Across the Boundary -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;">
+    <tr>
+      <td style="padding:36px 48px;">
+        <h2 style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:20px;font-weight:800;color:#1a1c1c;margin:0 0 12px 0;letter-spacing:-0.03em;">Consistent Naming Across the Boundary</h2>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.7;margin:0 0 14px 0;">Pick a naming convention and codify it everywhere. A clean pattern:</p>
+
+        <!-- REST naming table -->
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#1a1c1c;border-radius:4px;margin:14px 0 22px 0;overflow:hidden;">
+          <tr style="background:#1a1c1c;">
+            <td style="padding:10px 14px;font-family:monospace,monospace;font-size:13px;color:#ff6b00;font-weight:700;border-bottom:1px solid #2e3030;">HTTP Method</td>
+            <td style="padding:10px 14px;font-family:monospace,monospace;font-size:13px;color:#ff6b00;font-weight:700;border-bottom:1px solid #2e3030;">Path</td>
+            <td style="padding:10px 14px;font-family:monospace,monospace;font-size:13px;color:#ff6b00;font-weight:700;border-bottom:1px solid #2e3030;">Service Function</td>
+          </tr>
+          <tr>
+            <td style="padding:10px 14px;font-family:monospace,monospace;font-size:13px;color:#f1f1f1;border-bottom:1px solid #2e3030;">GET</td>
+            <td style="padding:10px 14px;font-family:monospace,monospace;font-size:13px;color:#f1f1f1;border-bottom:1px solid #2e3030;">/api/invoices</td>
+            <td style="padding:10px 14px;font-family:monospace,monospace;font-size:13px;color:#f1f1f1;border-bottom:1px solid #2e3030;">listInvoices</td>
+          </tr>
+          <tr>
+            <td style="padding:10px 14px;font-family:monospace,monospace;font-size:13px;color:#f1f1f1;border-bottom:1px solid #2e3030;">GET</td>
+            <td style="padding:10px 14px;font-family:monospace,monospace;font-size:13px;color:#f1f1f1;border-bottom:1px solid #2e3030;">/api/invoices/:id</td>
+            <td style="padding:10px 14px;font-family:monospace,monospace;font-size:13px;color:#f1f1f1;border-bottom:1px solid #2e3030;">getInvoice</td>
+          </tr>
+          <tr>
+            <td style="padding:10px 14px;font-family:monospace,monospace;font-size:13px;color:#f1f1f1;border-bottom:1px solid #2e3030;">POST</td>
+            <td style="padding:10px 14px;font-family:monospace,monospace;font-size:13px;color:#f1f1f1;border-bottom:1px solid #2e3030;">/api/invoices</td>
+            <td style="padding:10px 14px;font-family:monospace,monospace;font-size:13px;color:#f1f1f1;border-bottom:1px solid #2e3030;">createInvoice</td>
+          </tr>
+          <tr>
+            <td style="padding:10px 14px;font-family:monospace,monospace;font-size:13px;color:#f1f1f1;border-bottom:1px solid #2e3030;">PATCH</td>
+            <td style="padding:10px 14px;font-family:monospace,monospace;font-size:13px;color:#f1f1f1;border-bottom:1px solid #2e3030;">/api/invoices/:id</td>
+            <td style="padding:10px 14px;font-family:monospace,monospace;font-size:13px;color:#f1f1f1;border-bottom:1px solid #2e3030;">updateInvoice</td>
+          </tr>
+          <tr>
+            <td style="padding:10px 14px;font-family:monospace,monospace;font-size:13px;color:#f1f1f1;">DELETE</td>
+            <td style="padding:10px 14px;font-family:monospace,monospace;font-size:13px;color:#f1f1f1;">/api/invoices/:id</td>
+            <td style="padding:10px 14px;font-family:monospace,monospace;font-size:13px;color:#f1f1f1;">deleteInvoice</td>
+          </tr>
+        </table>
+
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.7;margin:0 0 14px 0;">Reflect this naming in your service module:</p>
+        <div style="max-width:100%;overflow-x:auto;display:block;">
+          <pre style="background:#1a1c1c;color:#f1f1f1;font-family:monospace,monospace;font-size:13px;line-height:1.6;padding:20px 24px;border-radius:4px;margin:14px 0 22px 0;overflow-x:auto;">// features/invoices/invoiceService.ts
+
+export async function listInvoices(filters: InvoiceFilters): Promise&lt;Invoice[]&gt; { ... }
+export async function getInvoice(id: string): Promise&lt;Invoice | null&gt; { ... }
+export async function createInvoice(input: CreateInvoiceInput): Promise&lt;Invoice&gt; { ... }
+export async function updateInvoice(id: string, patch: UpdateInvoiceInput): Promise&lt;Invoice&gt; { ... }
+export async function deleteInvoice(id: string): Promise&lt;void&gt; { ... }</pre>
+        </div>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.7;margin:0;">When an agent reads the route and the service, the one-to-one correspondence is instantly obvious. No guessing which service method a route calls.</p>
+      </td>
+    </tr>
+  </table>
+
+  <!-- SECTION: Zod Schemas as the Single Source of Truth -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f9f9f9;">
+    <tr>
+      <td style="padding:36px 48px;">
+        <h2 style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:20px;font-weight:800;color:#1a1c1c;margin:0 0 12px 0;letter-spacing:-0.03em;">Zod Schemas as the Single Source of Truth</h2>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.7;margin:0 0 14px 0;">Define your request/response shapes in Zod, derive TypeScript types from them, and use them in both validation and documentation:</p>
+        <div style="max-width:100%;overflow-x:auto;display:block;">
+          <pre style="background:#1a1c1c;color:#f1f1f1;font-family:monospace,monospace;font-size:13px;line-height:1.6;padding:20px 24px;border-radius:4px;margin:14px 0 22px 0;overflow-x:auto;">// features/invoices/invoice.schemas.ts
+import { z } from 'zod';
+
+export const CreateInvoiceSchema = z.object({
+  clientId: z.string().uuid(),
+  lineItems: z.array(
+    z.object({
+      description: z.string().min(1).max(500),
+      quantity: z.number().int().positive(),
+      unitPrice: z.number().int().positive(), // cents
+    })
+  ).min(1),
+  dueAt: z.string().datetime(), // ISO 8601
+});
+
+export type CreateInvoiceInput = z.infer&lt;typeof CreateInvoiceSchema&gt;;
+
+export const InvoiceResponseSchema = z.object({
+  id: z.string().uuid(),
+  clientId: z.string().uuid(),
+  status: z.enum(['draft', 'sent', 'paid', 'overdue']),
+  totalCents: z.number().int().nonnegative(),
+  createdAt: z.string().datetime(),
+  dueAt: z.string().datetime(),
+});
+
+export type InvoiceResponse = z.infer&lt;typeof InvoiceResponseSchema&gt;;</pre>
+        </div>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.7;margin:0 0 14px 0;">Your route becomes trivially readable:</p>
+        <div style="max-width:100%;overflow-x:auto;display:block;">
+          <pre style="background:#1a1c1c;color:#f1f1f1;font-family:monospace,monospace;font-size:13px;line-height:1.6;padding:20px 24px;border-radius:4px;margin:14px 0 22px 0;overflow-x:auto;">// routes/api/invoices/+server.ts
+import { CreateInvoiceSchema } from '$features/invoices/invoice.schemas';
+import { createInvoice } from '$features/invoices/invoiceService';
+import { json, error } from '@sveltejs/kit';
+import type { RequestHandler } from './$types';
+
+export const POST: RequestHandler = async ({ request }) =&gt; {
+  const body = await request.json();
+  const parsed = CreateInvoiceSchema.safeParse(body);
+
+  if (!parsed.success) {
+    throw error(400, { message: 'Invalid input', issues: parsed.error.issues });
+  }
+
+  const invoice = await createInvoice(parsed.data);
+  return json(invoice, { status: 201 });
+};</pre>
+        </div>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.7;margin:0;">An agent handed this file plus <span style="background:#e8e8e8;color:#1a1c1c;font-family:monospace,monospace;padding:2px 6px;border-radius:3px;font-size:13px;">invoice.schemas.ts</span> can immediately: validate correctness, add new fields, write tests, or generate a client SDK — all without asking you anything.</p>
+      </td>
+    </tr>
+  </table>
+
+  <!-- SECTION: JSDoc as Agent-Readable Spec -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;">
+    <tr>
+      <td style="padding:36px 48px;">
+        <h2 style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:20px;font-weight:800;color:#1a1c1c;margin:0 0 12px 0;letter-spacing:-0.03em;">JSDoc as Agent-Readable Spec</h2>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.7;margin:0 0 14px 0;">JSDoc isn't just for IDE tooltips. It's structured natural language that agents parse as specification. Write it for service functions that encode business logic:</p>
+        <div style="max-width:100%;overflow-x:auto;display:block;">
+          <pre style="background:#1a1c1c;color:#f1f1f1;font-family:monospace,monospace;font-size:13px;line-height:1.6;padding:20px 24px;border-radius:4px;margin:14px 0 22px 0;overflow-x:auto;">/**
+ * Creates a new invoice in DRAFT status.
+ *
+ * - Calculates `totalCents` from lineItems automatically.
+ * - Sends no notifications — use `sendInvoice()` to transition to SENT.
+ * - Requires the `clientId` to reference an existing Client record.
+ *
+ * @throws {ClientNotFoundError} if the clientId does not exist
+ * @throws {DatabaseError} on persistence failure
+ */
+export async function createInvoice(input: CreateInvoiceInput): Promise&lt;Invoice&gt; {</pre>
+        </div>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.7;margin:0;">This comment answers the questions an agent would otherwise hallucinate answers to: <em>Does this send an email? Does it calculate totals? What errors can it throw?</em></p>
+      </td>
+    </tr>
+  </table>
+
+  <!-- SECTION: Typed Error Envelopes -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f9f9f9;">
+    <tr>
+      <td style="padding:36px 48px;">
+        <h2 style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:20px;font-weight:800;color:#1a1c1c;margin:0 0 12px 0;letter-spacing:-0.03em;">Typed Error Envelopes</h2>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.7;margin:0 0 14px 0;">Define a consistent error response shape and use it everywhere. Agents hate inconsistency:</p>
+        <div style="max-width:100%;overflow-x:auto;display:block;">
+          <pre style="background:#1a1c1c;color:#f1f1f1;font-family:monospace,monospace;font-size:13px;line-height:1.6;padding:20px 24px;border-radius:4px;margin:14px 0 22px 0;overflow-x:auto;">// lib/api/response.ts
+
+export interface ApiError {
+  code: string;       // machine-readable: 'INVOICE_NOT_FOUND'
+  message: string;    // human-readable
+  issues?: unknown;   // Zod validation issues, if applicable
+}
+
+export interface ApiSuccess&lt;T&gt; {
+  data: T;
+  meta?: {
+    total?: number;
+    page?: number;
+  };
+}</pre>
+        </div>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.7;margin:0;">When every route returns <span style="background:#e8e8e8;color:#1a1c1c;font-family:monospace,monospace;padding:2px 6px;border-radius:3px;font-size:13px;">ApiSuccess&lt;T&gt;</span> or <span style="background:#e8e8e8;color:#1a1c1c;font-family:monospace,monospace;padding:2px 6px;border-radius:3px;font-size:13px;">ApiError</span>, the agent can write client-side error handling correctly on the first attempt — no "check the docs for what fields the error has."</p>
+      </td>
+    </tr>
+  </table>
+
+  <!-- PRO MOVE -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;">
+    <tr>
+      <td style="padding:36px 48px;">
+        <div style="background:#1a1c1c;border-left:4px solid #ff6b00;padding:20px 24px;margin-top:0;">
+          <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:11px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:#ff6b00;margin:0 0 12px 0;">PRO MOVE</p>
+          <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#e2e2e2;line-height:1.7;margin:0 0 14px 0;"><strong style="color:#ffffff;">Generate OpenAPI Spec from Zod at Build Time</strong></p>
+          <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#e2e2e2;line-height:1.7;margin:0 0 16px 0;">Use <span style="background:#2e3030;color:#f1f1f1;font-family:monospace,monospace;padding:2px 6px;border-radius:3px;font-size:13px;">zod-to-openapi</span> to auto-generate an OpenAPI spec from your schemas. Feed this spec to your agent as a compact, structured description of your entire API surface — far more token-efficient than pasting individual route files.</p>
+          <div style="max-width:100%;overflow-x:auto;display:block;">
+            <pre style="background:#0d0f0f;color:#f1f1f1;font-family:monospace,monospace;font-size:13px;line-height:1.6;padding:20px 24px;border-radius:4px;margin:0 0 16px 0;overflow-x:auto;">// scripts/generate-openapi.ts
+import { generateOpenApi } from '@anatine/zod-nestjs'; // or zod-to-openapi
+// ... register your schemas, output to openapi.json</pre>
+          </div>
+          <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#e2e2e2;line-height:1.7;margin:0;">Then your agent prompt becomes: <em>"Here is the OpenAPI spec for this project. Add a new endpoint for invoice PDF export following the existing patterns."</em> One context file covers your whole API.</p>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <!-- FOOTER -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;">
+    <tr>
+      <td style="padding:24px 48px 48px 48px;">
+        <hr style="border:none;border-top:1px solid #e2e2e2;margin:0 0 24px 0;" />
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:14px;color:#1a1c1c;margin:0 0 12px 0;line-height:1.6;">
+          <a href="https://www.perplexity.ai/computer/a/llm-dev-tips-V_IHjeQvTf.AxDfI6HnUVw" style="color:#ff6b00;text-decoration:none;font-weight:700;">View Tip #002 online</a>
+          &nbsp;&nbsp;&middot;&nbsp;&nbsp;
+          <a href="https://www.perplexity.ai/computer/a/llm-dev-tips-V_IHjeQvTf.AxDfI6HnUVw" style="color:#ff6b00;text-decoration:none;font-weight:700;">Browse archive</a>
+        </p>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:12px;color:#999999;margin:0;line-height:1.6;">Daily LLM Agent Dev Tips &nbsp;&middot;&nbsp; For SvelteKit + TypeScript developers &nbsp;&middot;&nbsp; Markdown attached</p>
+      </td>
+    </tr>
+  </table>
+
+</div>

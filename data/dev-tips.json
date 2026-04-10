@@ -1,0 +1,73 @@
+{
+  "meta": {
+    "description": "LLM Agent Dev Tips — daily tips for SvelteKit + TypeScript developers",
+    "last_updated": "2026-04-11",
+    "total_tips": 3
+  },
+  "tips": [
+    {
+      "id": "001",
+      "number": 1,
+      "title": "Context Windows as Architecture",
+      "subtitle": "Feed Agents the Right Slice",
+      "category": "Context Management",
+      "sent_date": "2026-04-10",
+      "summary": "An LLM agent is only as good as the context you hand it — structuring your SvelteKit codebase so that any feature's full picture fits in a single, coherent context window is the highest-leverage architectural decision you can make when working with coding agents.",
+      "key_concepts": [
+        "Feature-co-located folder structure",
+        "Barrel exports as agent-readable manifests",
+        "Co-located types per feature",
+        "Context budgeting: 4-file rule per task",
+        "AGENTS.md living contract file"
+      ],
+      "files": {
+        "html": "html/tip-001.html",
+        "markdown": "markdown/tip-001.md"
+      },
+      "subject": "DevTip #001 — Context Windows as Architecture"
+    },
+    {
+      "id": "002",
+      "number": 2,
+      "title": "Agent-First API Design",
+      "subtitle": "Types Are the Spec",
+      "category": "API Design",
+      "sent_date": "2026-04-10",
+      "summary": "A well-typed, self-documenting TypeScript API surface lets an LLM agent reason about, extend, and debug your routes without ever needing you to explain business logic — your code is the documentation.",
+      "key_concepts": [
+        "Consistent REST to service function naming (1:1 mapping)",
+        "Zod schemas as single source of truth",
+        "Derived TypeScript types from Zod",
+        "JSDoc as machine-readable business logic spec",
+        "Typed ApiSuccess<T> / ApiError response envelopes",
+        "Auto-generate OpenAPI spec from Zod at build time"
+      ],
+      "files": {
+        "html": "html/tip-002.html",
+        "markdown": "markdown/tip-002.md"
+      },
+      "subject": "DevTip #002 — Agent-First API Design"
+    },
+    {
+      "id": "003",
+      "number": 3,
+      "title": "Prompt Chaining for UI Generation",
+      "subtitle": "Consistent Components Every Time",
+      "category": "Prompt Engineering",
+      "sent_date": "2026-04-10",
+      "summary": "One-shot UI generation from LLM agents produces inconsistent, design-system-ignorant components — breaking the chain into discrete, primed steps produces output you can ship without a rewrite.",
+      "key_concepts": [
+        "4-step UI generation chain: prime, contract, generate, harden",
+        "Design tokens file as agent context primer",
+        "Exemplar components as few-shot examples",
+        "One-shot vs multi-turn decision framework",
+        "agent-ui-context.md reusable prompt prefix"
+      ],
+      "files": {
+        "html": "html/tip-003.html",
+        "markdown": "markdown/tip-003.md"
+      },
+      "subject": "DevTip #003 — Prompt Chaining for UI Generation"
+    }
+  ]
+}

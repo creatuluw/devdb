@@ -1,0 +1,211 @@
+<div style="font-family:Manrope,Inter,-apple-system,sans-serif;background:#ffffff;max-width:680px;margin:0 auto;padding:0;">
+
+  <!-- HEADER -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;">
+    <tr>
+      <td style="padding:48px 48px 32px 48px;">
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:11px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:#ff6b00;margin:0 0 16px 0;">DEVTIP #003</p>
+        <h1 style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:32px;font-weight:800;color:#1a1c1c;margin:0 0 12px 0;line-height:1.15;letter-spacing:-0.03em;">Prompt Chaining for UI Generation</h1>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:16px;font-weight:400;color:#5e5e5e;margin:0;line-height:1.5;">Consistent Components Every Time</p>
+      </td>
+    </tr>
+  </table>
+
+  <!-- WHY THIS MATTERS -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;">
+    <tr>
+      <td style="padding:0 48px 32px 48px;">
+        <div style="background:#ffffff;border-left:4px solid #ff6b00;padding:24px;margin-bottom:24px;">
+          <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:11px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:#ff6b00;margin:0 0 10px 0;">WHY THIS MATTERS</p>
+          <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#1a1c1c;line-height:1.7;margin:0;">One-shot UI generation from LLM agents produces inconsistent, design-system-ignorant components — breaking the chain into discrete, primed steps produces output you can ship without a rewrite.</p>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <!-- SECTION: Why One-Shot UI Generation Fails -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f9f9f9;">
+    <tr>
+      <td style="padding:36px 48px;">
+        <h2 style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:20px;font-weight:800;color:#1a1c1c;margin:0 0 12px 0;letter-spacing:-0.03em;">Why One-Shot UI Generation Fails</h2>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.7;margin:0 0 14px 0;">Ask an agent to "build a SvelteKit invoice status badge with Tailwind" and you'll get something that works but:</p>
+        <ul style="margin:0 0 14px 0;padding-left:24px;">
+          <li style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.8;margin-bottom:6px;">Uses arbitrary color classes instead of your design tokens</li>
+          <li style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.8;margin-bottom:6px;">Ignores your component conventions (slot patterns, prop naming)</li>
+          <li style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.8;margin-bottom:6px;">Has accessibility gaps</li>
+          <li style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.8;margin-bottom:6px;">Won't match any other component in your system</li>
+        </ul>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.7;margin:0;">The agent wasn't wrong — it was under-informed. Prompt chaining fixes this by feeding the right context at each stage of reasoning, before any code is written.</p>
+      </td>
+    </tr>
+  </table>
+
+  <!-- SECTION: The 4-Step UI Generation Chain -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;">
+    <tr>
+      <td style="padding:36px 48px 12px 48px;">
+        <h2 style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:20px;font-weight:800;color:#1a1c1c;margin:0 0 24px 0;letter-spacing:-0.03em;">The 4-Step UI Generation Chain</h2>
+
+        <!-- Step 1 -->
+        <h3 style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:16px;font-weight:700;color:#ff6b00;margin:20px 0 8px 0;">Step 1 — Prime with Design System Context</h3>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.7;margin:0 0 14px 0;">Before asking for any code, inject your design system as a structured document. Keep a <span style="background:#e8e8e8;color:#1a1c1c;font-family:monospace,monospace;padding:2px 6px;border-radius:3px;font-size:13px;">DESIGN_SYSTEM.md</span> in your project (or a <span style="background:#e8e8e8;color:#1a1c1c;font-family:monospace,monospace;padding:2px 6px;border-radius:3px;font-size:13px;">design-tokens.ts</span> that serves double duty):</p>
+        <div style="max-width:100%;overflow-x:auto;display:block;">
+          <pre style="background:#1a1c1c;color:#f1f1f1;font-family:monospace,monospace;font-size:13px;line-height:1.6;padding:20px 24px;border-radius:4px;margin:14px 0 22px 0;overflow-x:auto;">// lib/design/tokens.ts
+
+export const colors = {
+  status: {
+    draft:   { bg: 'bg-zinc-100',   text: 'text-zinc-600',   border: 'border-zinc-200'   },
+    sent:    { bg: 'bg-blue-50',    text: 'text-blue-700',   border: 'border-blue-200'   },
+    paid:    { bg: 'bg-green-50',   text: 'text-green-700',  border: 'border-green-200'  },
+    overdue: { bg: 'bg-red-50',     text: 'text-red-700',    border: 'border-red-200'    },
+  },
+  // ...
+} as const;</pre>
+        </div>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;font-weight:700;color:#1a1c1c;margin:0 0 8px 0;">Prompt 1 (priming):</p>
+        <blockquote style="border-left:3px solid #e2e2e2;padding-left:20px;margin:0 0 22px 0;">
+          <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#646464;line-height:1.7;font-style:italic;margin:0;">"Here is our design token file: [paste tokens.ts]. Here is an example of an existing badge component we use for user roles: [paste RoleBadge.svelte]. Do not write any code yet. Confirm you understand our color token structure and component conventions."</p>
+        </blockquote>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.7;margin:0 0 32px 0;">Let the agent confirm and summarize. This forces it to internalize your system before generating.</p>
+
+        <!-- Step 2 -->
+        <h3 style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:16px;font-weight:700;color:#ff6b00;margin:20px 0 8px 0;">Step 2 — Specify the Contract</h3>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.7;margin:0 0 14px 0;">Define the component's interface explicitly before generation:</p>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;font-weight:700;color:#1a1c1c;margin:0 0 8px 0;">Prompt 2 (contract):</p>
+        <blockquote style="border-left:3px solid #e2e2e2;padding-left:20px;margin:0 0 16px 0;">
+          <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#646464;line-height:1.7;font-style:italic;margin:0 0 10px 0;">"We need an <span style="background:#e8e8e8;color:#1a1c1c;font-family:monospace,monospace;padding:2px 6px;border-radius:3px;font-size:13px;font-style:normal;">InvoiceStatusBadge</span> component. Here is the TypeScript type it must accept:</p>
+        </blockquote>
+        <div style="max-width:100%;overflow-x:auto;display:block;">
+          <pre style="background:#1a1c1c;color:#f1f1f1;font-family:monospace,monospace;font-size:13px;line-height:1.6;padding:20px 24px;border-radius:4px;margin:0 0 16px 0;overflow-x:auto;">import type { InvoiceStatus } from '$features/invoices/invoice.types';
+
+interface Props {
+  status: InvoiceStatus;
+  size?: 'sm' | 'md';      // default: 'md'
+  showIcon?: boolean;       // default: true
+}</pre>
+        </div>
+        <blockquote style="border-left:3px solid #e2e2e2;padding-left:20px;margin:0 0 22px 0;">
+          <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#646464;line-height:1.7;font-style:italic;margin:0;">It should use the <span style="background:#e8e8e8;color:#646464;font-family:monospace,monospace;padding:2px 6px;border-radius:3px;font-size:13px;font-style:normal;">status</span> color tokens from our design system. Do not write the component yet — describe the mapping of each status to its visual treatment and which icon you'd use for each state."</p>
+        </blockquote>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.7;margin:0 0 32px 0;">This step externalizes the agent's reasoning. You can catch wrong assumptions — like it using an icon set you don't have installed — before a single line of Svelte is written.</p>
+
+        <!-- Step 3 -->
+        <h3 style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:16px;font-weight:700;color:#ff6b00;margin:20px 0 8px 0;">Step 3 — Generate the Component</h3>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.7;margin:0 0 14px 0;">Now, and only now, ask for the code:</p>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;font-weight:700;color:#1a1c1c;margin:0 0 8px 0;">Prompt 3 (generation):</p>
+        <blockquote style="border-left:3px solid #e2e2e2;padding-left:20px;margin:0 0 16px 0;">
+          <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#646464;line-height:1.7;font-style:italic;margin:0;">"Now write the <span style="background:#e8e8e8;color:#646464;font-family:monospace,monospace;padding:2px 6px;border-radius:3px;font-size:13px;font-style:normal;">InvoiceStatusBadge.svelte</span> component using: the contract from Step 2, our design tokens (not arbitrary Tailwind classes), the same prop/slot pattern as <span style="background:#e8e8e8;color:#646464;font-family:monospace,monospace;padding:2px 6px;border-radius:3px;font-size:13px;font-style:normal;">RoleBadge.svelte</span>, Tailwind v4 syntax (no <span style="background:#e8e8e8;color:#646464;font-family:monospace,monospace;padding:2px 6px;border-radius:3px;font-size:13px;font-style:normal;">@apply</span>, use class utilities directly), full TypeScript, no <span style="background:#e8e8e8;color:#646464;font-family:monospace,monospace;padding:2px 6px;border-radius:3px;font-size:13px;font-style:normal;">any</span>, ARIA role='status' and a visually hidden label for screen readers."</p>
+        </blockquote>
+        <div style="max-width:100%;overflow-x:auto;display:block;">
+          <pre style="background:#1a1c1c;color:#f1f1f1;font-family:monospace,monospace;font-size:13px;line-height:1.6;padding:20px 24px;border-radius:4px;margin:14px 0 22px 0;overflow-x:auto;">&lt;!-- Result shape you should expect: --&gt;
+&lt;script lang="ts"&gt;
+  import type { InvoiceStatus } from '$features/invoices/invoice.types';
+  import { colors } from '$lib/design/tokens';
+
+  interface Props {
+    status: InvoiceStatus;
+    size?: 'sm' | 'md';
+    showIcon?: boolean;
+  }
+
+  let { status, size = 'md', showIcon = true }: Props = $props();
+
+  const token = colors.status[status];
+  const sizeClass = size === 'sm' ? 'text-xs px-2 py-0.5' : 'text-sm px-2.5 py-1';
+&lt;/script&gt;
+
+&lt;span
+  role="status"
+  class="inline-flex items-center gap-1.5 rounded-full border font-medium {token.bg} {token.text} {token.border} {sizeClass}"
+&gt;
+  {#if showIcon}
+    &lt;span aria-hidden="true"&gt;&lt;!-- icon per status --&gt;&lt;/span&gt;
+  {/if}
+  &lt;span class="sr-only"&gt;Invoice status:&lt;/span&gt;
+  {status}
+&lt;/span&gt;</pre>
+        </div>
+
+        <!-- Step 4 -->
+        <h3 style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:16px;font-weight:700;color:#ff6b00;margin:20px 0 8px 0;">Step 4 — Harden and Extend</h3>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.7;margin:0 0 14px 0;">Use a focused follow-up to close gaps rather than regenerating:</p>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;font-weight:700;color:#1a1c1c;margin:0 0 8px 0;">Prompt 4 (hardening):</p>
+        <blockquote style="border-left:3px solid #e2e2e2;padding-left:20px;margin:0 0 16px 0;">
+          <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#646464;line-height:1.7;font-style:italic;margin:0;">"Now add: 1. A Storybook story with all 4 status variants shown at both sizes. 2. A <span style="background:#e8e8e8;color:#646464;font-family:monospace,monospace;padding:2px 6px;border-radius:3px;font-size:13px;font-style:normal;">data-testid</span> attribute using the pattern <span style="background:#e8e8e8;color:#646464;font-family:monospace,monospace;padding:2px 6px;border-radius:3px;font-size:13px;font-style:normal;">status-badge-{status}</span>. 3. Export this component from <span style="background:#e8e8e8;color:#646464;font-family:monospace,monospace;padding:2px 6px;border-radius:3px;font-size:13px;font-style:normal;">features/invoices/index.ts</span>."</p>
+        </blockquote>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.7;margin:0 0 12px 0;">Keeping this as a separate step prevents the generation step from getting bloated with non-component concerns.</p>
+      </td>
+    </tr>
+  </table>
+
+  <!-- SECTION: One-Shot vs. Multi-Turn -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f9f9f9;">
+    <tr>
+      <td style="padding:36px 48px;">
+        <h2 style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:20px;font-weight:800;color:#1a1c1c;margin:0 0 16px 0;letter-spacing:-0.03em;">One-Shot vs. Multi-Turn: When to Use Each</h2>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-radius:4px;overflow:hidden;border:1px solid #e2e2e2;">
+          <tr style="background:#1a1c1c;">
+            <td style="padding:10px 14px;font-family:Manrope,Inter,-apple-system,sans-serif;font-size:13px;font-weight:700;color:#ff6b00;border-right:1px solid #2e3030;">Scenario</td>
+            <td style="padding:10px 14px;font-family:Manrope,Inter,-apple-system,sans-serif;font-size:13px;font-weight:700;color:#ff6b00;">Use</td>
+          </tr>
+          <tr style="background:#f9f9f9;">
+            <td style="padding:10px 14px;font-family:Manrope,Inter,-apple-system,sans-serif;font-size:13px;color:#5e5e5e;border-right:1px solid #e2e2e2;border-bottom:1px solid #e2e2e2;">New component following a clear existing pattern</td>
+            <td style="padding:10px 14px;font-family:Manrope,Inter,-apple-system,sans-serif;font-size:13px;color:#5e5e5e;border-bottom:1px solid #e2e2e2;">One-shot with a rich example + token context</td>
+          </tr>
+          <tr style="background:#ffffff;">
+            <td style="padding:10px 14px;font-family:Manrope,Inter,-apple-system,sans-serif;font-size:13px;color:#5e5e5e;border-right:1px solid #e2e2e2;border-bottom:1px solid #e2e2e2;">Novel component type (no existing pattern)</td>
+            <td style="padding:10px 14px;font-family:Manrope,Inter,-apple-system,sans-serif;font-size:13px;color:#5e5e5e;border-bottom:1px solid #e2e2e2;">Multi-turn chain (all 4 steps)</td>
+          </tr>
+          <tr style="background:#f9f9f9;">
+            <td style="padding:10px 14px;font-family:Manrope,Inter,-apple-system,sans-serif;font-size:13px;color:#5e5e5e;border-right:1px solid #e2e2e2;border-bottom:1px solid #e2e2e2;">Modifying an existing component</td>
+            <td style="padding:10px 14px;font-family:Manrope,Inter,-apple-system,sans-serif;font-size:13px;color:#5e5e5e;border-bottom:1px solid #e2e2e2;">One-shot with the component file + diff instructions</td>
+          </tr>
+          <tr style="background:#ffffff;">
+            <td style="padding:10px 14px;font-family:Manrope,Inter,-apple-system,sans-serif;font-size:13px;color:#5e5e5e;border-right:1px solid #e2e2e2;border-bottom:1px solid #e2e2e2;">Full feature UI (multiple components)</td>
+            <td style="padding:10px 14px;font-family:Manrope,Inter,-apple-system,sans-serif;font-size:13px;color:#5e5e5e;border-bottom:1px solid #e2e2e2;">Multi-turn: design &#8594; contract &#8594; generate each &#8594; integrate</td>
+          </tr>
+          <tr style="background:#f9f9f9;">
+            <td style="padding:10px 14px;font-family:Manrope,Inter,-apple-system,sans-serif;font-size:13px;color:#5e5e5e;border-right:1px solid #e2e2e2;">Rapid prototype / throwaway</td>
+            <td style="padding:10px 14px;font-family:Manrope,Inter,-apple-system,sans-serif;font-size:13px;color:#5e5e5e;">One-shot, accept imperfection</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+  <!-- PRO MOVE -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;">
+    <tr>
+      <td style="padding:36px 48px;">
+        <div style="background:#1a1c1c;border-left:4px solid #ff6b00;padding:20px 24px;margin-top:0;">
+          <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:11px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:#ff6b00;margin:0 0 12px 0;">PRO MOVE</p>
+          <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#e2e2e2;line-height:1.7;margin:0 0 14px 0;"><strong style="color:#ffffff;">Snapshot Your Design Context as a Reusable Prompt Prefix</strong></p>
+          <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#e2e2e2;line-height:1.7;margin:0 0 14px 0;">Maintain a <span style="background:#2e3030;color:#f1f1f1;font-family:monospace,monospace;padding:2px 6px;border-radius:3px;font-size:13px;">agent-ui-context.md</span> file that you paste at the start of every UI generation session. Include:</p>
+          <ul style="margin:0;padding-left:20px;">
+            <li style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#e2e2e2;line-height:1.8;margin-bottom:6px;">Your Tailwind config (color palette, spacing scale, font sizes)</li>
+            <li style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#e2e2e2;line-height:1.8;margin-bottom:6px;">Two "exemplar" components — one simple, one complex — that represent your ideal output</li>
+            <li style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#e2e2e2;line-height:1.8;margin-bottom:6px;">Your component file naming and prop naming conventions</li>
+            <li style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#e2e2e2;line-height:1.8;">Any banned patterns (e.g., "never use inline styles," "never use <span style="background:#2e3030;color:#f1f1f1;font-family:monospace,monospace;padding:2px 6px;border-radius:3px;font-size:13px;">!important</span>," "always use <span style="background:#2e3030;color:#f1f1f1;font-family:monospace,monospace;padding:2px 6px;border-radius:3px;font-size:13px;">$props()</span> rune, not <span style="background:#2e3030;color:#f1f1f1;font-family:monospace,monospace;padding:2px 6px;border-radius:3px;font-size:13px;">export let</span>")</li>
+          </ul>
+          <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#e2e2e2;line-height:1.7;margin:14px 0 0 0;">With a well-maintained prefix, Step 1 becomes a paste, not a task — and your agent starts every UI session already inside your design system.</p>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <!-- FOOTER -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;">
+    <tr>
+      <td style="padding:24px 48px 48px 48px;">
+        <hr style="border:none;border-top:1px solid #e2e2e2;margin:0 0 24px 0;" />
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:14px;color:#1a1c1c;margin:0 0 12px 0;line-height:1.6;">
+          <a href="https://www.perplexity.ai/computer/a/llm-dev-tips-V_IHjeQvTf.AxDfI6HnUVw" style="color:#ff6b00;text-decoration:none;font-weight:700;">View Tip #003 online</a>
+          &nbsp;&nbsp;&middot;&nbsp;&nbsp;
+          <a href="https://www.perplexity.ai/computer/a/llm-dev-tips-V_IHjeQvTf.AxDfI6HnUVw" style="color:#ff6b00;text-decoration:none;font-weight:700;">Browse archive</a>
+        </p>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:12px;color:#999999;margin:0;line-height:1.6;">Daily LLM Agent Dev Tips &nbsp;&middot;&nbsp; For SvelteKit + TypeScript developers &nbsp;&middot;&nbsp; Markdown attached</p>
+      </td>
+    </tr>
+  </table>
+
+</div>

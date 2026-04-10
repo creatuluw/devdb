@@ -1,0 +1,215 @@
+<div style="font-family:Manrope,Inter,-apple-system,sans-serif;background:#ffffff;max-width:680px;margin:0 auto;padding:0;">
+
+  <!-- HEADER -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;">
+    <tr>
+      <td style="padding:48px 48px 32px 48px;">
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:11px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:#ff6b00;margin:0 0 16px 0;">DEVTIP #001</p>
+        <h1 style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:32px;font-weight:800;color:#1a1c1c;margin:0 0 12px 0;line-height:1.15;letter-spacing:-0.03em;">Context Windows as Architecture</h1>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:16px;font-weight:400;color:#5e5e5e;margin:0;line-height:1.5;">Feed Agents the Right Slice</p>
+      </td>
+    </tr>
+  </table>
+
+  <!-- WHY THIS MATTERS -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;">
+    <tr>
+      <td style="padding:0 48px 32px 48px;">
+        <div style="background:#ffffff;border-left:4px solid #ff6b00;padding:24px;margin-bottom:24px;">
+          <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:11px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:#ff6b00;margin:0 0 10px 0;">WHY THIS MATTERS</p>
+          <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#1a1c1c;line-height:1.7;margin:0;">An LLM agent is only as good as the context you hand it — structuring your SvelteKit codebase so that any feature's full picture fits in a single, coherent context window is the highest-leverage architectural decision you can make when working with coding agents.</p>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <!-- SECTION: The Problem with Unstructured Codebases -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f9f9f9;">
+    <tr>
+      <td style="padding:36px 48px;">
+        <h2 style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:20px;font-weight:800;color:#1a1c1c;margin:0 0 12px 0;letter-spacing:-0.03em;">The Problem with Unstructured Codebases</h2>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.7;margin:0 0 14px 0;">Most LLM agents fail not because of model quality, but because the developer pastes in the wrong files — or too many of them. A 200k-token context window is still a finite, attention-diluted resource. Dumping your entire <span style="background:#e8e8e8;color:#1a1c1c;font-family:monospace,monospace;padding:2px 6px;border-radius:3px;font-size:13px;">src/</span> directory guarantees the agent hallucinates missing imports, invents non-existent stores, or contradicts your actual data layer.</p>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.7;margin:0;">The fix: <strong style="color:#1a1c1c;">make your codebase legible to an agent by design</strong>.</p>
+      </td>
+    </tr>
+  </table>
+
+  <!-- SECTION: File Structure as a Signal Layer -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;">
+    <tr>
+      <td style="padding:36px 48px;">
+        <h2 style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:20px;font-weight:800;color:#1a1c1c;margin:0 0 12px 0;letter-spacing:-0.03em;">File Structure as a Signal Layer</h2>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.7;margin:0 0 14px 0;">Organize by feature, not by type. Instead of:</p>
+        <div style="max-width:100%;overflow-x:auto;display:block;">
+          <pre style="background:#1a1c1c;color:#f1f1f1;font-family:monospace,monospace;font-size:13px;line-height:1.6;padding:20px 24px;border-radius:4px;margin:14px 0 22px 0;overflow-x:auto;">src/
+  components/
+    Button.svelte
+    UserCard.svelte
+    InvoiceTable.svelte
+  stores/
+    userStore.ts
+    invoiceStore.ts
+  api/
+    users.ts
+    invoices.ts</pre>
+        </div>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.7;margin:0 0 14px 0;">Use a co-located feature structure:</p>
+        <div style="max-width:100%;overflow-x:auto;display:block;">
+          <pre style="background:#1a1c1c;color:#f1f1f1;font-family:monospace,monospace;font-size:13px;line-height:1.6;padding:20px 24px;border-radius:4px;margin:14px 0 22px 0;overflow-x:auto;">src/
+  features/
+    users/
+      UserCard.svelte
+      userStore.ts
+      userService.ts
+      user.types.ts
+      index.ts          &#8592; barrel export
+    invoices/
+      InvoiceTable.svelte
+      invoiceStore.ts
+      invoiceService.ts
+      invoice.types.ts
+      index.ts
+  routes/
+    users/
+      +page.svelte
+      +page.server.ts
+    invoices/
+      +page.svelte
+      +page.server.ts</pre>
+        </div>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.7;margin:0 0 14px 0;">When you ask an agent to "add a status badge to the invoice feature," you hand it:</p>
+        <div style="max-width:100%;overflow-x:auto;display:block;">
+          <pre style="background:#1a1c1c;color:#f1f1f1;font-family:monospace,monospace;font-size:13px;line-height:1.6;padding:20px 24px;border-radius:4px;margin:14px 0 22px 0;overflow-x:auto;">features/invoices/</pre>
+        </div>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.7;margin:0;">That's it. Every relevant type, store, component, and service is in one folder. No cross-folder hunting. No context pollution from unrelated features.</p>
+      </td>
+    </tr>
+  </table>
+
+  <!-- SECTION: Barrel Exports as Agent-Readable Manifests -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f9f9f9;">
+    <tr>
+      <td style="padding:36px 48px;">
+        <h2 style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:20px;font-weight:800;color:#1a1c1c;margin:0 0 12px 0;letter-spacing:-0.03em;">Barrel Exports as Agent-Readable Manifests</h2>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.7;margin:0 0 14px 0;">Your <span style="background:#e8e8e8;color:#1a1c1c;font-family:monospace,monospace;padding:2px 6px;border-radius:3px;font-size:13px;">index.ts</span> barrel is not just a convenience export — it's a <strong style="color:#1a1c1c;">declaration of the feature's public surface</strong>. Write it intentionally:</p>
+        <div style="max-width:100%;overflow-x:auto;display:block;">
+          <pre style="background:#1a1c1c;color:#f1f1f1;font-family:monospace,monospace;font-size:13px;line-height:1.6;padding:20px 24px;border-radius:4px;margin:14px 0 22px 0;overflow-x:auto;">// features/invoices/index.ts
+
+// Types
+export type { Invoice, InvoiceStatus, InvoiceLineItem } from './invoice.types';
+
+// Service (server-side logic)
+export { getInvoices, createInvoice, updateInvoiceStatus } from './invoiceService';
+
+// Store (client-side state)
+export { invoiceStore, selectedInvoice } from './invoiceStore';
+
+// Components
+export { default as InvoiceTable } from './InvoiceTable.svelte';
+export { default as InvoiceStatusBadge } from './InvoiceStatusBadge.svelte';</pre>
+        </div>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.7;margin:0;">When an agent reads this file first, it instantly maps the entire feature's capabilities without opening a single implementation file. Prompt pattern: <em>"Read <span style="background:#e8e8e8;color:#1a1c1c;font-family:monospace,monospace;padding:2px 6px;border-radius:3px;font-size:13px;">features/invoices/index.ts</span> to understand what's available, then implement X."</em></p>
+      </td>
+    </tr>
+  </table>
+
+  <!-- SECTION: Co-locate Types — Always -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;">
+    <tr>
+      <td style="padding:36px 48px;">
+        <h2 style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:20px;font-weight:800;color:#1a1c1c;margin:0 0 12px 0;letter-spacing:-0.03em;">Co-locate Types — Always</h2>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.7;margin:0 0 14px 0;">Types defined far from their usage force the agent to chase references. Put <span style="background:#e8e8e8;color:#1a1c1c;font-family:monospace,monospace;padding:2px 6px;border-radius:3px;font-size:13px;">invoice.types.ts</span> in the feature folder and import from it everywhere:</p>
+        <div style="max-width:100%;overflow-x:auto;display:block;">
+          <pre style="background:#1a1c1c;color:#f1f1f1;font-family:monospace,monospace;font-size:13px;line-height:1.6;padding:20px 24px;border-radius:4px;margin:14px 0 22px 0;overflow-x:auto;">// features/invoices/invoice.types.ts
+
+export type InvoiceStatus = 'draft' | 'sent' | 'paid' | 'overdue';
+
+export interface InvoiceLineItem {
+  id: string;
+  description: string;
+  quantity: number;
+  unitPrice: number; // in cents
+}
+
+export interface Invoice {
+  id: string;
+  clientId: string;
+  status: InvoiceStatus;
+  lineItems: InvoiceLineItem[];
+  createdAt: Date;
+  dueAt: Date;
+  totalCents: number;
+}</pre>
+        </div>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.7;margin:0;">When the agent encounters <span style="background:#e8e8e8;color:#1a1c1c;font-family:monospace,monospace;padding:2px 6px;border-radius:3px;font-size:13px;">Invoice</span> anywhere in context, the full shape is right there — no need to resolve it across the project graph.</p>
+      </td>
+    </tr>
+  </table>
+
+  <!-- SECTION: Slicing Context Per Task -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f9f9f9;">
+    <tr>
+      <td style="padding:36px 48px;">
+        <h2 style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:20px;font-weight:800;color:#1a1c1c;margin:0 0 12px 0;letter-spacing:-0.03em;">Slicing Context Per Task</h2>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.7;margin:0 0 14px 0;">Build a personal discipline of <strong style="color:#1a1c1c;">context budgeting</strong>. For each agent task, ask:</p>
+        <ul style="margin:0 0 14px 0;padding-left:24px;">
+          <li style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.8;margin-bottom:6px;"><strong style="color:#1a1c1c;">Feature context</strong>: the feature folder (<span style="background:#e8e8e8;color:#1a1c1c;font-family:monospace,monospace;padding:2px 6px;border-radius:3px;font-size:13px;">features/invoices/</span>)</li>
+          <li style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.8;margin-bottom:6px;"><strong style="color:#1a1c1c;">Route context</strong>: the relevant <span style="background:#e8e8e8;color:#1a1c1c;font-family:monospace,monospace;padding:2px 6px;border-radius:3px;font-size:13px;">+page.server.ts</span> or <span style="background:#e8e8e8;color:#1a1c1c;font-family:monospace,monospace;padding:2px 6px;border-radius:3px;font-size:13px;">+server.ts</span></li>
+          <li style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.8;margin-bottom:6px;"><strong style="color:#1a1c1c;">Design system context</strong>: your token definitions or a <span style="background:#e8e8e8;color:#1a1c1c;font-family:monospace,monospace;padding:2px 6px;border-radius:3px;font-size:13px;">DESIGN_SYSTEM.md</span> (see Tip #3)</li>
+          <li style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.8;margin-bottom:6px;"><strong style="color:#1a1c1c;">Constraint file</strong>: a <span style="background:#e8e8e8;color:#1a1c1c;font-family:monospace,monospace;padding:2px 6px;border-radius:3px;font-size:13px;">AGENTS.md</span> at the project root with your coding conventions</li>
+        </ul>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.7;margin:0 0 14px 0;">Avoid including: unrelated features, your entire <span style="background:#e8e8e8;color:#1a1c1c;font-family:monospace,monospace;padding:2px 6px;border-radius:3px;font-size:13px;">lib/</span> directory, <span style="background:#e8e8e8;color:#1a1c1c;font-family:monospace,monospace;padding:2px 6px;border-radius:3px;font-size:13px;">node_modules</span> (obviously), or boilerplate config files.</p>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#5e5e5e;line-height:1.7;margin:0;">A tight 4-file context will outperform a 40-file dump every time.</p>
+      </td>
+    </tr>
+  </table>
+
+  <!-- PRO MOVE -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;">
+    <tr>
+      <td style="padding:36px 48px;">
+        <div style="background:#1a1c1c;border-left:4px solid #ff6b00;padding:20px 24px;margin-top:0;">
+          <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:11px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:#ff6b00;margin:0 0 12px 0;">PRO MOVE</p>
+          <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#e2e2e2;line-height:1.7;margin:0 0 14px 0;"><strong style="color:#ffffff;">AGENTS.md as a Living Contract</strong></p>
+          <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#e2e2e2;line-height:1.7;margin:0 0 16px 0;">Create a <span style="background:#2e3030;color:#f1f1f1;font-family:monospace,monospace;padding:2px 6px;border-radius:3px;font-size:13px;">AGENTS.md</span> at your project root and include it in every agent session. Keep it under 200 lines:</p>
+          <div style="max-width:100%;overflow-x:auto;display:block;">
+            <pre style="background:#0d0f0f;color:#f1f1f1;font-family:monospace,monospace;font-size:13px;line-height:1.6;padding:20px 24px;border-radius:4px;margin:0 0 16px 0;overflow-x:auto;"># Agent Context: MyApp
+
+## Stack
+- SvelteKit 2, TypeScript strict mode, Tailwind v4
+- PostgreSQL via Drizzle ORM, DuckDB for analytics, Pocketbase for auth
+- Zod for all I/O validation
+
+## Conventions
+- All DB calls go through `src/lib/db/` service modules — never query directly in routes
+- Use `$lib` alias for all internal imports
+- Components are never async — async logic lives in `+page.server.ts` or service modules
+- All monetary values stored in cents (integer), displayed via `formatCurrency()` util
+
+## File patterns
+- Feature types: `features/[name]/[name].types.ts`
+- Feature barrel: `features/[name]/index.ts`
+- API routes: `src/routes/api/[resource]/+server.ts`</pre>
+          </div>
+          <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:15px;color:#e2e2e2;line-height:1.7;margin:0;">This file makes every agent session context-aware from line one, with zero repetition on your end.</p>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <!-- FOOTER -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;">
+    <tr>
+      <td style="padding:24px 48px 48px 48px;">
+        <hr style="border:none;border-top:1px solid #e2e2e2;margin:0 0 24px 0;" />
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:14px;color:#1a1c1c;margin:0 0 12px 0;line-height:1.6;">
+          <a href="https://www.perplexity.ai/computer/a/llm-dev-tips-V_IHjeQvTf.AxDfI6HnUVw" style="color:#ff6b00;text-decoration:none;font-weight:700;">View Tip #001 online</a>
+          &nbsp;&nbsp;&middot;&nbsp;&nbsp;
+          <a href="https://www.perplexity.ai/computer/a/llm-dev-tips-V_IHjeQvTf.AxDfI6HnUVw" style="color:#ff6b00;text-decoration:none;font-weight:700;">Browse archive</a>
+        </p>
+        <p style="font-family:Manrope,Inter,-apple-system,sans-serif;font-size:12px;color:#999999;margin:0;line-height:1.6;">Daily LLM Agent Dev Tips &nbsp;&middot;&nbsp; For SvelteKit + TypeScript developers &nbsp;&middot;&nbsp; Markdown attached</p>
+      </td>
+    </tr>
+  </table>
+
+</div>
