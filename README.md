@@ -27,7 +27,7 @@ devdb/
 | 002 | Agent-First API Design | API Design | 2026-04-10 |
 | 003 | Prompt Chaining for UI Generation | Prompt Engineering | 2026-04-10 |
 
-## Categories (rotating — 24 total)
+## Categories (rotating — 29 total)
 
 | # | Category | Focus |
 |---|----------|-------|
@@ -50,8 +50,13 @@ devdb/
 | 16 | Agent-to-Agent Interactions | Multi-agent systems, orchestrators, inter-agent communication |
 | 17 | Optimizing DX | Dev experience improvements, tooling ergonomics, reducing friction |
 | 18 | Build Internal Tools for LLM | Admin UIs, dashboards, dev portals purpose-built for LLM workflows |
-| 19 | Failure Archaeology | Mining past agent failures as training signal — turning bad outputs into better prompts, typed error taxonomies, and regression suites |
-| 20 | Cognitive Load Engineering | Designing agent interactions to minimize the developer's mental overhead — fewer decisions, better defaults, self-documenting outputs |
-| 21 | Temporal Reasoning & State Drift | How agents mishandle time, stale state, and evolving codebases — and how to anchor them to reality with versioned context and freshness signals |
-| 22 | The Economics of Agent Time | Token budgeting, cost-per-feature analysis, when NOT to use an agent, and how to measure ROI on agentic work |
-| 23 | Adversarial Prompting as a Design Tool | Using red-teaming techniques on your own prompts to find failure modes before they hit production |
+| 19 | Failure Archaeology | Mining past agent failures as training signal — error taxonomies, regression suites |
+| 20 | Cognitive Load Engineering | Designing agent outputs to minimize human verification overhead |
+| 21 | Temporal Reasoning & State Drift | Anchoring agents to reality — versioned context, freshness signals, stale state detection |
+| 22 | The Economics of Agent Time | Token budgeting, cost-per-feature, ROI measurement, when NOT to use an agent |
+| 23 | Adversarial Prompting as a Design Tool | Red-teaming your own prompts to find failure modes before production |
+| 24 | Comprehension Debt | The accumulating cost of agent-written code you never fully understood — how to detect, measure, and pay it down before it owns your codebase |
+| 25 | Updating Devs in a Smart Way | Agent-generated changelogs, semantic PR summaries, intent-first diffs — keeping humans genuinely informed, not just notified |
+| 26 | Semantic Tooling | Tools that operate on meaning, not syntax — semantic search, embedding-aware linters, meaning-preserving refactors, codebase-wide concept graphs |
+| 27 | How to Ideate with LLMs | Structured divergent/convergent prompting, using agents as a thinking partner, idea pressure-testing, spec generation from rough intent |
+| 28 | Deterministic Design | Making agent outputs reproducible and production-safe — temperature discipline, output schemas, idempotency, regression-proof generation pipelines |

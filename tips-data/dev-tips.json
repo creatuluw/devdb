@@ -27,9 +27,14 @@
       "Cognitive Load Engineering",
       "Temporal Reasoning & State Drift",
       "The Economics of Agent Time",
-      "Adversarial Prompting as a Design Tool"
+      "Adversarial Prompting as a Design Tool",
+      "Comprehension Debt",
+      "Updating Devs in a Smart Way",
+      "Semantic Tooling",
+      "How to Ideate with LLMs",
+      "Deterministic Design"
     ],
-    "category_count": 24
+    "category_count": 29
   },
   "tips": [
     {
