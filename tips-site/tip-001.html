@@ -1,0 +1,416 @@
+<!doctype html>
+<html class="light" lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <title>DevTip #001 — Context Windows as Architecture</title>
+        <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@400;500;600&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            .material-symbols-outlined {
+                font-variation-settings:
+                    "FILL" 0,
+                    "wght" 400,
+                    "GRAD" 0,
+                    "opsz" 24;
+            }
+            body {
+                font-family: "Inter", sans-serif;
+                background-color: #f9f9f9;
+                color: #1a1c1c;
+            }
+            h1, h2, h3, .headline {
+                font-family: "Manrope", sans-serif;
+            }
+            pre code {
+                font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+                font-size: 0.875rem;
+                line-height: 1.7;
+            }
+            pre {
+                background: #1a1c1c;
+                color: #f1f1f1;
+                border-radius: 0.5rem;
+                padding: 1.5rem;
+                overflow-x: auto;
+                margin: 0;
+            }
+            pre .comment { color: #6b7280; }
+            pre .keyword { color: #ff6b00; }
+            pre .string { color: #a5d6a7; }
+            pre .type { color: #90caf9; }
+            pre .fn { color: #ffcc80; }
+        </style>
+        <script id="tailwind-config">
+            tailwind.config = {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        colors: {
+                            "secondary-container": "#e3e2e2",
+                            "on-secondary-container": "#646464",
+                            "tertiary-fixed-dim": "#ffb693",
+                            "surface-container-lowest": "#ffffff",
+                            "tertiary-container": "#ff6b00",
+                            "error-container": "#ffdad6",
+                            "primary-container": "#999999",
+                            "surface-dim": "#dadada",
+                            "on-tertiary": "#ffffff",
+                            outline: "#8e7164",
+                            "on-primary-fixed-variant": "#474747",
+                            "primary-fixed": "#e2e2e2",
+                            "on-tertiary-fixed-variant": "#7a3000",
+                            primary: "#5e5e5e",
+                            "on-secondary": "#ffffff",
+                            tertiary: "#a04100",
+                            "surface-tint": "#5e5e5e",
+                            "inverse-on-surface": "#f1f1f1",
+                            "on-secondary-fixed-variant": "#464747",
+                            "surface-bright": "#f9f9f9",
+                            "on-background": "#1a1c1c",
+                            "surface-variant": "#e2e2e2",
+                            "surface-container-highest": "#e2e2e2",
+                            "tertiary-fixed": "#ffdbcc",
+                            "surface-container-high": "#e8e8e8",
+                            "on-tertiary-fixed": "#351000",
+                            secondary: "#5e5e5e",
+                            "on-primary-container": "#313131",
+                            "secondary-fixed-dim": "#c7c6c6",
+                            "surface-container-low": "#f3f3f3",
+                            "outline-variant": "#e2bfb0",
+                            "on-secondary-fixed": "#1b1c1c",
+                            "on-surface-variant": "#5a4136",
+                            "on-primary-fixed": "#1b1b1b",
+                            error: "#ba1a1a",
+                            background: "#f9f9f9",
+                            "on-primary": "#ffffff",
+                            surface: "#f9f9f9",
+                            "on-tertiary-container": "#572000",
+                            "primary-fixed-dim": "#c6c6c6",
+                            "inverse-surface": "#2f3131",
+                            "surface-container": "#eeeeee",
+                            "inverse-primary": "#c6c6c6",
+                            "secondary-fixed": "#e3e2e2",
+                            "on-error-container": "#93000a",
+                            "on-surface": "#1a1c1c",
+                            "on-error": "#ffffff",
+                        },
+                        borderRadius: {
+                            DEFAULT: "0.125rem",
+                            lg: "0.25rem",
+                            xl: "0.5rem",
+                            full: "0.75rem",
+                        },
+                        fontFamily: {
+                            headline: ["Manrope"],
+                            body: ["Inter"],
+                            label: ["Inter"],
+                        },
+                    },
+                },
+            };
+        </script>
+    </head>
+    <body class="bg-surface selection:bg-tertiary-container selection:text-white">
+
+        <!-- Navigation -->
+        <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl flex justify-between items-center px-8 py-4 max-w-full border-b border-stone-100">
+            <a href="../" class="text-2xl font-black tracking-tighter text-stone-900 font-headline hover:text-tertiary-container transition-colors">DevTips</a>
+            <div class="hidden md:flex items-center gap-2">
+                <span class="text-xs font-bold text-tertiary-container uppercase tracking-widest bg-tertiary-fixed px-3 py-1">SvelteKit</span>
+                <span class="text-xs font-bold text-stone-500 uppercase tracking-widest">·</span>
+                <span class="text-xs font-bold text-stone-500 uppercase tracking-widest">TypeScript</span>
+                <span class="text-xs font-bold text-stone-500 uppercase tracking-widest">·</span>
+                <span class="text-xs font-bold text-stone-500 uppercase tracking-widest">LLM Agents</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="../" class="text-stone-900 font-bold hover:scale-95 duration-200 text-sm flex items-center gap-1">
+                    <span class="material-symbols-outlined text-sm">arrow_back</span>
+                    All Tips
+                </a>
+            </div>
+        </nav>
+
+        <main class="pt-20 pb-32">
+
+            <!-- Hero Section -->
+            <section class="px-8 md:px-24 py-20 bg-surface-container-low">
+                <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+                    <div class="md:col-span-8">
+                        <span class="text-tertiary-container font-bold tracking-widest text-xs uppercase mb-4 block">DEVTIP #001</span>
+                        <h1 class="text-5xl md:text-7xl font-black tracking-tighter text-on-surface leading-none mb-4">
+                            Context Windows as Architecture
+                        </h1>
+                        <p class="text-2xl text-secondary font-light leading-snug">
+                            Feed Agents the Right Slice
+                        </p>
+                    </div>
+                    <div class="md:col-span-4 flex items-center justify-center">
+                        <div class="w-32 h-32 bg-stone-900 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-tertiary-container text-6xl">window</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Why This Matters -->
+            <section class="px-8 md:px-24 py-16 bg-white">
+                <div class="max-w-3xl mx-auto">
+                    <div class="p-8 bg-surface-container-lowest border-l-4 border-tertiary-container">
+                        <h2 class="text-xs font-bold uppercase tracking-widest text-primary mb-2">WHY THIS MATTERS</h2>
+                        <p class="text-xl text-on-surface leading-relaxed font-medium italic">
+                            "An LLM agent is only as good as the context you hand it — structuring your SvelteKit codebase so that any feature's full picture fits in a single, coherent context window is the highest-leverage architectural decision you can make when working with coding agents."
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: The Problem -->
+            <section class="px-8 md:px-24 py-20 bg-surface">
+                <div class="max-w-3xl mx-auto space-y-12">
+                    <div class="space-y-6">
+                        <h2 class="text-3xl font-black tracking-tighter">The Problem with Unstructured Codebases</h2>
+                        <p class="text-lg text-secondary leading-relaxed">
+                            Most LLM agents fail not because of model quality, but because the developer pastes in the wrong files — or too many of them. A 200k-token context window is still a finite, <span class="font-bold text-tertiary-container underline decoration-2 underline-offset-4">attention-diluted</span> resource. Dumping your entire <code class="bg-surface-container-high px-2 py-0.5 text-sm font-mono">src/</code> directory guarantees the agent hallucinates missing imports, invents non-existent stores, or contradicts your actual data layer.
+                        </p>
+                        <blockquote class="pl-8 border-l-4 border-[#ff6b00]">
+                            <p class="text-lg italic text-secondary">
+                                The fix: make your codebase legible to an agent by design.
+                            </p>
+                        </blockquote>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: File Structure -->
+            <section class="px-8 md:px-24 py-20 bg-surface-container-low">
+                <div class="max-w-3xl mx-auto space-y-12">
+                    <div class="space-y-6">
+                        <h2 class="text-3xl font-black tracking-tighter">File Structure as a Signal Layer</h2>
+                        <p class="text-lg text-secondary leading-relaxed">
+                            Organize by feature, not by type. Instead of scattering related files across <code class="bg-surface-container-high px-2 py-0.5 text-sm font-mono">components/</code>, <code class="bg-surface-container-high px-2 py-0.5 text-sm font-mono">stores/</code>, and <code class="bg-surface-container-high px-2 py-0.5 text-sm font-mono">api/</code> directories:
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <p class="text-xs font-bold text-stone-400 uppercase tracking-widest mb-3">❌ Type-based (scattered)</p>
+                                <pre><code>src/
+  components/
+    Button.svelte
+    UserCard.svelte
+    InvoiceTable.svelte
+  stores/
+    userStore.ts
+    invoiceStore.ts
+  api/
+    users.ts
+    invoices.ts</code></pre>
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold text-tertiary-container uppercase tracking-widest mb-3">✓ Feature-based (co-located)</p>
+                                <pre><code>src/
+  features/
+    users/
+      UserCard.svelte
+      userStore.ts
+      userService.ts
+      user.types.ts
+      index.ts       <span class="comment">← barrel export</span>
+    invoices/
+      InvoiceTable.svelte
+      invoiceStore.ts
+      invoiceService.ts
+      invoice.types.ts
+      index.ts
+  routes/
+    users/
+      +page.svelte
+      +page.server.ts
+    invoices/
+      +page.svelte
+      +page.server.ts</code></pre>
+                            </div>
+                        </div>
+                        <p class="text-lg text-secondary leading-relaxed">
+                            When you ask an agent to "add a status badge to the invoice feature," you hand it <code class="bg-surface-container-high px-2 py-0.5 text-sm font-mono">features/invoices/</code> — that's it. Every relevant type, store, component, and service is in one folder. No cross-folder hunting. No context pollution from unrelated features.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Barrel Exports -->
+            <section class="px-8 md:px-24 py-20 bg-white">
+                <div class="max-w-3xl mx-auto space-y-12">
+                    <div class="space-y-6">
+                        <h2 class="text-3xl font-black tracking-tighter">Barrel Exports as Agent-Readable Manifests</h2>
+                        <p class="text-lg text-secondary leading-relaxed">
+                            Your <code class="bg-surface-container-high px-2 py-0.5 text-sm font-mono">index.ts</code> barrel is not just a convenience export — it's a <span class="font-bold">declaration of the feature's public surface</span>. Write it intentionally:
+                        </p>
+                        <pre><code><span class="comment">// features/invoices/index.ts</span>
+
+<span class="comment">// Types</span>
+<span class="keyword">export type</span> { <span class="type">Invoice</span>, <span class="type">InvoiceStatus</span>, <span class="type">InvoiceLineItem</span> } <span class="keyword">from</span> <span class="string">'./invoice.types'</span>;
+
+<span class="comment">// Service (server-side logic)</span>
+<span class="keyword">export</span> { <span class="fn">getInvoices</span>, <span class="fn">createInvoice</span>, <span class="fn">updateInvoiceStatus</span> } <span class="keyword">from</span> <span class="string">'./invoiceService'</span>;
+
+<span class="comment">// Store (client-side state)</span>
+<span class="keyword">export</span> { <span class="fn">invoiceStore</span>, <span class="fn">selectedInvoice</span> } <span class="keyword">from</span> <span class="string">'./invoiceStore'</span>;
+
+<span class="comment">// Components</span>
+<span class="keyword">export</span> { <span class="keyword">default</span> <span class="keyword">as</span> <span class="type">InvoiceTable</span> } <span class="keyword">from</span> <span class="string">'./InvoiceTable.svelte'</span>;
+<span class="keyword">export</span> { <span class="keyword">default</span> <span class="keyword">as</span> <span class="type">InvoiceStatusBadge</span> } <span class="keyword">from</span> <span class="string">'./InvoiceStatusBadge.svelte'</span>;</code></pre>
+                        <p class="text-lg text-secondary leading-relaxed">
+                            When an agent reads this file first, it instantly maps the entire feature's capabilities without opening a single implementation file. Prompt pattern: <em>"Read <code class="bg-surface-container-high px-2 py-0.5 text-sm font-mono">features/invoices/index.ts</code> to understand what's available, then implement X."</em>
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Co-locate Types -->
+            <section class="px-8 md:px-24 py-20 bg-surface-container-low">
+                <div class="max-w-3xl mx-auto space-y-12">
+                    <div class="space-y-6">
+                        <h2 class="text-3xl font-black tracking-tighter">Co-locate Types — Always</h2>
+                        <p class="text-lg text-secondary leading-relaxed">
+                            Types defined far from their usage force the agent to chase references. Put <code class="bg-surface-container-high px-2 py-0.5 text-sm font-mono">invoice.types.ts</code> in the feature folder and import from it everywhere:
+                        </p>
+                        <pre><code><span class="comment">// features/invoices/invoice.types.ts</span>
+
+<span class="keyword">export type</span> <span class="type">InvoiceStatus</span> = <span class="string">'draft'</span> | <span class="string">'sent'</span> | <span class="string">'paid'</span> | <span class="string">'overdue'</span>;
+
+<span class="keyword">export interface</span> <span class="type">InvoiceLineItem</span> {
+  id: <span class="type">string</span>;
+  description: <span class="type">string</span>;
+  quantity: <span class="type">number</span>;
+  unitPrice: <span class="type">number</span>; <span class="comment">// in cents</span>
+}
+
+<span class="keyword">export interface</span> <span class="type">Invoice</span> {
+  id: <span class="type">string</span>;
+  clientId: <span class="type">string</span>;
+  status: <span class="type">InvoiceStatus</span>;
+  lineItems: <span class="type">InvoiceLineItem</span>[];
+  createdAt: <span class="type">Date</span>;
+  dueAt: <span class="type">Date</span>;
+  totalCents: <span class="type">number</span>;
+}</code></pre>
+                        <p class="text-lg text-secondary leading-relaxed">
+                            When the agent encounters <code class="bg-surface-container-high px-2 py-0.5 text-sm font-mono">Invoice</code> anywhere in context, the full shape is right there — no need to resolve it across the project graph.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Slicing Context -->
+            <section class="px-8 md:px-24 py-20 bg-white">
+                <div class="max-w-3xl mx-auto space-y-12">
+                    <div class="space-y-6">
+                        <h2 class="text-3xl font-black tracking-tighter">Slicing Context Per Task</h2>
+                        <p class="text-lg text-secondary leading-relaxed">
+                            Build a personal discipline of <span class="font-bold">context budgeting</span>. For each agent task, ask:
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="p-6 bg-surface-container-low border-b-4 border-stone-100 hover:border-tertiary-container transition-all">
+                                <span class="material-symbols-outlined text-tertiary-container mb-3 block">folder_open</span>
+                                <h4 class="font-bold mb-1">Feature context</h4>
+                                <p class="text-sm text-secondary">The feature folder (<code class="text-xs bg-surface-container-high px-1.5 py-0.5 font-mono">features/invoices/</code>)</p>
+                            </div>
+                            <div class="p-6 bg-surface-container-low border-b-4 border-stone-100 hover:border-tertiary-container transition-all">
+                                <span class="material-symbols-outlined text-tertiary-container mb-3 block">route</span>
+                                <h4 class="font-bold mb-1">Route context</h4>
+                                <p class="text-sm text-secondary">The relevant <code class="text-xs bg-surface-container-high px-1.5 py-0.5 font-mono">+page.server.ts</code> or <code class="text-xs bg-surface-container-high px-1.5 py-0.5 font-mono">+server.ts</code></p>
+                            </div>
+                            <div class="p-6 bg-surface-container-low border-b-4 border-stone-100 hover:border-tertiary-container transition-all">
+                                <span class="material-symbols-outlined text-tertiary-container mb-3 block">palette</span>
+                                <h4 class="font-bold mb-1">Design system context</h4>
+                                <p class="text-sm text-secondary">Your token definitions or a <code class="text-xs bg-surface-container-high px-1.5 py-0.5 font-mono">DESIGN_SYSTEM.md</code></p>
+                            </div>
+                            <div class="p-6 bg-surface-container-low border-b-4 border-stone-100 hover:border-tertiary-container transition-all">
+                                <span class="material-symbols-outlined text-tertiary-container mb-3 block">description</span>
+                                <h4 class="font-bold mb-1">Constraint file</h4>
+                                <p class="text-sm text-secondary">An <code class="text-xs bg-surface-container-high px-1.5 py-0.5 font-mono">AGENTS.md</code> at the project root with your coding conventions</p>
+                            </div>
+                        </div>
+                        <blockquote class="pl-8 border-l-4 border-[#ff6b00]">
+                            <p class="text-lg italic text-secondary">
+                                A tight 4-file context will outperform a 40-file dump every time.
+                            </p>
+                        </blockquote>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PRO MOVE Section (dark bg like Kernpunten) -->
+            <section class="px-8 md:px-24 py-24 bg-[#1a1c1c] text-white">
+                <div class="max-w-5xl mx-auto">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-16">
+                        <div class="md:col-span-4">
+                            <h2 class="text-4xl font-black tracking-tighter text-tertiary-container">
+                                Pro Move
+                            </h2>
+                            <p class="mt-4 text-stone-400 font-medium">
+                                AGENTS.md as a Living Contract
+                            </p>
+                        </div>
+                        <div class="md:col-span-8 space-y-8">
+                            <p class="text-stone-300 leading-relaxed text-lg">
+                                Create a <code class="bg-stone-800 px-2 py-0.5 text-sm font-mono text-tertiary-fixed-dim">AGENTS.md</code> at your project root and include it in every agent session. Keep it under 200 lines:
+                            </p>
+                            <pre><code><span class="comment"># Agent Context: MyApp</span>
+
+<span class="comment">## Stack</span>
+- SvelteKit 2, TypeScript strict mode, Tailwind v4
+- PostgreSQL via Drizzle ORM, DuckDB for analytics
+- Pocketbase for auth
+- Zod for all I/O validation
+
+<span class="comment">## Conventions</span>
+- All DB calls go through <span class="string">`src/lib/db/`</span> service modules
+  — never query directly in routes
+- Use <span class="string">`$lib`</span> alias for all internal imports
+- Components are never async — async logic lives in
+  <span class="string">`+page.server.ts`</span> or service modules
+- All monetary values stored in cents (integer),
+  displayed via <span class="fn">formatCurrency()</span> util
+
+<span class="comment">## File patterns</span>
+- Feature types: <span class="string">`features/[name]/[name].types.ts`</span>
+- Feature barrel: <span class="string">`features/[name]/index.ts`</span>
+- API routes: <span class="string">`src/routes/api/[resource]/+server.ts`</span></code></pre>
+                            <p class="text-stone-400 leading-relaxed">
+                                This file makes every agent session context-aware from line one, with zero repetition on your end.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <section class="px-8 md:px-24 py-20 bg-white">
+                <div class="max-w-3xl mx-auto text-center">
+                    <span class="text-xs font-bold text-stone-400 uppercase tracking-widest mb-4 block">Daily LLM Agent Dev Tips</span>
+                    <p class="text-lg text-secondary font-medium">For SvelteKit + TypeScript developers</p>
+                    <div class="mt-8 flex justify-center gap-4">
+                        <a href="../tip-002/" class="inline-flex items-center gap-4 bg-tertiary-container text-white px-10 py-5 font-bold hover:scale-105 transition-transform group">
+                            <span>NEXT: TIP #002</span>
+                            <span class="material-symbols-outlined group-hover:translate-x-2 transition-transform">arrow_forward</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- FAB -->
+        <a href="../" class="fixed bottom-8 right-8 w-14 h-14 bg-tertiary-container text-white flex items-center justify-center shadow-2xl hover:scale-110 transition-transform z-50">
+            <span class="material-symbols-outlined">home</span>
+        </a>
+    </body>
+</html>

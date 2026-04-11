@@ -1,0 +1,418 @@
+<!doctype html>
+<html class="light" lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <title>DevTip #002 — Agent-First API Design</title>
+        <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@400;500;600&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            .material-symbols-outlined {
+                font-variation-settings:
+                    "FILL" 0,
+                    "wght" 400,
+                    "GRAD" 0,
+                    "opsz" 24;
+            }
+            body {
+                font-family: "Inter", sans-serif;
+                background-color: #f9f9f9;
+                color: #1a1c1c;
+            }
+            h1, h2, h3, .headline {
+                font-family: "Manrope", sans-serif;
+            }
+            pre code {
+                font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+                font-size: 0.875rem;
+                line-height: 1.7;
+            }
+            pre {
+                background: #1a1c1c;
+                color: #f1f1f1;
+                border-radius: 0.5rem;
+                padding: 1.5rem;
+                overflow-x: auto;
+                margin: 0;
+            }
+            pre .comment { color: #6b7280; }
+            pre .keyword { color: #ff6b00; }
+            pre .string { color: #a5d6a7; }
+            pre .type { color: #90caf9; }
+            pre .fn { color: #ffcc80; }
+        </style>
+        <script id="tailwind-config">
+            tailwind.config = {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        colors: {
+                            "secondary-container": "#e3e2e2",
+                            "on-secondary-container": "#646464",
+                            "tertiary-fixed-dim": "#ffb693",
+                            "surface-container-lowest": "#ffffff",
+                            "tertiary-container": "#ff6b00",
+                            "error-container": "#ffdad6",
+                            "primary-container": "#999999",
+                            "surface-dim": "#dadada",
+                            "on-tertiary": "#ffffff",
+                            outline: "#8e7164",
+                            "on-primary-fixed-variant": "#474747",
+                            "primary-fixed": "#e2e2e2",
+                            "on-tertiary-fixed-variant": "#7a3000",
+                            primary: "#5e5e5e",
+                            "on-secondary": "#ffffff",
+                            tertiary: "#a04100",
+                            "surface-tint": "#5e5e5e",
+                            "inverse-on-surface": "#f1f1f1",
+                            "on-secondary-fixed-variant": "#464747",
+                            "surface-bright": "#f9f9f9",
+                            "on-background": "#1a1c1c",
+                            "surface-variant": "#e2e2e2",
+                            "surface-container-highest": "#e2e2e2",
+                            "tertiary-fixed": "#ffdbcc",
+                            "surface-container-high": "#e8e8e8",
+                            "on-tertiary-fixed": "#351000",
+                            secondary: "#5e5e5e",
+                            "on-primary-container": "#313131",
+                            "secondary-fixed-dim": "#c7c6c6",
+                            "surface-container-low": "#f3f3f3",
+                            "outline-variant": "#e2bfb0",
+                            "on-secondary-fixed": "#1b1c1c",
+                            "on-surface-variant": "#5a4136",
+                            "on-primary-fixed": "#1b1b1b",
+                            error: "#ba1a1a",
+                            background: "#f9f9f9",
+                            "on-primary": "#ffffff",
+                            surface: "#f9f9f9",
+                            "on-tertiary-container": "#572000",
+                            "primary-fixed-dim": "#c6c6c6",
+                            "inverse-surface": "#2f3131",
+                            "surface-container": "#eeeeee",
+                            "inverse-primary": "#c6c6c6",
+                            "secondary-fixed": "#e3e2e2",
+                            "on-error-container": "#93000a",
+                            "on-surface": "#1a1c1c",
+                            "on-error": "#ffffff",
+                        },
+                        borderRadius: {
+                            DEFAULT: "0.125rem",
+                            lg: "0.25rem",
+                            xl: "0.5rem",
+                            full: "0.75rem",
+                        },
+                        fontFamily: {
+                            headline: ["Manrope"],
+                            body: ["Inter"],
+                            label: ["Inter"],
+                        },
+                    },
+                },
+            };
+        </script>
+    </head>
+    <body class="bg-surface selection:bg-tertiary-container selection:text-white">
+
+        <!-- Navigation -->
+        <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl flex justify-between items-center px-8 py-4 max-w-full border-b border-stone-100">
+            <a href="../" class="text-2xl font-black tracking-tighter text-stone-900 font-headline hover:text-tertiary-container transition-colors">DevTips</a>
+            <div class="hidden md:flex items-center gap-2">
+                <span class="text-xs font-bold text-tertiary-container uppercase tracking-widest bg-tertiary-fixed px-3 py-1">SvelteKit</span>
+                <span class="text-xs font-bold text-stone-500 uppercase tracking-widest">·</span>
+                <span class="text-xs font-bold text-stone-500 uppercase tracking-widest">TypeScript</span>
+                <span class="text-xs font-bold text-stone-500 uppercase tracking-widest">·</span>
+                <span class="text-xs font-bold text-stone-500 uppercase tracking-widest">LLM Agents</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="../" class="text-stone-900 font-bold hover:scale-95 duration-200 text-sm flex items-center gap-1">
+                    <span class="material-symbols-outlined text-sm">arrow_back</span>
+                    All Tips
+                </a>
+            </div>
+        </nav>
+
+        <main class="pt-20 pb-32">
+
+            <!-- Hero Section -->
+            <section class="px-8 md:px-24 py-20 bg-surface-container-low">
+                <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+                    <div class="md:col-span-8">
+                        <span class="text-tertiary-container font-bold tracking-widest text-xs uppercase mb-4 block">DEVTIP #002</span>
+                        <h1 class="text-5xl md:text-7xl font-black tracking-tighter text-on-surface leading-none mb-4">
+                            Agent-First API Design
+                        </h1>
+                        <p class="text-2xl text-secondary font-light leading-snug">
+                            Types Are the Spec
+                        </p>
+                    </div>
+                    <div class="md:col-span-4 flex items-center justify-center">
+                        <div class="w-32 h-32 bg-stone-900 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-tertiary-container text-6xl">api</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Why This Matters -->
+            <section class="px-8 md:px-24 py-16 bg-white">
+                <div class="max-w-3xl mx-auto">
+                    <div class="p-8 bg-surface-container-lowest border-l-4 border-tertiary-container">
+                        <h2 class="text-xs font-bold uppercase tracking-widest text-primary mb-2">WHY THIS MATTERS</h2>
+                        <p class="text-xl text-on-surface leading-relaxed font-medium italic">
+                            "A well-typed, self-documenting TypeScript API surface lets an LLM agent reason about, extend, and debug your routes without ever needing you to explain business logic — your code <em>is</em> the documentation."
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: The Agent's Mental Model -->
+            <section class="px-8 md:px-24 py-20 bg-surface">
+                <div class="max-w-3xl mx-auto space-y-12">
+                    <div class="space-y-6">
+                        <h2 class="text-3xl font-black tracking-tighter">The Agent's Mental Model of Your API</h2>
+                        <p class="text-lg text-secondary leading-relaxed">
+                            When an agent reads a SvelteKit <code class="bg-surface-container-high px-2 py-0.5 text-sm font-mono">+server.ts</code> route, it constructs an internal model of: what comes in, what goes out, what can fail, and what the business intent is. The more ambiguity it encounters — untyped request bodies, <code class="bg-surface-container-high px-2 py-0.5 text-sm font-mono">any</code> returns, unnamed magic strings — the more it will fill gaps with <span class="font-bold text-tertiary-container underline decoration-2 underline-offset-4">plausible-but-wrong</span> assumptions.
+                        </p>
+                        <blockquote class="pl-8 border-l-4 border-[#ff6b00]">
+                            <p class="text-lg italic text-secondary">
+                                Your job is to make that mental model construction deterministic.
+                            </p>
+                        </blockquote>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: REST Naming Convention Table -->
+            <section class="px-8 md:px-24 py-20 bg-surface-container-low">
+                <div class="max-w-3xl mx-auto space-y-12">
+                    <div class="space-y-6">
+                        <h2 class="text-3xl font-black tracking-tighter">Consistent Naming Across the Boundary</h2>
+                        <p class="text-lg text-secondary leading-relaxed">
+                            Pick a naming convention and codify it everywhere. A clean pattern:
+                        </p>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-tertiary-container text-white">
+                                        <th class="px-6 py-4 font-bold text-sm uppercase tracking-wider">Method</th>
+                                        <th class="px-6 py-4 font-bold text-sm uppercase tracking-wider">Endpoint</th>
+                                        <th class="px-6 py-4 font-bold text-sm uppercase tracking-wider">Function</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white">
+                                    <tr class="border-b border-surface-container">
+                                        <td class="px-6 py-4 font-mono text-sm font-bold text-tertiary-container">GET</td>
+                                        <td class="px-6 py-4 font-mono text-sm">/api/invoices</td>
+                                        <td class="px-6 py-4 font-mono text-sm">listInvoices</td>
+                                    </tr>
+                                    <tr class="border-b border-surface-container">
+                                        <td class="px-6 py-4 font-mono text-sm font-bold text-tertiary-container">GET</td>
+                                        <td class="px-6 py-4 font-mono text-sm">/api/invoices/:id</td>
+                                        <td class="px-6 py-4 font-mono text-sm">getInvoice</td>
+                                    </tr>
+                                    <tr class="border-b border-surface-container">
+                                        <td class="px-6 py-4 font-mono text-sm font-bold text-tertiary-container">POST</td>
+                                        <td class="px-6 py-4 font-mono text-sm">/api/invoices</td>
+                                        <td class="px-6 py-4 font-mono text-sm">createInvoice</td>
+                                    </tr>
+                                    <tr class="border-b border-surface-container">
+                                        <td class="px-6 py-4 font-mono text-sm font-bold text-tertiary-container">PATCH</td>
+                                        <td class="px-6 py-4 font-mono text-sm">/api/invoices/:id</td>
+                                        <td class="px-6 py-4 font-mono text-sm">updateInvoice</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 font-mono text-sm font-bold text-tertiary-container">DELETE</td>
+                                        <td class="px-6 py-4 font-mono text-sm">/api/invoices/:id</td>
+                                        <td class="px-6 py-4 font-mono text-sm">deleteInvoice</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="text-lg text-secondary leading-relaxed">
+                            Reflect this naming in your service module:
+                        </p>
+                        <pre><code><span class="comment">// features/invoices/invoiceService.ts</span>
+
+<span class="keyword">export async function</span> <span class="fn">listInvoices</span>(filters: <span class="type">InvoiceFilters</span>): <span class="type">Promise</span>&lt;<span class="type">Invoice</span>[]&gt; { ... }
+<span class="keyword">export async function</span> <span class="fn">getInvoice</span>(id: <span class="type">string</span>): <span class="type">Promise</span>&lt;<span class="type">Invoice</span> | <span class="keyword">null</span>&gt; { ... }
+<span class="keyword">export async function</span> <span class="fn">createInvoice</span>(input: <span class="type">CreateInvoiceInput</span>): <span class="type">Promise</span>&lt;<span class="type">Invoice</span>&gt; { ... }
+<span class="keyword">export async function</span> <span class="fn">updateInvoice</span>(id: <span class="type">string</span>, patch: <span class="type">UpdateInvoiceInput</span>): <span class="type">Promise</span>&lt;<span class="type">Invoice</span>&gt; { ... }
+<span class="keyword">export async function</span> <span class="fn">deleteInvoice</span>(id: <span class="type">string</span>): <span class="type">Promise</span>&lt;<span class="keyword">void</span>&gt; { ... }</code></pre>
+                        <p class="text-lg text-secondary leading-relaxed">
+                            When an agent reads the route and the service, the one-to-one correspondence is instantly obvious. No guessing which service method a route calls.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Zod Schemas -->
+            <section class="px-8 md:px-24 py-20 bg-white">
+                <div class="max-w-3xl mx-auto space-y-12">
+                    <div class="space-y-6">
+                        <h2 class="text-3xl font-black tracking-tighter">Zod Schemas as the Single Source of Truth</h2>
+                        <p class="text-lg text-secondary leading-relaxed">
+                            Define your request/response shapes in Zod, derive TypeScript types from them, and use them in both validation and documentation:
+                        </p>
+                        <pre><code><span class="comment">// features/invoices/invoice.schemas.ts</span>
+<span class="keyword">import</span> { z } <span class="keyword">from</span> <span class="string">'zod'</span>;
+
+<span class="keyword">export const</span> <span class="fn">CreateInvoiceSchema</span> = z.object({
+  clientId: z.string().uuid(),
+  lineItems: z.array(
+    z.object({
+      description: z.string().min(1).max(500),
+      quantity: z.number().int().positive(),
+      unitPrice: z.number().int().positive(), <span class="comment">// cents</span>
+    })
+  ).min(1),
+  dueAt: z.string().datetime(), <span class="comment">// ISO 8601</span>
+});
+
+<span class="keyword">export type</span> <span class="type">CreateInvoiceInput</span> = z.infer&lt;<span class="keyword">typeof</span> <span class="fn">CreateInvoiceSchema</span>&gt;;</code></pre>
+                        <p class="text-lg text-secondary leading-relaxed mt-6">
+                            Your route becomes trivially readable:
+                        </p>
+                        <pre><code><span class="comment">// routes/api/invoices/+server.ts</span>
+<span class="keyword">import</span> { <span class="fn">CreateInvoiceSchema</span> } <span class="keyword">from</span> <span class="string">'$features/invoices/invoice.schemas'</span>;
+<span class="keyword">import</span> { <span class="fn">createInvoice</span> } <span class="keyword">from</span> <span class="string">'$features/invoices/invoiceService'</span>;
+<span class="keyword">import</span> { json, error } <span class="keyword">from</span> <span class="string">'@sveltejs/kit'</span>;
+<span class="keyword">import type</span> { <span class="type">RequestHandler</span> } <span class="keyword">from</span> <span class="string">'./$types'</span>;
+
+<span class="keyword">export const</span> POST: <span class="type">RequestHandler</span> = <span class="keyword">async</span> ({ request }) =&gt; {
+  <span class="keyword">const</span> body = <span class="keyword">await</span> request.json();
+  <span class="keyword">const</span> parsed = <span class="fn">CreateInvoiceSchema</span>.safeParse(body);
+
+  <span class="keyword">if</span> (!parsed.success) {
+    <span class="keyword">throw</span> error(400, { message: <span class="string">'Invalid input'</span>, issues: parsed.error.issues });
+  }
+
+  <span class="keyword">const</span> invoice = <span class="keyword">await</span> <span class="fn">createInvoice</span>(parsed.data);
+  <span class="keyword">return</span> json(invoice, { status: 201 });
+};</code></pre>
+                        <p class="text-lg text-secondary leading-relaxed">
+                            An agent handed this file plus <code class="bg-surface-container-high px-2 py-0.5 text-sm font-mono">invoice.schemas.ts</code> can immediately: validate correctness, add new fields, write tests, or generate a client SDK — all without asking you anything.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: JSDoc -->
+            <section class="px-8 md:px-24 py-20 bg-surface-container-low">
+                <div class="max-w-3xl mx-auto space-y-12">
+                    <div class="space-y-6">
+                        <h2 class="text-3xl font-black tracking-tighter">JSDoc as Agent-Readable Spec</h2>
+                        <p class="text-lg text-secondary leading-relaxed">
+                            JSDoc isn't just for IDE tooltips. It's structured natural language that agents parse as specification. Write it for service functions that encode business logic:
+                        </p>
+                        <pre><code><span class="comment">/**
+ * Creates a new invoice in DRAFT status.
+ *
+ * - Calculates `totalCents` from lineItems automatically.
+ * - Sends no notifications — use `sendInvoice()` to
+ *   transition to SENT.
+ * - Requires the `clientId` to reference an existing
+ *   Client record.
+ *
+ * @throws {ClientNotFoundError} if the clientId does not exist
+ * @throws {DatabaseError} on persistence failure
+ */</span>
+<span class="keyword">export async function</span> <span class="fn">createInvoice</span>(
+  input: <span class="type">CreateInvoiceInput</span>
+): <span class="type">Promise</span>&lt;<span class="type">Invoice</span>&gt; {</code></pre>
+                        <p class="text-lg text-secondary leading-relaxed">
+                            This comment answers the questions an agent would otherwise hallucinate answers to: <em>Does this send an email? Does it calculate totals? What errors can it throw?</em>
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Typed Error Envelopes -->
+            <section class="px-8 md:px-24 py-20 bg-white">
+                <div class="max-w-3xl mx-auto space-y-12">
+                    <div class="space-y-6">
+                        <h2 class="text-3xl font-black tracking-tighter">Typed Error Envelopes</h2>
+                        <p class="text-lg text-secondary leading-relaxed">
+                            Define a consistent error response shape and use it everywhere. Agents hate inconsistency:
+                        </p>
+                        <pre><code><span class="comment">// lib/api/response.ts</span>
+
+<span class="keyword">export interface</span> <span class="type">ApiError</span> {
+  code: <span class="type">string</span>;       <span class="comment">// machine-readable: 'INVOICE_NOT_FOUND'</span>
+  message: <span class="type">string</span>;    <span class="comment">// human-readable</span>
+  issues?: <span class="type">unknown</span>;   <span class="comment">// Zod validation issues, if applicable</span>
+}
+
+<span class="keyword">export interface</span> <span class="type">ApiSuccess</span>&lt;T&gt; {
+  data: T;
+  meta?: {
+    total?: <span class="type">number</span>;
+    page?: <span class="type">number</span>;
+  };
+}</code></pre>
+                        <p class="text-lg text-secondary leading-relaxed">
+                            When every route returns <code class="bg-surface-container-high px-2 py-0.5 text-sm font-mono">ApiSuccess&lt;T&gt;</code> or <code class="bg-surface-container-high px-2 py-0.5 text-sm font-mono">ApiError</code>, the agent can write client-side error handling correctly on the first attempt — no "check the docs for what fields the error has."
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PRO MOVE Section -->
+            <section class="px-8 md:px-24 py-24 bg-[#1a1c1c] text-white">
+                <div class="max-w-5xl mx-auto">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-16">
+                        <div class="md:col-span-4">
+                            <h2 class="text-4xl font-black tracking-tighter text-tertiary-container">
+                                Pro Move
+                            </h2>
+                            <p class="mt-4 text-stone-400 font-medium">
+                                Generate OpenAPI Spec from Zod at Build Time
+                            </p>
+                        </div>
+                        <div class="md:col-span-8 space-y-8">
+                            <p class="text-stone-300 leading-relaxed text-lg">
+                                Use <code class="bg-stone-800 px-2 py-0.5 text-sm font-mono text-tertiary-fixed-dim">zod-to-openapi</code> to auto-generate an OpenAPI spec from your schemas. Feed this spec to your agent as a compact, structured description of your entire API surface — far more token-efficient than pasting individual route files.
+                            </p>
+                            <pre><code><span class="comment">// scripts/generate-openapi.ts</span>
+<span class="keyword">import</span> { <span class="fn">generateOpenApi</span> } <span class="keyword">from</span> <span class="string">'@anatine/zod-nestjs'</span>;
+<span class="comment">// ... register your schemas, output to openapi.json</span></code></pre>
+                            <p class="text-stone-400 leading-relaxed">
+                                Then your agent prompt becomes: <em class="text-stone-300">"Here is the OpenAPI spec for this project. Add a new endpoint for invoice PDF export following the existing patterns."</em> One context file covers your whole API.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <section class="px-8 md:px-24 py-20 bg-white">
+                <div class="max-w-3xl mx-auto text-center">
+                    <span class="text-xs font-bold text-stone-400 uppercase tracking-widest mb-4 block">Daily LLM Agent Dev Tips</span>
+                    <p class="text-lg text-secondary font-medium">For SvelteKit + TypeScript developers</p>
+                    <div class="mt-8 flex justify-center gap-4">
+                        <a href="../tip-001/" class="inline-flex items-center gap-4 bg-stone-900 text-white px-8 py-5 font-bold hover:scale-105 transition-transform group">
+                            <span class="material-symbols-outlined group-hover:-translate-x-2 transition-transform">arrow_back</span>
+                            <span>TIP #001</span>
+                        </a>
+                        <a href="../tip-003/" class="inline-flex items-center gap-4 bg-tertiary-container text-white px-8 py-5 font-bold hover:scale-105 transition-transform group">
+                            <span>TIP #003</span>
+                            <span class="material-symbols-outlined group-hover:translate-x-2 transition-transform">arrow_forward</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- FAB -->
+        <a href="../" class="fixed bottom-8 right-8 w-14 h-14 bg-tertiary-container text-white flex items-center justify-center shadow-2xl hover:scale-110 transition-transform z-50">
+            <span class="material-symbols-outlined">home</span>
+        </a>
+    </body>
+</html>

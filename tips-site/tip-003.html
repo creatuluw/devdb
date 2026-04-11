@@ -1,0 +1,454 @@
+<!doctype html>
+<html class="light" lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <title>DevTip #003 — Prompt Chaining for UI Generation</title>
+        <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@400;500;600&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            .material-symbols-outlined {
+                font-variation-settings:
+                    "FILL" 0,
+                    "wght" 400,
+                    "GRAD" 0,
+                    "opsz" 24;
+            }
+            body {
+                font-family: "Inter", sans-serif;
+                background-color: #f9f9f9;
+                color: #1a1c1c;
+            }
+            h1, h2, h3, .headline {
+                font-family: "Manrope", sans-serif;
+            }
+            pre code {
+                font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+                font-size: 0.875rem;
+                line-height: 1.7;
+            }
+            pre {
+                background: #1a1c1c;
+                color: #f1f1f1;
+                border-radius: 0.5rem;
+                padding: 1.5rem;
+                overflow-x: auto;
+                margin: 0;
+            }
+            pre .comment { color: #6b7280; }
+            pre .keyword { color: #ff6b00; }
+            pre .string { color: #a5d6a7; }
+            pre .type { color: #90caf9; }
+            pre .fn { color: #ffcc80; }
+        </style>
+        <script id="tailwind-config">
+            tailwind.config = {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        colors: {
+                            "secondary-container": "#e3e2e2",
+                            "on-secondary-container": "#646464",
+                            "tertiary-fixed-dim": "#ffb693",
+                            "surface-container-lowest": "#ffffff",
+                            "tertiary-container": "#ff6b00",
+                            "error-container": "#ffdad6",
+                            "primary-container": "#999999",
+                            "surface-dim": "#dadada",
+                            "on-tertiary": "#ffffff",
+                            outline: "#8e7164",
+                            "on-primary-fixed-variant": "#474747",
+                            "primary-fixed": "#e2e2e2",
+                            "on-tertiary-fixed-variant": "#7a3000",
+                            primary: "#5e5e5e",
+                            "on-secondary": "#ffffff",
+                            tertiary: "#a04100",
+                            "surface-tint": "#5e5e5e",
+                            "inverse-on-surface": "#f1f1f1",
+                            "on-secondary-fixed-variant": "#464747",
+                            "surface-bright": "#f9f9f9",
+                            "on-background": "#1a1c1c",
+                            "surface-variant": "#e2e2e2",
+                            "surface-container-highest": "#e2e2e2",
+                            "tertiary-fixed": "#ffdbcc",
+                            "surface-container-high": "#e8e8e8",
+                            "on-tertiary-fixed": "#351000",
+                            secondary: "#5e5e5e",
+                            "on-primary-container": "#313131",
+                            "secondary-fixed-dim": "#c7c6c6",
+                            "surface-container-low": "#f3f3f3",
+                            "outline-variant": "#e2bfb0",
+                            "on-secondary-fixed": "#1b1c1c",
+                            "on-surface-variant": "#5a4136",
+                            "on-primary-fixed": "#1b1b1b",
+                            error: "#ba1a1a",
+                            background: "#f9f9f9",
+                            "on-primary": "#ffffff",
+                            surface: "#f9f9f9",
+                            "on-tertiary-container": "#572000",
+                            "primary-fixed-dim": "#c6c6c6",
+                            "inverse-surface": "#2f3131",
+                            "surface-container": "#eeeeee",
+                            "inverse-primary": "#c6c6c6",
+                            "secondary-fixed": "#e3e2e2",
+                            "on-error-container": "#93000a",
+                            "on-surface": "#1a1c1c",
+                            "on-error": "#ffffff",
+                        },
+                        borderRadius: {
+                            DEFAULT: "0.125rem",
+                            lg: "0.25rem",
+                            xl: "0.5rem",
+                            full: "0.75rem",
+                        },
+                        fontFamily: {
+                            headline: ["Manrope"],
+                            body: ["Inter"],
+                            label: ["Inter"],
+                        },
+                    },
+                },
+            };
+        </script>
+    </head>
+    <body class="bg-surface selection:bg-tertiary-container selection:text-white">
+
+        <!-- Navigation -->
+        <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl flex justify-between items-center px-8 py-4 max-w-full border-b border-stone-100">
+            <a href="../" class="text-2xl font-black tracking-tighter text-stone-900 font-headline hover:text-tertiary-container transition-colors">DevTips</a>
+            <div class="hidden md:flex items-center gap-2">
+                <span class="text-xs font-bold text-tertiary-container uppercase tracking-widest bg-tertiary-fixed px-3 py-1">SvelteKit</span>
+                <span class="text-xs font-bold text-stone-500 uppercase tracking-widest">·</span>
+                <span class="text-xs font-bold text-stone-500 uppercase tracking-widest">TypeScript</span>
+                <span class="text-xs font-bold text-stone-500 uppercase tracking-widest">·</span>
+                <span class="text-xs font-bold text-stone-500 uppercase tracking-widest">LLM Agents</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="../" class="text-stone-900 font-bold hover:scale-95 duration-200 text-sm flex items-center gap-1">
+                    <span class="material-symbols-outlined text-sm">arrow_back</span>
+                    All Tips
+                </a>
+            </div>
+        </nav>
+
+        <main class="pt-20 pb-32">
+
+            <!-- Hero Section -->
+            <section class="px-8 md:px-24 py-20 bg-surface-container-low">
+                <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+                    <div class="md:col-span-8">
+                        <span class="text-tertiary-container font-bold tracking-widest text-xs uppercase mb-4 block">DEVTIP #003</span>
+                        <h1 class="text-5xl md:text-7xl font-black tracking-tighter text-on-surface leading-none mb-4">
+                            Prompt Chaining for UI Generation
+                        </h1>
+                        <p class="text-2xl text-secondary font-light leading-snug">
+                            Consistent Components Every Time
+                        </p>
+                    </div>
+                    <div class="md:col-span-4 flex items-center justify-center">
+                        <div class="w-32 h-32 bg-stone-900 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-tertiary-container text-6xl">widgets</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Why This Matters -->
+            <section class="px-8 md:px-24 py-16 bg-white">
+                <div class="max-w-3xl mx-auto">
+                    <div class="p-8 bg-surface-container-lowest border-l-4 border-tertiary-container">
+                        <h2 class="text-xs font-bold uppercase tracking-widest text-primary mb-2">WHY THIS MATTERS</h2>
+                        <p class="text-xl text-on-surface leading-relaxed font-medium italic">
+                            "One-shot UI generation from LLM agents produces inconsistent, design-system-ignorant components — breaking the chain into discrete, primed steps produces output you can ship without a rewrite."
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Why One-Shot Fails -->
+            <section class="px-8 md:px-24 py-20 bg-surface">
+                <div class="max-w-3xl mx-auto space-y-12">
+                    <div class="space-y-6">
+                        <h2 class="text-3xl font-black tracking-tighter">Why One-Shot UI Generation Fails</h2>
+                        <p class="text-lg text-secondary leading-relaxed">
+                            Ask an agent to "build a SvelteKit invoice status badge with Tailwind" and you'll get something that works but:
+                        </p>
+                        <ul class="space-y-3 text-lg text-secondary">
+                            <li class="flex items-start gap-3">
+                                <span class="material-symbols-outlined text-tertiary-container mt-0.5 text-lg">close</span>
+                                Uses arbitrary color classes instead of your design tokens
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="material-symbols-outlined text-tertiary-container mt-0.5 text-lg">close</span>
+                                Ignores your component conventions (slot patterns, prop naming)
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="material-symbols-outlined text-tertiary-container mt-0.5 text-lg">close</span>
+                                Has accessibility gaps
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="material-symbols-outlined text-tertiary-container mt-0.5 text-lg">close</span>
+                                Won't match any other component in your system
+                            </li>
+                        </ul>
+                        <blockquote class="pl-8 border-l-4 border-[#ff6b00]">
+                            <p class="text-lg italic text-secondary">
+                                The agent wasn't wrong — it was under-informed. Prompt chaining fixes this by feeding the right context at each stage of reasoning, before any code is written.
+                            </p>
+                        </blockquote>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: The 4-Step Chain (rendered like template's 3-Stappen Proces) -->
+            <section class="px-8 md:px-24 py-24 bg-surface-container-low">
+                <div class="max-w-6xl mx-auto">
+                    <div class="flex justify-between items-baseline mb-16">
+                        <h2 class="text-4xl font-black tracking-tighter">The 4-Step UI Generation Chain</h2>
+                        <span class="text-sm font-bold text-tertiary-container uppercase tracking-widest">4 Steps</span>
+                    </div>
+
+                    <!-- Step flow visualization -->
+                    <div class="flex items-center justify-center gap-4 mb-16 flex-wrap">
+                        <div class="w-16 h-16 rounded-full border-2 border-tertiary-container flex items-center justify-center text-sm font-bold text-tertiary-container">
+                            PRIME
+                        </div>
+                        <div class="h-px w-12 bg-stone-300 hidden md:block"></div>
+                        <div class="w-16 h-16 rounded-full border-2 border-stone-300 flex items-center justify-center text-sm font-bold text-stone-500">
+                            SPEC
+                        </div>
+                        <div class="h-px w-12 bg-stone-300 hidden md:block"></div>
+                        <div class="w-16 h-16 rounded-full border-2 border-stone-300 flex items-center justify-center text-sm font-bold text-stone-500">
+                            GEN
+                        </div>
+                        <div class="h-px w-12 bg-stone-300 hidden md:block"></div>
+                        <div class="w-16 h-16 rounded-full border-2 border-stone-300 flex items-center justify-center text-sm font-bold text-stone-500">
+                            HARDEN
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-1">
+                        <!-- Step 1 -->
+                        <div class="group bg-surface p-10 hover:bg-surface-container-lowest transition-colors border-b md:border-b-0 md:border-r border-stone-200">
+                            <span class="text-xs font-bold text-tertiary-container mb-4 block">STEP 01</span>
+                            <h4 class="text-xl font-bold mb-4 group-hover:text-tertiary-container transition-colors">
+                                Prime with Design System Context
+                            </h4>
+                            <p class="text-secondary leading-relaxed mb-6">
+                                Before asking for any code, inject your design system as a structured document. Keep a <code class="bg-surface-container-high px-1.5 py-0.5 text-xs font-mono">DESIGN_SYSTEM.md</code> in your project.
+                            </p>
+                            <pre><code><span class="comment">// lib/design/tokens.ts</span>
+
+<span class="keyword">export const</span> colors = {
+  status: {
+    draft:   { bg: <span class="string">'bg-zinc-100'</span>,
+               text: <span class="string">'text-zinc-600'</span> },
+    sent:    { bg: <span class="string">'bg-blue-50'</span>,
+               text: <span class="string">'text-blue-700'</span> },
+    paid:    { bg: <span class="string">'bg-green-50'</span>,
+               text: <span class="string">'text-green-700'</span> },
+    overdue: { bg: <span class="string">'bg-red-50'</span>,
+               text: <span class="string">'text-red-700'</span> },
+  },
+} <span class="keyword">as const</span>;</code></pre>
+                        </div>
+                        <!-- Step 2 -->
+                        <div class="group bg-surface p-10 hover:bg-surface-container-lowest transition-colors border-b border-stone-200">
+                            <span class="text-xs font-bold text-stone-400 mb-4 block">STEP 02</span>
+                            <h4 class="text-xl font-bold mb-4 group-hover:text-tertiary-container transition-colors">
+                                Specify the Contract
+                            </h4>
+                            <p class="text-secondary leading-relaxed mb-6">
+                                Define the component's interface explicitly before generation. This externalizes the agent's reasoning so you can catch wrong assumptions.
+                            </p>
+                            <pre><code><span class="keyword">import type</span> { <span class="type">InvoiceStatus</span> }
+  <span class="keyword">from</span> <span class="string">'$features/invoices/invoice.types'</span>;
+
+<span class="keyword">interface</span> <span class="type">Props</span> {
+  status: <span class="type">InvoiceStatus</span>;
+  size?: <span class="string">'sm'</span> | <span class="string">'md'</span>;      <span class="comment">// default: 'md'</span>
+  showIcon?: <span class="type">boolean</span>;  <span class="comment">// default: true</span>
+}</code></pre>
+                        </div>
+                        <!-- Step 3 -->
+                        <div class="group bg-surface p-10 hover:bg-surface-container-lowest transition-colors md:border-r border-stone-200">
+                            <span class="text-xs font-bold text-stone-400 mb-4 block">STEP 03</span>
+                            <h4 class="text-xl font-bold mb-4 group-hover:text-tertiary-container transition-colors">
+                                Generate the Component
+                            </h4>
+                            <p class="text-secondary leading-relaxed mb-6">
+                                Now, and only now, ask for the code — using the contract, your design tokens, and the same prop/slot pattern as existing components.
+                            </p>
+                            <pre><code><span class="comment">&lt;!-- InvoiceStatusBadge.svelte --&gt;</span>
+&lt;script lang=<span class="string">"ts"</span>&gt;
+  <span class="keyword">let</span> { status, size = <span class="string">'md'</span>,
+        showIcon = <span class="keyword">true</span> }: <span class="type">Props</span>
+    = $props();
+
+  <span class="keyword">const</span> token = colors.status[status];
+&lt;/script&gt;
+
+&lt;span role=<span class="string">"status"</span>
+  class=<span class="string">"inline-flex items-center
+    gap-1.5 rounded-full border
+    font-medium {token.bg} {token.text}"</span>
+&gt;
+  {status}
+&lt;/span&gt;</code></pre>
+                        </div>
+                        <!-- Step 4 -->
+                        <div class="group bg-surface p-10 hover:bg-surface-container-lowest transition-colors">
+                            <span class="text-xs font-bold text-stone-400 mb-4 block">STEP 04</span>
+                            <h4 class="text-xl font-bold mb-4 group-hover:text-tertiary-container transition-colors">
+                                Harden and Extend
+                            </h4>
+                            <p class="text-secondary leading-relaxed mb-6">
+                                Use a focused follow-up to close gaps rather than regenerating. Keep this as a separate step to prevent bloat.
+                            </p>
+                            <div class="space-y-3">
+                                <div class="flex items-start gap-3 text-sm text-secondary">
+                                    <span class="text-tertiary-container font-bold">1.</span>
+                                    Add a Storybook story with all 4 status variants at both sizes
+                                </div>
+                                <div class="flex items-start gap-3 text-sm text-secondary">
+                                    <span class="text-tertiary-container font-bold">2.</span>
+                                    Add <code class="bg-surface-container-high px-1.5 py-0.5 text-xs font-mono">data-testid</code> using the pattern <code class="bg-surface-container-high px-1.5 py-0.5 text-xs font-mono">status-badge-{status}</code>
+                                </div>
+                                <div class="flex items-start gap-3 text-sm text-secondary">
+                                    <span class="text-tertiary-container font-bold">3.</span>
+                                    Export from <code class="bg-surface-container-high px-1.5 py-0.5 text-xs font-mono">features/invoices/index.ts</code>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: One-Shot vs. Multi-Turn Table -->
+            <section class="px-8 md:px-24 py-20 bg-white">
+                <div class="max-w-3xl mx-auto space-y-12">
+                    <div class="space-y-6">
+                        <h2 class="text-3xl font-black tracking-tighter">One-Shot vs. Multi-Turn: When to Use Each</h2>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-tertiary-container text-white">
+                                        <th class="px-6 py-4 font-bold text-sm uppercase tracking-wider">Scenario</th>
+                                        <th class="px-6 py-4 font-bold text-sm uppercase tracking-wider">Use</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white">
+                                    <tr class="border-b border-surface-container">
+                                        <td class="px-6 py-4 text-sm">New component following a clear existing pattern</td>
+                                        <td class="px-6 py-4 text-sm font-bold">One-shot with a rich example + token context</td>
+                                    </tr>
+                                    <tr class="border-b border-surface-container">
+                                        <td class="px-6 py-4 text-sm">Novel component type (no existing pattern)</td>
+                                        <td class="px-6 py-4 text-sm font-bold text-tertiary-container">Multi-turn chain (all 4 steps)</td>
+                                    </tr>
+                                    <tr class="border-b border-surface-container">
+                                        <td class="px-6 py-4 text-sm">Modifying an existing component</td>
+                                        <td class="px-6 py-4 text-sm font-bold">One-shot with the component file + diff instructions</td>
+                                    </tr>
+                                    <tr class="border-b border-surface-container">
+                                        <td class="px-6 py-4 text-sm">Full feature UI (multiple components)</td>
+                                        <td class="px-6 py-4 text-sm font-bold text-tertiary-container">Multi-turn: design → contract → generate → integrate</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 text-sm">Rapid prototype / throwaway</td>
+                                        <td class="px-6 py-4 text-sm font-bold">One-shot, accept imperfection</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PRO MOVE Section -->
+            <section class="px-8 md:px-24 py-24 bg-[#1a1c1c] text-white">
+                <div class="max-w-5xl mx-auto">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-16">
+                        <div class="md:col-span-4">
+                            <h2 class="text-4xl font-black tracking-tighter text-tertiary-container">
+                                Pro Move
+                            </h2>
+                            <p class="mt-4 text-stone-400 font-medium">
+                                Snapshot Your Design Context as a Reusable Prompt Prefix
+                            </p>
+                        </div>
+                        <div class="md:col-span-8 space-y-8">
+                            <p class="text-stone-300 leading-relaxed text-lg">
+                                Maintain an <code class="bg-stone-800 px-2 py-0.5 text-sm font-mono text-tertiary-fixed-dim">agent-ui-context.md</code> file that you paste at the start of every UI generation session. Include:
+                            </p>
+                            <div class="space-y-6">
+                                <div class="flex gap-6">
+                                    <span class="text-4xl font-black text-stone-800">01</span>
+                                    <div>
+                                        <h4 class="text-lg font-bold mb-1">Tailwind Config</h4>
+                                        <p class="text-stone-400 leading-relaxed">Your color palette, spacing scale, and font sizes</p>
+                                    </div>
+                                </div>
+                                <div class="flex gap-6">
+                                    <span class="text-4xl font-black text-stone-800">02</span>
+                                    <div>
+                                        <h4 class="text-lg font-bold mb-1">Two Exemplar Components</h4>
+                                        <p class="text-stone-400 leading-relaxed">One simple, one complex — representing your ideal output</p>
+                                    </div>
+                                </div>
+                                <div class="flex gap-6">
+                                    <span class="text-4xl font-black text-stone-800">03</span>
+                                    <div>
+                                        <h4 class="text-lg font-bold mb-1">Naming Conventions</h4>
+                                        <p class="text-stone-400 leading-relaxed">Component file naming and prop naming patterns</p>
+                                    </div>
+                                </div>
+                                <div class="flex gap-6">
+                                    <span class="text-4xl font-black text-stone-800">04</span>
+                                    <div>
+                                        <h4 class="text-lg font-bold mb-1">Banned Patterns</h4>
+                                        <p class="text-stone-400 leading-relaxed">"Never use inline styles," "never use <code class="text-tertiary-fixed-dim">!important</code>," "always use <code class="text-tertiary-fixed-dim">$props()</code> rune"</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-stone-400 leading-relaxed">
+                                With a well-maintained prefix, Step 1 becomes a paste, not a task — and your agent starts every UI session already inside your design system.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <section class="px-8 md:px-24 py-20 bg-white">
+                <div class="max-w-3xl mx-auto text-center">
+                    <span class="text-xs font-bold text-stone-400 uppercase tracking-widest mb-4 block">Daily LLM Agent Dev Tips</span>
+                    <p class="text-lg text-secondary font-medium">For SvelteKit + TypeScript developers</p>
+                    <div class="mt-8 flex justify-center gap-4 flex-wrap">
+                        <a href="../tip-002/" class="inline-flex items-center gap-2 border border-stone-200 text-stone-600 px-8 py-4 font-bold hover:scale-105 transition-transform group text-sm">
+                            <span class="material-symbols-outlined group-hover:-translate-x-1 transition-transform text-sm">arrow_back</span>
+                            <span>PREV: TIP #002</span>
+                        </a>
+                        <a href="../tip-004/" class="inline-flex items-center gap-4 bg-tertiary-container text-white px-10 py-5 font-bold hover:scale-105 transition-transform group">
+                            <span>NEXT: TIP #004</span>
+                            <span class="material-symbols-outlined group-hover:translate-x-2 transition-transform">arrow_forward</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- FAB -->
+        <a href="../" class="fixed bottom-8 right-8 w-14 h-14 bg-tertiary-container text-white flex items-center justify-center shadow-2xl hover:scale-110 transition-transform z-50">
+            <span class="material-symbols-outlined">home</span>
+        </a>
+    </body>
+</html>

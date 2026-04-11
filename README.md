@@ -12,6 +12,9 @@ devdb/
 ├── tips-markdown/    # Full tip content as Markdown
 │   ├── tip-001.md
 │   └── ...
+├── tips-site/        # Full rendered web pages per tip (deployed site source)
+│   ├── tip-001.html
+│   └── ...
 ├── tips-data/
 │   └── dev-tips.json   # All tips as structured JSON (appended with each new tip)
 └── tips-digests/     # Weekly digest HTML emails (every Monday)

@@ -1,139 +1,232 @@
 <!doctype html>
 <html>
-  <body style="margin:0;padding:0;background-color:#f6f6f6;">
+  <body style="margin:0;padding:0;background-color:#f6f6f6;font-family:Manrope,Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;">
     <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;background-color:#f6f6f6;">
       <tr>
         <td align="center" style="padding:24px 12px;">
           <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="680" style="border-collapse:collapse;background-color:#ffffff;border:1px solid #e8e8e8;">
+
+            <!-- EYEBROW -->
             <tr>
-              <td style="padding:22px 26px 10px 26px;font-family:Manrope,Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;">
-                <div style="font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#ff6b00;font-weight:800;">DEVTIP #004</div>
-              </td>
-            </tr>
-            <tr>
-              <td style="padding:0 26px 6px 26px;font-family:Manrope,Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;">
-                <div style="font-size:28px;line-height:1.25;color:#111111;font-weight:800;">Tools arent APIs; theyre contracts: design tool schemas like you design libraries</div>
-              </td>
-            </tr>
-            <tr>
-              <td style="padding:0 26px 18px 26px;font-family:Manrope,Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;">
-                <div style="font-size:14px;line-height:1.6;color:#555555;">If a tool cant fail predictably, your agent cant recover.</div>
+              <td style="padding:28px 32px 6px 32px;">
+                <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#ff6b00;font-weight:800;">DEVTIP #004</div>
               </td>
             </tr>
 
+            <!-- TITLE -->
             <tr>
-              <td style="padding:0 26px 18px 26px;font-family:Manrope,Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;">
+              <td style="padding:0 32px 8px 32px;">
+                <div style="font-size:26px;line-height:1.2;color:#111111;font-weight:800;">Tools aren't &ldquo;APIs&rdquo;; they're contracts: design tool schemas like you design libraries</div>
+              </td>
+            </tr>
+
+            <!-- SUBTITLE -->
+            <tr>
+              <td style="padding:0 32px 24px 32px;">
+                <div style="font-size:14px;line-height:1.6;color:#666666;">If a tool can't fail predictably, your agent can't recover.</div>
+              </td>
+            </tr>
+
+            <!-- CATEGORY PILL -->
+            <tr>
+              <td style="padding:0 32px 24px 32px;">
+                <span style="display:inline-block;background-color:#fff0e6;color:#ff6b00;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:4px 10px;border-radius:4px;">Agent Tooling</span>
+              </td>
+            </tr>
+
+            <!-- WHY THIS MATTERS -->
+            <tr>
+              <td style="padding:0 32px 24px 32px;">
                 <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;">
                   <tr>
-                    <td style="padding:14px 14px 14px 14px;border-left:4px solid #ff6b00;background-color:#fff7f0;">
-                      <div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#ff6b00;font-weight:800;margin-bottom:6px;">WHY THIS MATTERS</div>
-                      <div style="font-size:14px;line-height:1.65;color:#1b1b1b;">Most agent failures arent model problems  theyre interface problems. If your tool call surface is underspecified (ambiguous inputs, untyped outputs, inconsistent errors), the agent cant plan, cant validate, and cant recover. A well-designed tool schema gives the model a deterministic affordance: it knows what it can ask for, what it will get back, and how to react when something goes wrong.</div>
+                    <td style="padding:16px 18px;border-left:4px solid #ff6b00;background-color:#fff7f0;">
+                      <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#ff6b00;font-weight:800;margin-bottom:8px;">WHY THIS MATTERS</div>
+                      <div style="font-size:14px;line-height:1.7;color:#1a1c1c;">Most agent failures aren't &ldquo;model problems&rdquo; &mdash; they're interface problems. If your tool call surface is underspecified (ambiguous inputs, untyped outputs, inconsistent errors), the agent can't plan, can't validate, and can't recover. A well-designed tool schema gives the model a <em>deterministic affordance</em>: it knows what it can ask for, what it will get back, and how to react when something goes wrong.</div>
                     </td>
                   </tr>
                 </table>
               </td>
             </tr>
 
+            <!-- SECTION 1 -->
             <tr>
-              <td style="padding:0 26px 8px 26px;font-family:Manrope,Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;">
-                <div style="font-size:16px;line-height:1.6;color:#111111;font-weight:800;margin:0 0 6px 0;">The core idea: make tools machine-legible and failure-aware</div>
-                <div style="font-size:14px;line-height:1.75;color:#1b1b1b;">Below are a few concrete patterns that make tool calls dramatically more reliable in real agents (especially multi-step, retry-prone workflows).</div>
+              <td style="padding:0 32px 8px 32px;">
+                <div style="font-size:16px;font-weight:800;color:#111111;margin-bottom:6px;">1. Use discriminated unions for results</div>
+                <div style="font-size:14px;line-height:1.75;color:#333333;margin-bottom:12px;">Return a single top-level shape that is always valid JSON and always parseable. The agent can branch on <code style="font-family:ui-monospace,Menlo,Consolas,monospace;background:#f0f0f0;padding:1px 5px;border-radius:3px;font-size:13px;">ok</code> without brittle string matching.</div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:0 32px 20px 32px;">
+                <div style="max-width:100%;overflow-x:auto;">
+                  <pre style="margin:0;background-color:#1a1c1c;color:#f1f1f1;padding:16px 18px;border-radius:6px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;line-height:1.6;white-space:pre;">// shared/types/tool-result.ts
+export type ToolOk&lt;T&gt; = {
+  ok: true;
+  data: T;
+  meta?: { requestId?: string; durationMs?: number };
+};
+
+export type ToolErr = {
+  ok: false;
+  error: {
+    code:
+      | "INVALID_INPUT"
+      | "NOT_FOUND"
+      | "UNAUTHORIZED"
+      | "RATE_LIMITED"
+      | "CONFLICT"
+      | "UPSTREAM_FAILURE"
+      | "TIMEOUT"
+      | "INTERNAL";
+    message: string;
+    retryable: boolean;
+    details?: unknown;
+  };
+};
+
+export type ToolResult&lt;T&gt; = ToolOk&lt;T&gt; | ToolErr;</pre>
+                </div>
               </td>
             </tr>
 
+            <!-- SECTION 2 -->
             <tr>
-              <td style="padding:0 26px 16px 26px;font-family:Manrope,Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;">
-                <div style="font-size:14px;line-height:1.75;color:#1b1b1b;font-weight:800;margin-bottom:6px;">1) Use discriminated unions for results</div>
-                <div style="font-size:14px;line-height:1.75;color:#1b1b1b;margin-bottom:10px;">Return a single top-level shape that is always valid JSON and always parseable.</div>
-                <div style="background-color:#1a1c1c;color:#f1f1f1;padding:12px 12px;border-radius:8px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,\"Liberation Mono\",\"Courier New\",monospace;font-size:12.5px;line-height:1.55;white-space:pre;overflow-x:auto;">// shared/types/tool-result.ts\nexport type ToolOk&lt;T&gt; = {\n  ok: true;\n  data: T;\n  meta?: {\n    requestId?: string;\n    durationMs?: number;\n  };\n};\n\nexport type ToolErr = {\n  ok: false;\n  error: {\n    code:\n      | \"INVALID_INPUT\"\n      | \"NOT_FOUND\"\n      | \"UNAUTHORIZED\"\n      | \"RATE_LIMITED\"\n      | \"CONFLICT\"\n      | \"UPSTREAM_FAILURE\"\n      | \"TIMEOUT\"\n      | \"INTERNAL\";\n    message: string;\n    retryable: boolean;\n    details?: unknown;\n  };\n  meta?: {\n    requestId?: string;\n    durationMs?: number;\n  };\n};\n\nexport type ToolResult&lt;T&gt; = ToolOk&lt;T&gt; | ToolErr;</div>
-                <div style="font-size:13px;line-height:1.7;color:#444444;margin-top:10px;">Why: the agent can branch immediately on <span style="font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,\"Liberation Mono\",\"Courier New\",monospace;">ok</span> without brittle string matching.</div>
+              <td style="padding:0 32px 8px 32px;">
+                <div style="font-size:16px;font-weight:800;color:#111111;margin-bottom:6px;">2. Validate inputs with Zod and echo normalized args</div>
+                <div style="font-size:14px;line-height:1.75;color:#333333;margin-bottom:12px;">Agents often send nearly-correct inputs. Normalize them and return what you actually used &mdash; when a later step uses the tool output as context, the agent sees the exact canonical args.</div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:0 32px 20px 32px;">
+                <div style="max-width:100%;overflow-x:auto;">
+                  <pre style="margin:0;background-color:#1a1c1c;color:#f1f1f1;padding:16px 18px;border-radius:6px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;line-height:1.6;white-space:pre;">export const SearchTicketsInput = z.object({
+  query: z.string().min(1),
+  limit: z.number().int().min(1).max(50).default(20),
+  cursor: z.string().optional(),
+});
+
+export type SearchTicketsData = {
+  normalized: SearchTicketsArgs; // echo back what was used
+  items: Array&lt;{ id: string; title: string; status: "open" | "closed" }&gt;;
+  nextCursor?: string;
+};</pre>
+                </div>
               </td>
             </tr>
 
+            <!-- SECTION 3 -->
             <tr>
-              <td style="padding:0 26px 16px 26px;font-family:Manrope,Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;">
-                <div style="font-size:14px;line-height:1.75;color:#1b1b1b;font-weight:800;margin-bottom:6px;">2) Validate inputs with Zod and echo normalized inputs</div>
-                <div style="font-size:14px;line-height:1.75;color:#1b1b1b;margin-bottom:10px;">Agents often send nearly-correct inputs. Normalize them and return what you actually used.</div>
-                <div style="background-color:#1a1c1c;color:#f1f1f1;padding:12px 12px;border-radius:8px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,\"Liberation Mono\",\"Courier New\",monospace;font-size:12.5px;line-height:1.55;white-space:pre;overflow-x:auto;">import { z } from \"zod\";\n\nexport const SearchTicketsInput = z.object({\n  query: z.string().min(1),\n  limit: z.number().int().min(1).max(50).default(20),\n  cursor: z.string().optional(),\n});\n\nexport type SearchTicketsArgs = z.infer&lt;typeof SearchTicketsInput&gt;;</div>
-                <div style="height:10px;line-height:10px;font-size:10px;">&nbsp;</div>
-                <div style="background-color:#1a1c1c;color:#f1f1f1;padding:12px 12px;border-radius:8px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,\"Liberation Mono\",\"Courier New\",monospace;font-size:12.5px;line-height:1.55;white-space:pre;overflow-x:auto;">export type SearchTicketsData = {\n  normalized: SearchTicketsArgs;\n  items: Array&lt;{ id: string; title: string; status: \"open\" | \"closed\" }&gt;;\n  nextCursor?: string;\n};</div>
-                <div style="font-size:13px;line-height:1.7;color:#444444;margin-top:10px;">Why: when a later step uses the tool output as context, the agent sees the exact canonical args.</div>
+              <td style="padding:0 32px 8px 32px;">
+                <div style="font-size:16px;font-weight:800;color:#111111;margin-bottom:6px;">3. Design error codes for agent decisions</div>
+                <div style="font-size:14px;line-height:1.75;color:#333333;margin-bottom:6px;">Humans like messages; agents need categories. Good codes are <strong>actionable</strong>, <strong>stable</strong>, and <strong>complete</strong>:</div>
+                <div style="font-size:13px;line-height:1.9;color:#333333;">
+                  &bull; <code style="font-family:ui-monospace,Menlo,Consolas,monospace;background:#f0f0f0;padding:1px 5px;border-radius:3px;">INVALID_INPUT</code> &rarr; fix args (no retry)<br>
+                  &bull; <code style="font-family:ui-monospace,Menlo,Consolas,monospace;background:#f0f0f0;padding:1px 5px;border-radius:3px;">RATE_LIMITED</code> &rarr; retry with backoff<br>
+                  &bull; <code style="font-family:ui-monospace,Menlo,Consolas,monospace;background:#f0f0f0;padding:1px 5px;border-radius:3px;">UPSTREAM_FAILURE</code> &rarr; switch provider / degrade<br>
+                  &bull; <code style="font-family:ui-monospace,Menlo,Consolas,monospace;background:#f0f0f0;padding:1px 5px;border-radius:3px;">CONFLICT</code> &rarr; re-read state then retry
+                </div>
               </td>
             </tr>
 
+            <!-- SECTION 4 -->
             <tr>
-              <td style="padding:0 26px 16px 26px;font-family:Manrope,Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;">
-                <div style="font-size:14px;line-height:1.75;color:#1b1b1b;font-weight:800;margin-bottom:6px;">3) Design error codes for agent decisions</div>
-                <div style="font-size:14px;line-height:1.75;color:#1b1b1b;">Humans like messages; agents need categories. Good error codes are actionable, stable, and complete. Example mapping:</div>
-                <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;margin-top:10px;">
-                  <tr>
-                    <td style="padding:10px 12px;border:1px solid #ededed;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,\"Liberation Mono\",\"Courier New\",monospace;font-size:12.5px;color:#111111;">INVALID_INPUT</td>
-                    <td style="padding:10px 12px;border:1px solid #ededed;font-family:Manrope,Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;font-size:13px;line-height:1.6;color:#1b1b1b;">Fix args (no retry)</td>
-                  </tr>
-                  <tr>
-                    <td style="padding:10px 12px;border:1px solid #ededed;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,\"Liberation Mono\",\"Courier New\",monospace;font-size:12.5px;color:#111111;">RATE_LIMITED</td>
-                    <td style="padding:10px 12px;border:1px solid #ededed;font-family:Manrope,Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;font-size:13px;line-height:1.6;color:#1b1b1b;">Retry with backoff</td>
-                  </tr>
-                  <tr>
-                    <td style="padding:10px 12px;border:1px solid #ededed;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,\"Liberation Mono\",\"Courier New\",monospace;font-size:12.5px;color:#111111;">UPSTREAM_FAILURE</td>
-                    <td style="padding:10px 12px;border:1px solid #ededed;font-family:Manrope,Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;font-size:13px;line-height:1.6;color:#1b1b1b;">Switch provider / degrade gracefully</td>
-                  </tr>
-                  <tr>
-                    <td style="padding:10px 12px;border:1px solid #ededed;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,\"Liberation Mono\",\"Courier New\",monospace;font-size:12.5px;color:#111111;">CONFLICT</td>
-                    <td style="padding:10px 12px;border:1px solid #ededed;font-family:Manrope,Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;font-size:13px;line-height:1.6;color:#1b1b1b;">Re-read state then retry</td>
-                  </tr>
-                </table>
+              <td style="padding:16px 32px 8px 32px;">
+                <div style="font-size:16px;font-weight:800;color:#111111;margin-bottom:6px;">4. Make retries safe with idempotency keys</div>
+                <div style="font-size:14px;line-height:1.75;color:#333333;margin-bottom:12px;">Agents are inherently retry-prone. Idempotency keys and optimistic concurrency prevent double-writes.</div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:0 32px 20px 32px;">
+                <div style="max-width:100%;overflow-x:auto;">
+                  <pre style="margin:0;background-color:#1a1c1c;color:#f1f1f1;padding:16px 18px;border-radius:6px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;line-height:1.6;white-space:pre;">export const CreateInvoiceInput = z.object({
+  idempotencyKey: z.string().min(10), // agent must supply this
+  customerId: z.string(),
+  amountCents: z.number().int().positive(),
+});
+
+// For updates - optimistic concurrency
+export const UpdateDocInput = z.object({
+  docId: z.string(),
+  ifVersion: z.number().int().nonnegative(), // reject stale writes
+  patch: z.array(z.object({
+    op: z.enum(["replace"]),
+    path: z.string(),
+    value: z.any()
+  })),
+});</pre>
+                </div>
               </td>
             </tr>
 
+            <!-- SECTION 5 -->
             <tr>
-              <td style="padding:0 26px 16px 26px;font-family:Manrope,Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;">
-                <div style="font-size:14px;line-height:1.75;color:#1b1b1b;font-weight:800;margin-bottom:6px;">4) Make retries safe: idempotency + optimistic concurrency</div>
-                <div style="font-size:14px;line-height:1.75;color:#1b1b1b;margin-bottom:10px;">If the agent retries, you must guarantee the operation is safe.</div>
-                <div style="background-color:#1a1c1c;color:#f1f1f1;padding:12px 12px;border-radius:8px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,\"Liberation Mono\",\"Courier New\",monospace;font-size:12.5px;line-height:1.55;white-space:pre;overflow-x:auto;">export const CreateInvoiceInput = z.object({\n  idempotencyKey: z.string().min(10),\n  customerId: z.string(),\n  amountCents: z.number().int().positive(),\n});</div>
-                <div style="height:10px;line-height:10px;font-size:10px;">&nbsp;</div>
-                <div style="background-color:#1a1c1c;color:#f1f1f1;padding:12px 12px;border-radius:8px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,\"Liberation Mono\",\"Courier New\",monospace;font-size:12.5px;line-height:1.55;white-space:pre;overflow-x:auto;">export const UpdateDocInput = z.object({\n  docId: z.string(),\n  ifVersion: z.number().int().nonnegative(),\n  patch: z.array(z.object({ op: z.enum([\"replace\"]), path: z.string(), value: z.any() })),\n});</div>
-                <div style="font-size:13px;line-height:1.7;color:#444444;margin-top:10px;">Why: agents are inherently retry-prone; concurrency guards prevent double writes.</div>
+              <td style="padding:0 32px 8px 32px;">
+                <div style="font-size:16px;font-weight:800;color:#111111;margin-bottom:6px;">5. Add a lightweight "capabilities" tool</div>
+                <div style="font-size:14px;line-height:1.75;color:#333333;margin-bottom:12px;">Agents do better when they can discover what a tool can do before calling it. Reduces prompt bloat and wrong-operation calls.</div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:0 32px 24px 32px;">
+                <div style="max-width:100%;overflow-x:auto;">
+                  <pre style="margin:0;background-color:#1a1c1c;color:#f1f1f1;padding:16px 18px;border-radius:6px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;line-height:1.6;white-space:pre;">export type Capabilities = {
+  name: string;
+  version: string;
+  operations: Array&lt;{
+    op: string;
+    description: string;
+    inputSchemaRef: string;
+    outputSchemaRef: string;
+    commonErrors: string[];
+  }&gt;;
+};</pre>
+                </div>
               </td>
             </tr>
 
+            <!-- DIVIDER -->
             <tr>
-              <td style="padding:0 26px 18px 26px;font-family:Manrope,Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;">
-                <div style="font-size:14px;line-height:1.75;color:#1b1b1b;font-weight:800;margin-bottom:6px;">5) Add a lightweight capabilities tool</div>
-                <div style="font-size:14px;line-height:1.75;color:#1b1b1b;margin-bottom:10px;">Agents do better when they can ask what the tool can do.</div>
-                <div style="background-color:#1a1c1c;color:#f1f1f1;padding:12px 12px;border-radius:8px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,\"Liberation Mono\",\"Courier New\",monospace;font-size:12.5px;line-height:1.55;white-space:pre;overflow-x:auto;">export type Capabilities = {\n  name: string;\n  version: string;\n  operations: Array&lt;{\n    op: string;\n    description: string;\n    inputSchemaRef: string;\n    outputSchemaRef: string;\n    commonErrors: string[];\n  }&gt;;\n};</div>
+              <td style="padding:0 32px 24px 32px;">
+                <div style="height:1px;background-color:#eeeeee;"></div>
               </td>
             </tr>
 
+            <!-- PRO MOVE -->
             <tr>
-              <td style="padding:0 26px 22px 26px;font-family:Manrope,Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;">
+              <td style="padding:0 32px 8px 32px;">
                 <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;">
                   <tr>
-                    <td style="padding:14px 14px 14px 14px;background-color:#1a1c1c;border-left:4px solid #ff6b00;">
-                      <div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#ff6b00;font-weight:800;margin-bottom:6px;">PRO MOVE</div>
-                      <div style="font-size:14px;line-height:1.7;color:#f1f1f1;">Bake a tool-contract test suite into CI. Add contract tests that verify: every tool returns the <span style="font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,\"Liberation Mono\",\"Courier New\",monospace;">ToolResult&lt;T&gt;</span> shape, Zod validation maps to <span style="font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,\"Liberation Mono\",\"Courier New\",monospace;">INVALID_INPUT</span>, retryable errors set <span style="font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,\"Liberation Mono\",\"Courier New\",monospace;">retryable: true</span>, and outputs remain backward compatible (snapshot the schema). Agents become predictably capable  and failures become recoverable rather than catastrophic.</div>
-                      <div style="height:10px;line-height:10px;font-size:10px;">&nbsp;</div>
-                      <div style="background-color:#1a1c1c;color:#f1f1f1;padding:12px 12px;border-radius:8px;border:1px solid #2a2d2d;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,\"Liberation Mono\",\"Courier New\",monospace;font-size:12.5px;line-height:1.55;white-space:pre;overflow-x:auto;">import { describe, expect, it } from \"vitest\";\nimport { searchTickets } from \"../tools/searchTickets\";\n\ndescribe(\"tool contract: searchTickets\", () => {\n  it(\"always returns ToolResult shape\", async () => {\n    const res = await searchTickets({ query: \"\" } as any);\n    expect(res).toHaveProperty(\"ok\");\n    if (res.ok === false) {\n      expect(res.error).toHaveProperty(\"code\");\n      expect(typeof res.error.retryable).toBe(\"boolean\");\n    }\n  });\n});</div>
+                    <td style="padding:20px 22px;background-color:#1a1c1c;border-left:4px solid #ff6b00;border-radius:6px;">
+                      <div style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#ff6b00;font-weight:800;margin-bottom:10px;">PRO MOVE</div>
+                      <div style="font-size:15px;font-weight:800;color:#ffffff;margin-bottom:10px;">Bake a tool-contract test suite into CI</div>
+                      <div style="font-size:13px;line-height:1.7;color:#cccccc;margin-bottom:14px;">Add contract tests verifying every tool returns ToolResult&lt;T&gt;, Zod validation maps to INVALID_INPUT, retryable errors set retryable: true, and outputs are backward compatible.</div>
+                      <div style="max-width:100%;overflow-x:auto;">
+                        <pre style="margin:0;background-color:#111314;color:#f1f1f1;padding:14px 16px;border-radius:4px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;line-height:1.6;white-space:pre;">describe("tool contract: searchTickets", () =&gt; {
+  it("always returns ToolResult shape", async () =&gt; {
+    const res = await searchTickets({ query: "" } as any);
+    expect(res).toHaveProperty("ok");
+    if (res.ok === false) {
+      expect(res.error).toHaveProperty("code");
+      expect(typeof res.error.retryable).toBe("boolean");
+    }
+  });
+});</pre>
+                      </div>
                     </td>
                   </tr>
                 </table>
               </td>
             </tr>
 
+            <!-- FOOTER LINKS -->
             <tr>
-              <td style="padding:14px 26px 18px 26px;background-color:#ffffff;border-top:1px solid #ededed;font-family:Manrope,Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;">
-                <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;">
-                  <tr>
-                    <td style="font-size:13px;line-height:1.6;color:#444444;">
-                      <a href="https://www.perplexity.ai/computer/a/llm-dev-tips-V_IHjeQvTf.AxDfI6HnUVw" style="color:#ff6b00;text-decoration:none;font-weight:700;">View Tip #004 online</a>
-                      <span style="color:#b0b0b0;">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-                      <a href="https://www.perplexity.ai/computer/a/llm-dev-tips-V_IHjeQvTf.AxDfI6HnUVw" style="color:#ff6b00;text-decoration:none;font-weight:700;">Browse archive</a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style="padding-top:10px;font-size:11.5px;line-height:1.6;color:#777777;">Daily LLM Agent Dev Tips  SvelteKit + TypeScript</td>
-                  </tr>
-                </table>
+              <td style="padding:28px 32px 12px 32px;text-align:center;">
+                <a href="https://www.perplexity.ai/computer/a/llm-dev-tips-V_IHjeQvTf.AxDfI6HnUVw" style="display:inline-block;color:#ff6b00;font-weight:700;font-size:13px;text-decoration:none;margin:0 12px;">View Tip #004 online</a>
+                <span style="color:#cccccc;font-size:13px;">&middot;</span>
+                <a href="https://www.perplexity.ai/computer/a/llm-dev-tips-V_IHjeQvTf.AxDfI6HnUVw" style="display:inline-block;color:#ff6b00;font-weight:700;font-size:13px;text-decoration:none;margin:0 12px;">Browse archive</a>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:0 32px 28px 32px;text-align:center;">
+                <div style="font-size:11px;color:#aaaaaa;letter-spacing:0.04em;">Daily LLM Agent Dev Tips &middot; SvelteKit + TypeScript</div>
               </td>
             </tr>
 

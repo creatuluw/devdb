@@ -1,0 +1,388 @@
+<!doctype html>
+<html class="light" lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <title>DevTip #004 — Tools aren't "APIs"; they're contracts</title>
+        <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@400;500;600&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            .material-symbols-outlined {
+                font-variation-settings:
+                    "FILL" 0,
+                    "wght" 400,
+                    "GRAD" 0,
+                    "opsz" 24;
+            }
+            body {
+                font-family: "Inter", sans-serif;
+                background-color: #f9f9f9;
+                color: #1a1c1c;
+            }
+            h1, h2, h3, .headline {
+                font-family: "Manrope", sans-serif;
+            }
+            pre code {
+                font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+                font-size: 0.875rem;
+                line-height: 1.7;
+            }
+            pre {
+                background: #1a1c1c;
+                color: #f1f1f1;
+                border-radius: 0.5rem;
+                padding: 1.5rem;
+                overflow-x: auto;
+                margin: 0;
+            }
+            pre .comment { color: #6b7280; }
+            pre .keyword { color: #ff6b00; }
+            pre .string { color: #a5d6a7; }
+            pre .type { color: #90caf9; }
+            pre .fn { color: #ffcc80; }
+        </style>
+        <script id="tailwind-config">
+            tailwind.config = {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        colors: {
+                            "secondary-container": "#e3e2e2",
+                            "on-secondary-container": "#646464",
+                            "tertiary-fixed-dim": "#ffb693",
+                            "surface-container-lowest": "#ffffff",
+                            "tertiary-container": "#ff6b00",
+                            "error-container": "#ffdad6",
+                            "primary-container": "#999999",
+                            "surface-dim": "#dadada",
+                            "on-tertiary": "#ffffff",
+                            outline: "#8e7164",
+                            "on-primary-fixed-variant": "#474747",
+                            "primary-fixed": "#e2e2e2",
+                            "on-tertiary-fixed-variant": "#7a3000",
+                            primary: "#5e5e5e",
+                            "on-secondary": "#ffffff",
+                            tertiary: "#a04100",
+                            "surface-tint": "#5e5e5e",
+                            "inverse-on-surface": "#f1f1f1",
+                            "on-secondary-fixed-variant": "#464747",
+                            "surface-bright": "#f9f9f9",
+                            "on-background": "#1a1c1c",
+                            "surface-variant": "#e2e2e2",
+                            "surface-container-highest": "#e2e2e2",
+                            "tertiary-fixed": "#ffdbcc",
+                            "surface-container-high": "#e8e8e8",
+                            "on-tertiary-fixed": "#351000",
+                            secondary: "#5e5e5e",
+                            "on-primary-container": "#313131",
+                            "secondary-fixed-dim": "#c7c6c6",
+                            "surface-container-low": "#f3f3f3",
+                            "outline-variant": "#e2bfb0",
+                            "on-secondary-fixed": "#1b1c1c",
+                            "on-surface-variant": "#5a4136",
+                            "on-primary-fixed": "#1b1b1b",
+                            error: "#ba1a1a",
+                            background: "#f9f9f9",
+                            "on-primary": "#ffffff",
+                            surface: "#f9f9f9",
+                            "on-tertiary-container": "#572000",
+                            "primary-fixed-dim": "#c6c6c6",
+                            "inverse-surface": "#2f3131",
+                            "surface-container": "#eeeeee",
+                            "inverse-primary": "#c6c6c6",
+                            "secondary-fixed": "#e3e2e2",
+                            "on-error-container": "#93000a",
+                            "on-surface": "#1a1c1c",
+                            "on-error": "#ffffff",
+                        },
+                        borderRadius: {
+                            DEFAULT: "0.125rem",
+                            lg: "0.25rem",
+                            xl: "0.5rem",
+                            full: "0.75rem",
+                        },
+                        fontFamily: {
+                            headline: ["Manrope"],
+                            body: ["Inter"],
+                            label: ["Inter"],
+                        },
+                    },
+                },
+            };
+        </script>
+    </head>
+    <body class="bg-surface selection:bg-tertiary-container selection:text-white">
+
+        <!-- Navigation -->
+        <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl flex justify-between items-center px-8 py-4 max-w-full border-b border-stone-100">
+            <a href="../" class="text-2xl font-black tracking-tighter text-stone-900 font-headline hover:text-tertiary-container transition-colors">DevTips</a>
+            <div class="hidden md:flex items-center gap-2">
+                <span class="text-xs font-bold text-tertiary-container uppercase tracking-widest bg-tertiary-fixed px-3 py-1">SvelteKit</span>
+                <span class="text-xs font-bold text-stone-500 uppercase tracking-widest">·</span>
+                <span class="text-xs font-bold text-stone-500 uppercase tracking-widest">TypeScript</span>
+                <span class="text-xs font-bold text-stone-500 uppercase tracking-widest">·</span>
+                <span class="text-xs font-bold text-stone-500 uppercase tracking-widest">LLM Agents</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="../" class="text-stone-900 font-bold hover:scale-95 duration-200 text-sm flex items-center gap-1">
+                    <span class="material-symbols-outlined text-sm">arrow_back</span>
+                    All Tips
+                </a>
+            </div>
+        </nav>
+
+        <main class="pt-20 pb-32">
+
+            <!-- Hero Section -->
+            <section class="px-8 md:px-24 py-20 bg-surface-container-low">
+                <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+                    <div class="md:col-span-8">
+                        <span class="text-tertiary-container font-bold tracking-widest text-xs uppercase mb-4 block">DEVTIP #004 · Agent Tooling</span>
+                        <h1 class="text-5xl md:text-7xl font-black tracking-tighter text-on-surface leading-none mb-4">
+                            Tools aren't "APIs"; they're contracts
+                        </h1>
+                        <p class="text-2xl text-secondary font-light leading-snug">
+                            Design tool schemas like you design libraries
+                        </p>
+                    </div>
+                    <div class="md:col-span-4 flex items-center justify-center">
+                        <div class="w-32 h-32 bg-stone-900 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-tertiary-container text-6xl">handyman</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Why This Matters -->
+            <section class="px-8 md:px-24 py-16 bg-white">
+                <div class="max-w-3xl mx-auto">
+                    <div class="p-8 bg-surface-container-lowest border-l-4 border-tertiary-container">
+                        <h2 class="text-xs font-bold uppercase tracking-widest text-primary mb-2">WHY THIS MATTERS</h2>
+                        <p class="text-xl text-on-surface leading-relaxed font-medium italic">
+                            "Most agent failures aren't model problems — they're interface problems. If your tool call surface is underspecified, the agent can't plan, can't validate, and can't recover. A well-designed tool schema gives the model a deterministic affordance: it knows what it can ask for, what it will get back, and how to react when something goes wrong."
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Discriminated Unions -->
+            <section class="px-8 md:px-24 py-20 bg-surface">
+                <div class="max-w-3xl mx-auto space-y-12">
+                    <div class="space-y-6">
+                        <h2 class="text-3xl font-black tracking-tighter">1. Use discriminated unions for results</h2>
+                        <p class="text-lg text-secondary leading-relaxed">
+                            Return a single top-level shape that is always valid JSON and always parseable. The agent can branch on <code class="bg-surface-container-high px-2 py-0.5 text-sm font-mono">ok</code> without brittle string matching.
+                        </p>
+                        <pre><code><span class="comment">// shared/types/tool-result.ts</span>
+<span class="keyword">export type</span> <span class="type">ToolOk</span>&lt;<span class="type">T</span>&gt; = {
+  ok: <span class="keyword">true</span>;
+  data: <span class="type">T</span>;
+  meta?: { requestId?: <span class="type">string</span>; durationMs?: <span class="type">number</span> };
+};
+
+<span class="keyword">export type</span> <span class="type">ToolErr</span> = {
+  ok: <span class="keyword">false</span>;
+  error: {
+    code:
+      | <span class="string">"INVALID_INPUT"</span>
+      | <span class="string">"NOT_FOUND"</span>
+      | <span class="string">"UNAUTHORIZED"</span>
+      | <span class="string">"RATE_LIMITED"</span>
+      | <span class="string">"CONFLICT"</span>
+      | <span class="string">"UPSTREAM_FAILURE"</span>
+      | <span class="string">"TIMEOUT"</span>
+      | <span class="string">"INTERNAL"</span>;
+    message: <span class="type">string</span>;
+    retryable: <span class="type">boolean</span>;
+    details?: <span class="type">unknown</span>;
+  };
+  meta?: { requestId?: <span class="type">string</span>; durationMs?: <span class="type">number</span> };
+};
+
+<span class="keyword">export type</span> <span class="type">ToolResult</span>&lt;<span class="type">T</span>&gt; = <span class="type">ToolOk</span>&lt;<span class="type">T</span>&gt; | <span class="type">ToolErr</span>;</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Zod Validation -->
+            <section class="px-8 md:px-24 py-20 bg-surface-container-low">
+                <div class="max-w-3xl mx-auto space-y-12">
+                    <div class="space-y-6">
+                        <h2 class="text-3xl font-black tracking-tighter">2. Validate inputs with Zod and echo normalized args</h2>
+                        <p class="text-lg text-secondary leading-relaxed">
+                            Agents often send nearly-correct inputs. Normalize them and return what you actually used — when a later step uses the tool output as context, the agent sees the exact canonical args.
+                        </p>
+                        <pre><code><span class="keyword">import</span> { z } <span class="keyword">from</span> <span class="string">"zod"</span>;
+
+<span class="keyword">export const</span> <span class="fn">SearchTicketsInput</span> = z.object({
+  query: z.string().min(1),
+  limit: z.number().int().min(1).max(50).default(20),
+  cursor: z.string().optional(),
+});
+
+<span class="keyword">export type</span> <span class="type">SearchTicketsArgs</span> = z.infer&lt;<span class="keyword">typeof</span> <span class="fn">SearchTicketsInput</span>&gt;;
+
+<span class="keyword">export type</span> <span class="type">SearchTicketsData</span> = {
+  normalized: <span class="type">SearchTicketsArgs</span>; <span class="comment">// ← echo back what was used</span>
+  items: <span class="type">Array</span>&lt;{ id: <span class="type">string</span>; title: <span class="type">string</span>; status: <span class="string">"open"</span> | <span class="string">"closed"</span> }&gt;;
+  nextCursor?: <span class="type">string</span>;
+};</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Error codes -->
+            <section class="px-8 md:px-24 py-20 bg-white">
+                <div class="max-w-3xl mx-auto space-y-12">
+                    <div class="space-y-6">
+                        <h2 class="text-3xl font-black tracking-tighter">3. Design error codes for agent decisions</h2>
+                        <p class="text-lg text-secondary leading-relaxed">
+                            Humans like messages; agents need categories. Good error codes are <span class="font-bold">actionable</span> (imply a next step), <span class="font-bold">stable</span> (don't change across refactors), and <span class="font-bold">complete</span> (cover expected failures).
+                        </p>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm border-collapse">
+                                <thead>
+                                    <tr class="bg-surface-container-low">
+                                        <th class="text-left p-3 font-bold border border-stone-200 font-mono text-xs">Error Code</th>
+                                        <th class="text-left p-3 font-bold border border-stone-200 text-xs">Agent Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td class="p-3 border border-stone-200 font-mono text-xs text-tertiary-container font-bold">INVALID_INPUT</td><td class="p-3 border border-stone-200">Fix args (no retry)</td></tr>
+                                    <tr class="bg-surface-container-low"><td class="p-3 border border-stone-200 font-mono text-xs text-tertiary-container font-bold">RATE_LIMITED</td><td class="p-3 border border-stone-200">Retry with backoff</td></tr>
+                                    <tr><td class="p-3 border border-stone-200 font-mono text-xs text-tertiary-container font-bold">UPSTREAM_FAILURE</td><td class="p-3 border border-stone-200">Switch provider / degrade gracefully</td></tr>
+                                    <tr class="bg-surface-container-low"><td class="p-3 border border-stone-200 font-mono text-xs text-tertiary-container font-bold">CONFLICT</td><td class="p-3 border border-stone-200">Re-read state then retry</td></tr>
+                                    <tr><td class="p-3 border border-stone-200 font-mono text-xs text-tertiary-container font-bold">NOT_FOUND</td><td class="p-3 border border-stone-200">Abort or ask user to clarify</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Idempotency -->
+            <section class="px-8 md:px-24 py-20 bg-surface-container-low">
+                <div class="max-w-3xl mx-auto space-y-12">
+                    <div class="space-y-6">
+                        <h2 class="text-3xl font-black tracking-tighter">4. Make retries safe with idempotency keys</h2>
+                        <p class="text-lg text-secondary leading-relaxed">
+                            Agents are inherently retry-prone — timeouts, tool glitches, partial context. Concurrency guards prevent double writes.
+                        </p>
+                        <pre><code><span class="keyword">export const</span> <span class="fn">CreateInvoiceInput</span> = z.object({
+  idempotencyKey: z.string().min(10), <span class="comment">// ← agent must supply this</span>
+  customerId: z.string(),
+  amountCents: z.number().int().positive(),
+});
+
+<span class="comment">// For updates — optimistic concurrency</span>
+<span class="keyword">export const</span> <span class="fn">UpdateDocInput</span> = z.object({
+  docId: z.string(),
+  ifVersion: z.number().int().nonnegative(), <span class="comment">// reject stale writes</span>
+  patch: z.array(z.object({
+    op: z.enum([<span class="string">"replace"</span>]),
+    path: z.string(),
+    value: z.any()
+  })),
+});</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Capabilities tool -->
+            <section class="px-8 md:px-24 py-20 bg-white">
+                <div class="max-w-3xl mx-auto space-y-12">
+                    <div class="space-y-6">
+                        <h2 class="text-3xl font-black tracking-tighter">5. Add a lightweight "capabilities" tool</h2>
+                        <p class="text-lg text-secondary leading-relaxed">
+                            Agents do better when they can ask what the tool can do before calling it. Reduces prompt bloat and helps the agent select the right operation without guessing.
+                        </p>
+                        <pre><code><span class="keyword">export type</span> <span class="type">Capabilities</span> = {
+  name: <span class="type">string</span>;
+  version: <span class="type">string</span>;
+  operations: <span class="type">Array</span>&lt;{
+    op: <span class="type">string</span>;
+    description: <span class="type">string</span>;
+    inputSchemaRef: <span class="type">string</span>;
+    outputSchemaRef: <span class="type">string</span>;
+    commonErrors: <span class="type">string</span>[];
+  }&gt;;
+};</code></pre>
+                        <blockquote class="pl-8 border-l-4 border-[#ff6b00]">
+                            <p class="text-lg italic text-secondary">
+                                Treat tools as public APIs: versioned, documented, and enforced with tests.
+                            </p>
+                        </blockquote>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PRO MOVE Section -->
+            <section class="px-8 md:px-24 py-24 bg-[#1a1c1c] text-white">
+                <div class="max-w-5xl mx-auto">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-16">
+                        <div class="md:col-span-4">
+                            <h2 class="text-4xl font-black tracking-tighter text-tertiary-container">
+                                Pro Move
+                            </h2>
+                            <p class="mt-4 text-stone-400 font-medium">
+                                Bake a tool-contract test suite into CI
+                            </p>
+                        </div>
+                        <div class="md:col-span-8 space-y-8">
+                            <p class="text-stone-300 leading-relaxed text-lg">
+                                Add contract tests that verify every tool returns <code class="bg-stone-800 px-2 py-0.5 text-sm font-mono text-tertiary-fixed-dim">ToolResult&lt;T&gt;</code>, Zod validation maps to <code class="bg-stone-800 px-2 py-0.5 text-sm font-mono text-tertiary-fixed-dim">INVALID_INPUT</code>, retryable errors set <code class="bg-stone-800 px-2 py-0.5 text-sm font-mono text-tertiary-fixed-dim">retryable: true</code>, and outputs remain backward compatible.
+                            </p>
+                            <pre><code><span class="keyword">import</span> { describe, expect, it } <span class="keyword">from</span> <span class="string">"vitest"</span>;
+<span class="keyword">import</span> { <span class="fn">searchTickets</span> } <span class="keyword">from</span> <span class="string">"../tools/searchTickets"</span>;
+
+<span class="fn">describe</span>(<span class="string">"tool contract: searchTickets"</span>, () => {
+  <span class="fn">it</span>(<span class="string">"always returns ToolResult shape"</span>, <span class="keyword">async</span> () => {
+    <span class="keyword">const</span> res = <span class="keyword">await</span> <span class="fn">searchTickets</span>({ query: <span class="string">""</span> } <span class="keyword">as any</span>);
+    <span class="fn">expect</span>(res).<span class="fn">toHaveProperty</span>(<span class="string">"ok"</span>);
+    <span class="keyword">if</span> (res.ok === <span class="keyword">false</span>) {
+      <span class="fn">expect</span>(res.error).<span class="fn">toHaveProperty</span>(<span class="string">"code"</span>);
+      <span class="fn">expect</span>(<span class="keyword">typeof</span> res.error.retryable).<span class="fn">toBe</span>(<span class="string">"boolean"</span>);
+    }
+  });
+});</code></pre>
+                            <p class="text-stone-400 leading-relaxed">
+                                If you treat tool schemas as public APIs and enforce them with tests, agents become predictably capable — and failures become recoverable rather than catastrophic.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer nav -->
+            <section class="px-8 md:px-24 py-20 bg-white">
+                <div class="max-w-3xl mx-auto text-center">
+                    <span class="text-xs font-bold text-stone-400 uppercase tracking-widest mb-4 block">Daily LLM Agent Dev Tips</span>
+                    <p class="text-lg text-secondary font-medium">For SvelteKit + TypeScript developers</p>
+                    <div class="mt-8 flex justify-center gap-4 flex-wrap">
+                        <a href="../tip-003/" class="inline-flex items-center gap-2 border border-stone-200 text-stone-600 px-8 py-4 font-bold hover:scale-105 transition-transform group text-sm">
+                            <span class="material-symbols-outlined group-hover:-translate-x-1 transition-transform text-sm">arrow_back</span>
+                            <span>PREV: TIP #003</span>
+                        </a>
+                        <a href="../tip-005/" class="inline-flex items-center gap-4 bg-tertiary-container text-white px-10 py-5 font-bold hover:scale-105 transition-transform group">
+                            <span>NEXT: TIP #005</span>
+                            <span class="material-symbols-outlined group-hover:translate-x-2 transition-transform">arrow_forward</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- FAB -->
+        <a href="../" class="fixed bottom-8 right-8 w-14 h-14 bg-tertiary-container text-white flex items-center justify-center shadow-2xl hover:scale-110 transition-transform z-50">
+            <span class="material-symbols-outlined">home</span>
+        </a>
+    </body>
+</html>
