@@ -1,0 +1,352 @@
+<!doctype html>
+<html class="light" lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <title>Idea #002 — ToolGate</title>
+        <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@400;500;600&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            .material-symbols-outlined {
+                font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+            }
+            body { font-family: "Inter", sans-serif; background-color: #f9f9f9; color: #1a1c1c; }
+            h1, h2, h3, h4, .headline { font-family: "Manrope", sans-serif; }
+        </style>
+        <script id="tailwind-config">
+            tailwind.config = {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        colors: {
+                            "secondary-container": "#e3e2e2",
+                            "on-secondary-container": "#646464",
+                            "tertiary-fixed-dim": "#ffb693",
+                            "surface-container-lowest": "#ffffff",
+                            "tertiary-container": "#ff6b00",
+                            "error-container": "#ffdad6",
+                            "primary-container": "#999999",
+                            "surface-dim": "#dadada",
+                            "on-tertiary": "#ffffff",
+                            outline: "#8e7164",
+                            "on-primary-fixed-variant": "#474747",
+                            "primary-fixed": "#e2e2e2",
+                            "on-tertiary-fixed-variant": "#7a3000",
+                            primary: "#5e5e5e",
+                            "on-secondary": "#ffffff",
+                            tertiary: "#a04100",
+                            "surface-tint": "#5e5e5e",
+                            "inverse-on-surface": "#f1f1f1",
+                            "on-secondary-fixed-variant": "#464747",
+                            "surface-bright": "#f9f9f9",
+                            "on-background": "#1a1c1c",
+                            "surface-variant": "#e2e2e2",
+                            "surface-container-highest": "#e2e2e2",
+                            "tertiary-fixed": "#ffdbcc",
+                            "surface-container-high": "#e8e8e8",
+                            "on-tertiary-fixed": "#351000",
+                            secondary: "#5e5e5e",
+                            "on-primary-container": "#313131",
+                            "secondary-fixed-dim": "#c7c6c6",
+                            "surface-container-low": "#f3f3f3",
+                            "outline-variant": "#e2bfb0",
+                            "on-secondary-fixed": "#1b1c1c",
+                            "on-surface-variant": "#5a4136",
+                            "on-primary-fixed": "#1b1b1b",
+                            error: "#ba1a1a",
+                            background: "#f9f9f9",
+                            "on-primary": "#ffffff",
+                            surface: "#f9f9f9",
+                            "on-tertiary-container": "#572000",
+                            "primary-fixed-dim": "#c6c6c6",
+                            "inverse-surface": "#2f3131",
+                            "surface-container": "#eeeeee",
+                            "inverse-primary": "#c6c6c6",
+                            "secondary-fixed": "#e3e2e2",
+                            "on-error-container": "#93000a",
+                            "on-surface": "#1a1c1c",
+                            "on-error": "#ffffff",
+                        },
+                        borderRadius: { DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.5rem", full: "0.75rem" },
+                        fontFamily: { headline: ["Manrope"], body: ["Inter"], label: ["Inter"] },
+                    },
+                },
+            };
+        </script>
+    </head>
+    <body class="bg-surface selection:bg-tertiary-container selection:text-white">
+
+        <!-- Nav -->
+        <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl flex justify-between items-center px-8 py-4 border-b border-stone-100">
+            <a href="index.html" class="text-xl font-black tracking-tighter text-stone-900 font-manrope hover:text-tertiary-container transition-colors">
+                te9.dev/ideas
+            </a>
+            <div class="hidden md:flex items-center gap-8">
+                <a class="text-stone-500 hover:text-orange-600 transition-colors font-bold text-sm tracking-tight" href="#problem">Problem</a>
+                <a class="text-stone-500 hover:text-orange-600 transition-colors font-bold text-sm tracking-tight" href="#idea">Idea</a>
+                <a class="text-stone-500 hover:text-orange-600 transition-colors font-bold text-sm tracking-tight" href="#build">How to Build</a>
+                <a class="text-stone-500 hover:text-orange-600 transition-colors font-bold text-sm tracking-tight" href="#pitch">Pitch</a>
+            </div>
+            <a href="index.html" class="text-sm font-bold text-stone-500 hover:text-tertiary-container transition-colors flex items-center gap-1">
+                <span class="material-symbols-outlined text-base">arrow_back</span> All Ideas
+            </a>
+        </nav>
+
+        <main class="pt-20 pb-32">
+
+            <!-- Hero -->
+            <section class="px-8 md:px-24 py-20 bg-surface-container-low" id="hero">
+                <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+                    <div class="md:col-span-8">
+                        <span class="text-tertiary-container font-bold tracking-widest text-xs uppercase mb-4 block">Daily Idea · April 11, 2026 · #002</span>
+                        <h1 class="text-5xl md:text-7xl font-black tracking-tighter text-on-surface leading-none mb-8">
+                            ToolGate
+                        </h1>
+                        <div class="p-8 bg-surface-container-lowest border-l-4 border-tertiary-container">
+                            <h2 class="text-xs font-bold uppercase tracking-widest text-primary mb-2">The Idea</h2>
+                            <p class="text-xl text-on-surface leading-relaxed font-medium italic">
+                                "Approval gates, schema contracts, and audit logs for AI agents using tools."
+                            </p>
+                        </div>
+                    </div>
+                    <div class="md:col-span-4">
+                        <div class="space-y-4">
+                            <div class="bg-surface-container-highest p-6">
+                                <span class="text-xs font-bold text-stone-400 uppercase tracking-widest block mb-1">Market</span>
+                                <span class="font-bold text-tertiary-container">Developer Tools / AI Governance</span>
+                            </div>
+                            <div class="bg-surface-container-highest p-6">
+                                <span class="text-xs font-bold text-stone-400 uppercase tracking-widest block mb-1">Business Model</span>
+                                <span class="font-bold">B2B SaaS</span>
+                            </div>
+                            <div class="bg-surface-container-highest p-6">
+                                <span class="text-xs font-bold text-stone-400 uppercase tracking-widest block mb-1">Build Effort</span>
+                                <span class="font-bold">Medium — 4-week MVP</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Problem -->
+            <section class="px-8 md:px-24 py-24 bg-surface" id="problem">
+                <div class="max-w-3xl mx-auto space-y-12">
+                    <div>
+                        <span class="text-tertiary-container font-bold tracking-widest text-xs uppercase mb-4 block">The Problem</span>
+                        <p class="text-2xl text-on-surface leading-snug font-light">
+                            AI agents can now <span class="font-bold text-tertiary-container underline decoration-2 underline-offset-4">call tools</span> — send emails, create PRs, query databases, make purchases. But there is no standard way to enforce <span class="font-bold">who approved what</span>, what schemas are allowed, or to produce an audit trail that satisfies compliance teams.
+                        </p>
+                    </div>
+                    <blockquote class="pl-8 border-l border-surface-container-highest">
+                        <p class="text-lg italic text-secondary">
+                            "Browser agents are less safe than chat models — they need runtime guardrails that go beyond input/output filtering to cover actual tool execution."
+                        </p>
+                        <footer class="mt-2 text-sm font-bold text-primary">— <a href="https://invariantlabs.ai/blog/enhancing-browser-agent-safety" class="hover:text-tertiary-container transition-colors underline">Invariant Labs, 2026</a></footer>
+                    </blockquote>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                        <div class="space-y-4">
+                            <h3 class="text-xl font-bold tracking-tight">The Gap Today</h3>
+                            <p class="text-secondary leading-relaxed">Observability tools like LangSmith and Phoenix can <em>trace</em> what agents did after the fact. AWS Bedrock Guardrails filter inputs/outputs. But neither provides an app-agnostic policy gateway that sits between the agent and the tool — enforcing allow/deny/approval-required at runtime with typed schema contracts.</p>
+                        </div>
+                        <div class="space-y-4">
+                            <h3 class="text-xl font-bold tracking-tight text-tertiary-container">The Opportunity</h3>
+                            <p class="text-secondary leading-relaxed">MCP and structured tool schemas are making tool contracts a first-class surface. Enterprises adopting agents need exactly one thing before they go to production: a policy layer with human-in-the-loop approval and audit-grade logs. Nobody owns this layer yet.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Idea -->
+            <section class="px-8 md:px-24 py-24 bg-surface-container-low" id="idea">
+                <div class="max-w-6xl mx-auto">
+                    <div class="flex justify-between items-baseline mb-16">
+                        <h2 class="text-4xl font-black tracking-tighter">The Solution</h2>
+                        <span class="text-sm font-bold text-tertiary-container uppercase tracking-widest">ToolGate</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-1">
+                        <div class="group bg-surface p-10 hover:bg-surface-container-lowest transition-colors border-b md:border-b-0 md:border-r border-stone-200">
+                            <span class="text-xs font-bold text-stone-400 mb-4 block">01</span>
+                            <h4 class="text-xl font-bold mb-4 group-hover:text-tertiary-container transition-colors">Policy Engine</h4>
+                            <p class="text-secondary leading-relaxed">Define allow/deny/approval-required rules per tool, per agent, per team. Write policies in YAML or via a visual editor. Supports wildcard matching, parameter constraints, and time windows.</p>
+                        </div>
+                        <div class="group bg-surface p-10 hover:bg-surface-container-lowest transition-colors border-b border-stone-200">
+                            <span class="text-xs font-bold text-stone-400 mb-4 block">02</span>
+                            <h4 class="text-xl font-bold mb-4 group-hover:text-tertiary-container transition-colors">Schema Contracts</h4>
+                            <p class="text-secondary leading-relaxed">Every tool call passes through a typed JSON Schema validator. Agents can only invoke tools with the exact parameters allowed. Malformed or unauthorized payloads are rejected before execution.</p>
+                        </div>
+                        <div class="group bg-surface p-10 hover:bg-surface-container-lowest transition-colors md:border-r border-stone-200">
+                            <span class="text-xs font-bold text-stone-400 mb-4 block">03</span>
+                            <h4 class="text-xl font-bold mb-4 group-hover:text-tertiary-container transition-colors">Human Approval Gates</h4>
+                            <p class="text-secondary leading-relaxed">High-risk actions (send email, delete record, make purchase) pause and route to a human via Slack, email, or dashboard. The agent waits for approval before proceeding — with configurable timeout and escalation.</p>
+                        </div>
+                        <div class="group bg-surface p-10 hover:bg-surface-container-lowest transition-colors">
+                            <span class="text-xs font-bold text-stone-400 mb-4 block">04</span>
+                            <h4 class="text-xl font-bold mb-4 group-hover:text-tertiary-container transition-colors">Audit Trail</h4>
+                            <p class="text-secondary leading-relaxed">Every tool call — approved, denied, or timed out — is logged with agent ID, parameters, policy matched, approver, and timestamp. Exportable as JSON for compliance, queryable via API for other agents.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Value props -->
+            <section class="px-8 md:px-24 py-24">
+                <div class="max-w-6xl mx-auto">
+                    <h2 class="text-3xl font-black tracking-tighter mb-12 text-center">Why It's Valuable</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="bg-surface-container-lowest p-8 min-h-[240px] flex flex-col justify-between border-b-4 border-stone-100 hover:border-tertiary-container transition-all">
+                            <span class="material-symbols-outlined text-stone-300">shield</span>
+                            <div>
+                                <p class="text-lg font-bold leading-tight mb-3">For Enterprises</p>
+                                <p class="text-secondary text-sm leading-relaxed">Ship agents to production with confidence. Every tool call has a policy, an approval flow, and a log. SOC 2 and ISO 27001 auditors get the paper trail they need.</p>
+                            </div>
+                            <div class="w-8 h-1 bg-stone-200"></div>
+                        </div>
+                        <div class="bg-surface-container-lowest p-8 min-h-[240px] flex flex-col justify-between border-b-4 border-stone-100 hover:border-tertiary-container transition-all">
+                            <span class="material-symbols-outlined text-stone-300">smart_toy</span>
+                            <div>
+                                <p class="text-lg font-bold leading-tight mb-3">For Agents</p>
+                                <p class="text-secondary text-sm leading-relaxed">Machine-readable policy responses. Agents know exactly which tools they can use, what parameters are allowed, and whether to wait for approval — no guessing.</p>
+                            </div>
+                            <div class="w-8 h-1 bg-stone-200"></div>
+                        </div>
+                        <div class="bg-surface-container-lowest p-8 min-h-[240px] flex flex-col justify-between border-b-4 border-stone-100 hover:border-tertiary-container transition-all">
+                            <span class="material-symbols-outlined text-stone-300">engineering</span>
+                            <div>
+                                <p class="text-lg font-bold leading-tight mb-3">For Developers</p>
+                                <p class="text-secondary text-sm leading-relaxed">Drop-in middleware. Works with any MCP server, OpenAI function calling, or custom tool framework. One config file, zero code changes to your agent.</p>
+                            </div>
+                            <div class="w-8 h-1 bg-stone-200"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Build -->
+            <section class="px-8 md:px-24 py-24 bg-stone-950 text-white" id="build">
+                <div class="max-w-5xl mx-auto">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-16">
+                        <div class="md:col-span-4">
+                            <h2 class="text-4xl font-black tracking-tighter text-tertiary-container">How to Build It</h2>
+                            <p class="mt-4 text-stone-400 font-medium">4-week MVP. Solo developer. Ships on Railway.</p>
+                            <div class="mt-8 flex flex-wrap gap-2">
+                                <span class="text-xs bg-stone-800 text-stone-300 px-3 py-1 font-mono">SvelteKit</span>
+                                <span class="text-xs bg-stone-800 text-stone-300 px-3 py-1 font-mono">TypeScript</span>
+                                <span class="text-xs bg-stone-800 text-stone-300 px-3 py-1 font-mono">Postgres</span>
+                                <span class="text-xs bg-stone-800 text-stone-300 px-3 py-1 font-mono">Redis</span>
+                                <span class="text-xs bg-stone-800 text-stone-300 px-3 py-1 font-mono">JSON Schema</span>
+                                <span class="text-xs bg-stone-800 text-stone-300 px-3 py-1 font-mono">MCP SDK</span>
+                                <span class="text-xs bg-stone-800 text-stone-300 px-3 py-1 font-mono">Railway</span>
+                                <span class="text-xs bg-stone-800 text-stone-300 px-3 py-1 font-mono">Slack API</span>
+                            </div>
+                        </div>
+                        <div class="md:col-span-8 space-y-12">
+                            <div class="flex gap-6">
+                                <span class="text-4xl font-black text-stone-800 shrink-0">01</span>
+                                <div>
+                                    <h4 class="text-xl font-bold mb-2">Policy Engine + Proxy</h4>
+                                    <p class="text-stone-400 leading-relaxed">Build a lightweight HTTP proxy that intercepts tool calls. Policy rules in YAML define allow/deny/approval_required per tool name, agent ID, and parameter patterns. JSON Schema validation on every payload. Store policies in Postgres.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-6">
+                                <span class="text-4xl font-black text-stone-800 shrink-0">02</span>
+                                <div>
+                                    <h4 class="text-xl font-bold mb-2">Approval Flow</h4>
+                                    <p class="text-stone-400 leading-relaxed">When a call hits <code class="text-orange-400 font-mono text-sm">approval_required</code>, ToolGate holds the request in Redis, sends a notification (Slack webhook or email), and exposes a <code class="text-orange-400 font-mono text-sm">/approve/:id</code> endpoint. Configurable timeout + auto-deny/escalation.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-6">
+                                <span class="text-4xl font-black text-stone-800 shrink-0">03</span>
+                                <div>
+                                    <h4 class="text-xl font-bold mb-2">Audit Log + Dashboard</h4>
+                                    <p class="text-stone-400 leading-relaxed">Every decision (allow, deny, approve, timeout) is logged to Postgres with full context. SvelteKit dashboard shows real-time feed, filterable by agent, tool, and decision. Export as JSON or CSV for compliance.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-6">
+                                <span class="text-4xl font-black text-stone-800 shrink-0">04</span>
+                                <div>
+                                    <h4 class="text-xl font-bold mb-2">SDK + MCP Integration</h4>
+                                    <p class="text-stone-400 leading-relaxed">TypeScript SDK wraps any MCP client. Also ships as Express/Hono middleware. Agents query <code class="text-orange-400 font-mono text-sm">/capabilities</code> to get their allowed tool list — machine-readable policy discovery. One-click deploy on Railway.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pitch -->
+            <section class="px-8 md:px-24 py-24 bg-surface-container-low" id="pitch">
+                <div class="max-w-6xl mx-auto">
+                    <div class="flex justify-between items-baseline mb-16">
+                        <h2 class="text-4xl font-black tracking-tighter">How to Pitch It</h2>
+                        <span class="text-sm font-bold text-tertiary-container uppercase tracking-widest">Go-to-market</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-1">
+                        <div class="bg-surface p-10 border-b md:border-b-0 md:border-r border-stone-200">
+                            <span class="text-xs font-bold text-stone-400 mb-4 block uppercase tracking-widest">One-liner</span>
+                            <p class="text-xl font-bold leading-snug">"IAM for AI agents. Every tool call gets a policy, an approval gate, and a log."</p>
+                        </div>
+                        <div class="bg-surface p-10 border-b border-stone-200">
+                            <span class="text-xs font-bold text-stone-400 mb-4 block uppercase tracking-widest">Target ICP</span>
+                            <p class="text-secondary leading-relaxed">Engineering teams shipping agents to production, platform teams managing multi-agent systems, compliance officers at regulated enterprises, MCP server authors who need a governance layer.</p>
+                        </div>
+                        <div class="bg-surface p-10 border-b md:border-b-0 md:border-r border-stone-200">
+                            <span class="text-xs font-bold text-stone-400 mb-4 block uppercase tracking-widest">Go-to-market</span>
+                            <p class="text-secondary leading-relaxed">Open-source the proxy + policy engine. "Show HN" launch. Free for single-agent use. Monetize team dashboards, SSO, advanced approval workflows, and compliance exports.</p>
+                        </div>
+                        <div class="bg-surface p-10">
+                            <span class="text-xs font-bold text-stone-400 mb-4 block uppercase tracking-widest">Pricing</span>
+                            <div class="space-y-2">
+                                <div class="flex justify-between text-sm"><span class="font-bold">Free</span><span class="text-secondary">1 agent, 1K calls/mo, basic logs</span></div>
+                                <div class="flex justify-between text-sm"><span class="font-bold text-tertiary-container">Pro $29/mo</span><span class="text-secondary">10 agents, approval flows, Slack</span></div>
+                                <div class="flex justify-between text-sm"><span class="font-bold">Enterprise $149/mo</span><span class="text-secondary">Unlimited, SSO, compliance exports</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sources -->
+            <section class="px-8 md:px-24 py-16 bg-surface">
+                <div class="max-w-3xl mx-auto">
+                    <h3 class="text-xs font-bold text-stone-400 uppercase tracking-widest mb-6">Sources</h3>
+                    <div class="space-y-2">
+                        <a href="https://invariantlabs.ai/blog/enhancing-browser-agent-safety" class="block text-sm text-secondary hover:text-tertiary-container transition-colors">Invariant Labs — Enhancing Browser Agent Safety with Guardrails</a>
+                        <a href="https://www.agentpatterns.tech/en/governance/human-approval" class="block text-sm text-secondary hover:text-tertiary-container transition-colors">Agent Patterns — Human Approval For AI Agents</a>
+                        <a href="https://docs.stacklok.com/toolhive/tutorials/custom-registry" class="block text-sm text-secondary hover:text-tertiary-container transition-colors">Stacklok ToolHive — Create a Custom MCP Registry</a>
+                        <a href="https://www.moveworks.com/us/en/resources/blog/how-policy-validators-help-ai-compliance" class="block text-sm text-secondary hover:text-tertiary-container transition-colors">Moveworks — How Policy Validators Help AI Compliance</a>
+                        <a href="https://aws.amazon.com/bedrock/guardrails/" class="block text-sm text-secondary hover:text-tertiary-container transition-colors">AWS — Amazon Bedrock Guardrails</a>
+                        <a href="https://www.truefoundry.com/blog/what-is-mcp-registry" class="block text-sm text-secondary hover:text-tertiary-container transition-colors">TrueFoundry — What is MCP Registry?</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA -->
+            <section class="px-8 md:px-24 py-32 bg-white">
+                <div class="max-w-3xl mx-auto text-center">
+                    <span class="text-xs font-bold text-stone-400 uppercase tracking-widest mb-4 block">Next idea tomorrow</span>
+                    <h2 class="text-4xl md:text-5xl font-black tracking-tighter mb-10 leading-tight">
+                        One researched LLM webapp idea, every day.
+                    </h2>
+                    <a class="inline-flex items-center gap-4 bg-tertiary-container text-white px-10 py-5 font-bold hover:scale-105 transition-transform group" href="index.html">
+                        <span>BACK TO ALL IDEAS</span>
+                        <span class="material-symbols-outlined group-hover:translate-x-2 transition-transform">arrow_forward</span>
+                    </a>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- FAB -->
+        <a href="index.html" class="fixed bottom-8 right-8 w-14 h-14 bg-tertiary-container text-white flex items-center justify-center shadow-2xl hover:scale-110 transition-transform z-50">
+            <span class="material-symbols-outlined">format_list_bulleted</span>
+        </a>
+
+    </body>
+</html>

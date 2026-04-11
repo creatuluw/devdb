@@ -1,8 +1,8 @@
 {
   "meta": {
     "description": "Daily LLM Webapp Ideas — one researched idea per day, valuable for humans and AI agents",
-    "last_updated": "2026-04-10",
-    "total_ideas": 1
+    "last_updated": "2026-04-11",
+    "total_ideas": 2
   },
   "ideas": [
     {
@@ -57,6 +57,66 @@
       "links": {
         "one_pager": "https://www.perplexity.ai/computer/a/daily-llm-idea-001-livingdocs-Dop_AUn6QASrbugNwa8.6w",
         "live_page": "http://te9.dev/ideas/living-docs.html"
+      }
+    },
+    {
+      "id": "002",
+      "number": 2,
+      "title": "ToolGate",
+      "tagline": "Approval gates, schema contracts, and audit logs for AI agents using tools",
+      "market": "Developer Tools / AI Governance",
+      "model": "B2B SaaS",
+      "effort": "Medium",
+      "date": "2026-04-11",
+      "slug": "tool-gate",
+      "one_liner": "IAM for AI agents. Every tool call gets a policy, an approval gate, and a log.",
+      "problem": "AI agents can now call tools — send emails, create PRs, query databases, make purchases. But there is no standard way to enforce who approved what, what schemas are allowed, or to produce an audit trail. Observability tools trace after the fact, but nobody provides an app-agnostic policy gateway that enforces allow/deny/approval-required at runtime with typed schema contracts.",
+      "idea": "A webapp that acts as a policy gateway for AI agent tool calls. It sits between agents and their tools, enforcing typed JSON Schema contracts, routing high-risk actions through human approval gates (Slack, email, dashboard), and producing audit-grade logs queryable by both humans and other agents.",
+      "value": {
+        "for_enterprises": "Ship agents to production with confidence. Every tool call has a policy, an approval flow, and a log. SOC 2 and ISO 27001 auditors get the paper trail they need.",
+        "for_agents": "Machine-readable policy responses. Agents know exactly which tools they can use, what parameters are allowed, and whether to wait for approval.",
+        "for_developers": "Drop-in middleware. Works with any MCP server, OpenAI function calling, or custom tool framework. One config file, zero code changes."
+      },
+      "build": {
+        "timeline": "4-week MVP",
+        "weeks": [
+          "Week 1: Lightweight HTTP proxy + policy engine (YAML rules, JSON Schema validation) → Postgres",
+          "Week 2: Approval flow — hold in Redis, Slack/email notification, /approve/:id endpoint, timeout + escalation",
+          "Week 3: Audit log + SvelteKit dashboard — real-time feed, filterable, JSON/CSV export for compliance",
+          "Week 4: TypeScript SDK, Express/Hono middleware, /capabilities endpoint for agent policy discovery, Railway deploy"
+        ],
+        "stack": ["SvelteKit", "TypeScript", "Postgres", "Redis", "JSON Schema", "MCP SDK", "Railway", "Slack API"]
+      },
+      "pitch": {
+        "icp": "Engineering teams shipping agents to production, platform teams managing multi-agent systems, compliance officers at regulated enterprises, MCP server authors",
+        "gtm": "Open-source the proxy + policy engine. Show HN launch. Free for single-agent use. Monetize team dashboards, SSO, advanced approval workflows, compliance exports.",
+        "pricing": {
+          "free": "1 agent, 1K calls/mo, basic logs",
+          "pro": "$29/mo — 10 agents, approval flows, Slack integration",
+          "enterprise": "$149/mo — unlimited agents, SSO, compliance exports"
+        },
+        "investor_angle": "IAM for the agent economy. Every enterprise deploying agents will need a policy layer — ToolGate is the natural chokepoint. Comparable to how Okta became essential for human identity."
+      },
+      "signals": [
+        "Browser agents are less safe than chat models and need runtime guardrails (Invariant Labs)",
+        "MCP and structured tool schemas are making tool contracts a first-class product surface",
+        "Enterprises want approval and audit trails for write actions before shipping agents to production"
+      ],
+      "sources": [
+        {"name": "Invariant Labs — Enhancing Browser Agent Safety", "url": "https://invariantlabs.ai/blog/enhancing-browser-agent-safety"},
+        {"name": "Agent Patterns — Human Approval For AI Agents", "url": "https://www.agentpatterns.tech/en/governance/human-approval"},
+        {"name": "Stacklok ToolHive — Custom MCP Registry", "url": "https://docs.stacklok.com/toolhive/tutorials/custom-registry"},
+        {"name": "Moveworks — Policy Validators for AI Compliance", "url": "https://www.moveworks.com/us/en/resources/blog/how-policy-validators-help-ai-compliance"},
+        {"name": "AWS — Amazon Bedrock Guardrails", "url": "https://aws.amazon.com/bedrock/guardrails/"},
+        {"name": "TrueFoundry — What is MCP Registry?", "url": "https://www.truefoundry.com/blog/what-is-mcp-registry"}
+      ],
+      "files": {
+        "html": "idea-html/002-tool-gate.html",
+        "markdown": "idea-markdown/002-tool-gate.md",
+        "data": "idea-data/dev-ideas.json"
+      },
+      "links": {
+        "live_page": "http://te9.dev/ideas/tool-gate.html"
       }
     }
   ]
