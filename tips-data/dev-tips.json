@@ -2,7 +2,7 @@
   "meta": {
     "description": "LLM Agent Dev Tips \u2014 daily tips for SvelteKit + TypeScript developers",
     "last_updated": "2026-04-11",
-    "total_tips": 4,
+    "total_tips": 5,
     "categories": [
       "Context Management",
       "API Design",
@@ -129,6 +129,28 @@
         "markdown": "tips-markdown/tip-004.md"
       },
       "subject": "DevTip #004 \u2014 Tools aren\u2019t \u201cAPIs\u201d; they\u2019re contracts: design tool schemas like you design libraries"
+    },
+    {
+      "id": "005",
+      "number": 5,
+      "title": "Migrations as a Safety Harness for Agents",
+      "subtitle": "Make schema changes legible, reversible, and reviewable",
+      "category": "Data Architecture",
+      "sent_date": "2026-04-11",
+      "summary": "A migration workflow that separates DDL, idempotent backfills, and verification queries makes agent-driven schema changes safe to ship.",
+      "key_concepts": [
+        "up/down/verify migrations",
+        "idempotent backfills",
+        "constraints as invariants",
+        "concurrent indexes",
+        "CI migration gates"
+      ],
+      "files": {
+        "html": "tips-html/tip-005.html",
+        "markdown": "tips-markdown/tip-005.md",
+        "site": "tips-site/tip-005.html"
+      },
+      "subject": "DevTip #005 \u2014 Migrations as a Safety Harness for Agents"
     }
   ]
 }

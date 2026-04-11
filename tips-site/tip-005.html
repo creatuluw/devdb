@@ -1,0 +1,303 @@
+<!doctype html>
+<html class="light" lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <title>DevTip #005 — Migrations as a Safety Harness for Agents</title>
+        <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@400;500;600&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            .material-symbols-outlined {
+                font-variation-settings:
+                    "FILL" 0,
+                    "wght" 400,
+                    "GRAD" 0,
+                    "opsz" 24;
+            }
+            body {
+                font-family: "Inter", sans-serif;
+                background-color: #f9f9f9;
+                color: #1a1c1c;
+            }
+            h1, h2, h3, .headline {
+                font-family: "Manrope", sans-serif;
+            }
+            pre code {
+                font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+                font-size: 0.875rem;
+                line-height: 1.7;
+            }
+            pre {
+                background: #1a1c1c;
+                color: #f1f1f1;
+                border-radius: 0.5rem;
+                padding: 1.5rem;
+                overflow-x: auto;
+                margin: 0;
+            }
+            pre .comment { color: #6b7280; }
+            pre .keyword { color: #ff6b00; }
+            pre .string { color: #a5d6a7; }
+            pre .type { color: #90caf9; }
+            pre .fn { color: #ffcc80; }
+        </style>
+        <script id="tailwind-config">
+            tailwind.config = tailwind.config = {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        colors: {
+                            "secondary-container": "#e3e2e2",
+                            "on-secondary-container": "#646464",
+                            "tertiary-fixed-dim": "#ffb693",
+                            "surface-container-lowest": "#ffffff",
+                            "tertiary-container": "#ff6b00",
+                            "error-container": "#ffdad6",
+                            "primary-container": "#999999",
+                            "surface-dim": "#dadada",
+                            "on-tertiary": "#ffffff",
+                            outline: "#8e7164",
+                            "on-primary-fixed-variant": "#474747",
+                            "primary-fixed": "#e2e2e2",
+                            "on-tertiary-fixed-variant": "#7a3000",
+                            primary: "#5e5e5e",
+                            "on-secondary": "#ffffff",
+                            tertiary: "#a04100",
+                            "surface-tint": "#5e5e5e",
+                            "inverse-on-surface": "#f1f1f1",
+                            "on-secondary-fixed-variant": "#464747",
+                            "surface-bright": "#f9f9f9",
+                            "on-background": "#1a1c1c",
+                            "surface-variant": "#e2e2e2",
+                            "surface-container-highest": "#e2e2e2",
+                            "tertiary-fixed": "#ffdbcc",
+                            "surface-container-high": "#e8e8e8",
+                            "on-tertiary-fixed": "#351000",
+                            secondary: "#5e5e5e",
+                            "on-primary-container": "#313131",
+                            "secondary-fixed-dim": "#c7c6c6",
+                            "surface-container-low": "#f3f3f3",
+                            "outline-variant": "#e2bfb0",
+                            "on-secondary-fixed": "#1b1c1c",
+                            "on-surface-variant": "#5a4136",
+                            "on-primary-fixed": "#1b1b1b",
+                            error: "#ba1a1a",
+                            background: "#f9f9f9",
+                            "on-primary": "#ffffff",
+                            surface: "#f9f9f9",
+                            "on-tertiary-container": "#572000",
+                            "primary-fixed-dim": "#c6c6c6",
+                            "inverse-surface": "#2f3131",
+                            "surface-container": "#eeeeee",
+                            "inverse-primary": "#c6c6c6",
+                            "secondary-fixed": "#e3e2e2",
+                            "on-error-container": "#93000a",
+                            "on-surface": "#1a1c1c",
+                            "on-error": "#ffffff",
+                        },
+                        borderRadius: {
+                            DEFAULT: "0.125rem",
+                            lg: "0.25rem",
+                            xl: "0.5rem",
+                            full: "0.75rem",
+                        },
+                        fontFamily: {
+                            headline: ["Manrope"],
+                            body: ["Inter"],
+                            label: ["Inter"],
+                        },
+                    },
+                },
+            };
+        </script>
+    </head>
+    <body class="bg-surface selection:bg-tertiary-container selection:text-white">
+
+        <!-- Navigation -->
+        <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl flex justify-between items-center px-8 py-4 max-w-full border-b border-stone-100">
+            <a href="../" class="text-2xl font-black tracking-tighter text-stone-900 font-headline hover:text-tertiary-container transition-colors">DevTips</a>
+            <div class="hidden md:flex items-center gap-2">
+                <span class="text-xs font-bold text-tertiary-container uppercase tracking-widest bg-tertiary-fixed px-3 py-1">SvelteKit</span>
+                <span class="text-xs font-bold text-stone-500 uppercase tracking-widest">·</span>
+                <span class="text-xs font-bold text-stone-500 uppercase tracking-widest">TypeScript</span>
+                <span class="text-xs font-bold text-stone-500 uppercase tracking-widest">·</span>
+                <span class="text-xs font-bold text-stone-500 uppercase tracking-widest">LLM Agents</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="../" class="text-stone-900 font-bold hover:scale-95 duration-200 text-sm flex items-center gap-1">
+                    <span class="material-symbols-outlined text-sm">arrow_back</span>
+                    All Tips
+                </a>
+            </div>
+        </nav>
+
+        <main class="pt-20 pb-32">
+
+            <!-- Hero Section -->
+            <section class="px-8 md:px-24 py-20 bg-surface-container-low">
+                <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+                    <div class="md:col-span-8">
+                        <span class="text-tertiary-container font-bold tracking-widest text-xs uppercase mb-4 block">DEVTIP #005 · Data Architecture</span>
+                        <h1 class="text-5xl md:text-7xl font-black tracking-tighter text-on-surface leading-none mb-4">
+                            Migrations as a Safety Harness for Agents
+                        </h1>
+                        <p class="text-2xl text-secondary font-light leading-snug">
+                            Make schema changes legible, reversible, and reviewable
+                        </p>
+                    </div>
+                    <div class="md:col-span-4 flex items-center justify-center">
+                        <div class="w-32 h-32 bg-stone-900 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-tertiary-container text-6xl">database</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Why This Matters -->
+            <section class="px-8 md:px-24 py-16 bg-white">
+                <div class="max-w-3xl mx-auto">
+                    <div class="p-8 bg-surface-container-lowest border-l-4 border-tertiary-container">
+                        <h2 class="text-xs font-bold uppercase tracking-widest text-primary mb-2">WHY THIS MATTERS</h2>
+                        <p class="text-xl text-on-surface leading-relaxed font-medium italic">
+                            Agents can generate SQL fast, but they are also excellent at accidentally destroying invariants: adding nullable columns without backfills, rewriting tables without indexes, or shipping migrations that work locally but break in CI. A principled migration workflow turns database changes into a contract the agent can follow and you can approve in minutes.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            
+            <section class="px-8 md:px-24 py-20 bg-surface">
+                <div class="max-w-3xl mx-auto space-y-12">
+                    <div class="space-y-6">
+                        <h2 class="text-3xl font-black tracking-tighter">1. Use a 3-file migration pattern (up / down / verify)</h2>
+                        <p class="text-lg text-secondary leading-relaxed">Write migrations as an explicit plan with a validation step. The key is to separate *DDL* from *data backfills* and to include a cheap verification query that can run in CI after applying the migration.</p>
+                        
+                        <pre><code><span class=\"comment\">-- 2026-04-11_001_add_user_slug.up.sql</span>
+<span class=\"keyword\">ALTER</span> <span class=\"keyword\">TABLE</span> users
+  <span class=\"keyword\">ADD</span> <span class=\"keyword\">COLUMN</span> slug text;
+
+<span class=\"keyword\">CREATE</span> <span class=\"keyword\">UNIQUE</span> <span class=\"keyword\">INDEX</span> <span class=\"keyword\">CONCURRENTLY</span> <span class=\"keyword\">IF</span> <span class=\"keyword\">NOT</span> <span class=\"keyword\">EXISTS</span> users_slug_uq
+  <span class=\"keyword\">ON</span> users (slug)
+  <span class=\"keyword\">WHERE</span> slug <span class=\"keyword\">IS</span> <span class=\"keyword\">NOT</span> <span class=\"keyword\">NULL</span>;
+
+<span class=\"comment\">-- 2026-04-11_001_add_user_slug.verify.sql</span>
+<span class=\"comment\">-- Expect: 0 rows</span>
+<span class=\"keyword\">SELECT</span> id
+<span class=\"keyword\">FROM</span> users
+<span class=\"keyword\">WHERE</span> slug <span class=\"keyword\">IS</span> <span class=\"keyword\">NULL</span>
+  <span class=\"keyword\">AND</span> created_at &lt; now() - interval <span class=\"string\">'10 minutes'</span>;</code></pre>
+            
+                    </div>
+                </div>
+            </section>
+        
+            
+            <section class="px-8 md:px-24 py-20 bg-surface-container-low">
+                <div class="max-w-3xl mx-auto space-y-12">
+                    <div class="space-y-6">
+                        <h2 class="text-3xl font-black tracking-tighter">2. Make backfills idempotent (so retries are safe)</h2>
+                        <p class="text-lg text-secondary leading-relaxed">Agents (and CI) will retry. Your backfill should be safe to run multiple times and should converge. Prefer chunked updates with a stable ordering to avoid long locks.</p>
+                        
+                        <pre><code><span class=\"comment\">-- 2026-04-11_002_backfill_user_slug.up.sql</span>
+<span class=\"comment\">-- Repeat-safe backfill: only fills missing slugs.</span>
+<span class=\"keyword\">WITH</span> batch AS (
+  <span class=\"keyword\">SELECT</span> id
+  <span class=\"keyword\">FROM</span> users
+  <span class=\"keyword\">WHERE</span> slug <span class=\"keyword\">IS</span> <span class=\"keyword\">NULL</span>
+  <span class=\"keyword\">ORDER</span> <span class=\"keyword\">BY</span> id
+  <span class=\"keyword\">LIMIT</span> 500
+)
+<span class=\"keyword\">UPDATE</span> users u
+<span class=\"keyword\">SET</span> slug = lower(regexp_replace(u.name, <span class=\"string\">'[^a-zA-Z0-9]+'</span>, <span class=\"string\">'-'</span>, <span class=\"string\">'g'</span>)) || <span class=\"string\">'-'</span> || u.id
+<span class=\"keyword\">FROM</span> batch
+<span class=\"keyword\">WHERE</span> u.id = batch.id;</code></pre>
+            
+                    </div>
+                </div>
+            </section>
+        
+            
+            <section class="px-8 md:px-24 py-20 bg-white">
+                <div class="max-w-3xl mx-auto space-y-12">
+                    <div class="space-y-6">
+                        <h2 class="text-3xl font-black tracking-tighter">3. Encode invariants in the database (not in prompts)</h2>
+                        <p class="text-lg text-secondary leading-relaxed">If an invariant matters, enforce it with constraints. Prompts are not enforcement mechanisms. This is especially important for agent-written CRUD because agents tend to miss edge cases.</p>
+                        
+                        <pre><code><span class=\"comment\">-- 2026-04-11_003_enforce_slug_not_null.up.sql</span>
+<span class=\"comment\">-- Only after verify.sql passes for a few deploys:</span>
+<span class=\"keyword\">ALTER</span> <span class=\"keyword\">TABLE</span> users
+  <span class=\"keyword\">ALTER</span> <span class=\"keyword\">COLUMN</span> slug <span class=\"keyword\">SET</span> <span class=\"keyword\">NOT</span> <span class=\"keyword\">NULL</span>;</code></pre>
+            
+                    </div>
+                </div>
+            </section>
+        
+            
+            <section class="px-8 md:px-24 py-20 bg-surface">
+                <div class="max-w-3xl mx-auto space-y-12">
+                    <div class="space-y-6">
+                        <h2 class="text-3xl font-black tracking-tighter">4. Teach the agent your migration & review checklist</h2>
+                        <p class="text-lg text-secondary leading-relaxed">Put a short checklist in your repo (for example: docs/AGENTS.md) and refer to it in your system prompt. The agent should output: affected tables, lock risk, rollback plan, and verification queries.</p>
+                        
+                        <pre><code># docs/AGENTS.md (excerpt)
+
+## DB Change Checklist
+- [ ] Migration includes verify.sql with an assertion query
+- [ ] Backfill is idempotent and chunked (<span class=\"keyword\">LIMIT</span>)
+- [ ] New constraints shipped only after data is clean
+- [ ] Indexes use <span class=\"keyword\">CONCURRENTLY</span> when safe
+- [ ] Rollback path is documented (down.sql or manual note)</code></pre>
+            
+                    </div>
+                </div>
+            </section>
+        
+
+            <!-- PRO MOVE Section -->
+            <section class="px-8 md:px-24 py-24 bg-[#1a1c1c] text-white">
+                <div class="max-w-5xl mx-auto">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-16">
+                        <div class="md:col-span-4">
+                            <h2 class="text-4xl font-black tracking-tighter text-tertiary-container">Pro Move</h2>
+                            <p class="mt-4 text-stone-400 font-medium">Add a migration CI gate with a disposable Postgres</p>
+                        </div>
+                        <div class="md:col-span-8 space-y-8">
+                            <p class="text-stone-300 leading-relaxed text-lg">In CI, spin up Postgres, apply all migrations from scratch, then run every verify.sql. If the agent proposes a migration that cannot be applied cleanly in a fresh database, you catch it before prod. This also forces deterministic migrations: no environment-specific assumptions, no manual steps, no hidden ordering bugs.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer nav -->
+            <section class="px-8 md:px-24 py-20 bg-white">
+                <div class="max-w-3xl mx-auto text-center">
+                    <span class="text-xs font-bold text-stone-400 uppercase tracking-widest mb-4 block">Daily LLM Agent Dev Tips</span>
+                    <p class="text-lg text-secondary font-medium">For SvelteKit + TypeScript developers</p>
+                    <div class="mt-8 flex justify-center gap-4 flex-wrap">
+                        <a href="../tip-004/" class="inline-flex items-center gap-2 border border-stone-200 text-stone-600 px-8 py-4 font-bold hover:scale-105 transition-transform group text-sm">
+                            <span class="material-symbols-outlined group-hover:-translate-x-1 transition-transform text-sm">arrow_back</span>
+                            <span>PREV: TIP #004</span>
+                        </a>
+                        <a href="../tip-006/" class="inline-flex items-center gap-4 bg-tertiary-container text-white px-10 py-5 font-bold hover:scale-105 transition-transform group">
+                            <span>NEXT: TIP #006</span>
+                            <span class="material-symbols-outlined group-hover:translate-x-2 transition-transform">arrow_forward</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- FAB -->
+        <a href="../" class="fixed bottom-8 right-8 w-14 h-14 bg-tertiary-container text-white flex items-center justify-center shadow-2xl hover:scale-110 transition-transform z-50">
+            <span class="material-symbols-outlined">home</span>
+        </a>
+    </body>
+</html>

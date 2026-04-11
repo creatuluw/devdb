@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+  <body style="margin:0;padding:0;background:#f9f9f9;">
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;background:#f9f9f9;">
+      <tr>
+        <td align="center" style="padding:32px 16px;">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="680" style="width:680px;max-width:680px;background:#ffffff;border:1px solid #eee;">
+            <tr>
+              <td style="padding:28px 28px 8px 28px;">
+                <div style="font-family:Manrope,Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;font-size:12px;letter-spacing:2px;font-weight:800;color:#ff6b00;text-transform:uppercase;">DEVTIP #005</div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:0 28px 18px 28px;">
+                <div style="font-family:Manrope,Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;font-size:34px;line-height:1.05;font-weight:900;color:#1a1c1c;">Migrations as a Safety Harness for Agents</div>
+                <div style="margin-top:10px;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;font-size:16px;line-height:1.4;color:#555;">Make schema changes legible, reversible, and reviewable</div>
+                <div style="margin-top:16px;display:inline-block;background:#ff6b00;color:#ffffff;padding:6px 10px;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;">Data Architecture</div>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding:0 28px 18px 28px;">
+                <div style="border-left:4px solid #ff6b00;background:#f3f3f3;padding:16px 16px;">
+                  <div style="font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;font-size:11px;font-weight:900;letter-spacing:2px;color:#666;text-transform:uppercase;">WHY THIS MATTERS</div>
+                  <div style="margin-top:8px;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;font-size:15px;line-height:1.6;color:#1a1c1c;">Agents can generate SQL fast, but they are also excellent at accidentally destroying invariants: adding nullable columns without backfills, rewriting tables without indexes, or shipping migrations that work locally but break in CI. A principled migration workflow turns database changes into a contract the agent can follow and you can approve in minutes.</div>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding:0 28px 8px 28px;">
+                <h2 style="font-family:Manrope,Inter,system-ui; font-size:20px; line-height:1.2; margin:24px 0 8px;">1. Use a 3-file migration pattern (up / down / verify)</h2><p style="margin:0 0 12px; font-size:15px; line-height:1.6; color:#1a1c1c;">Write migrations as an explicit plan with a validation step. The key is to separate *DDL* from *data backfills* and to include a cheap verification query that can run in CI after applying the migration.</p><pre style="margin:0;background:#1a1c1c;color:#f1f1f1;padding:16px;border-radius:8px;overflow-x:auto;"><code style="font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono','Courier New',monospace;font-size:13px;line-height:1.6;">-- 2026-04-11_001_add_user_slug.up.sql
+ALTER TABLE users
+  ADD COLUMN slug text;
+
+CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS users_slug_uq
+  ON users (slug)
+  WHERE slug IS NOT NULL;</code></pre><div style="height:12px"></div><pre style="margin:0;background:#1a1c1c;color:#f1f1f1;padding:16px;border-radius:8px;overflow-x:auto;"><code style="font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono','Courier New',monospace;font-size:13px;line-height:1.6;">-- 2026-04-11_001_add_user_slug.verify.sql
+-- Expect: 0 rows
+SELECT id
+FROM users
+WHERE slug IS NULL
+  AND created_at &lt; now() - interval '10 minutes';</code></pre><h2 style="font-family:Manrope,Inter,system-ui; font-size:20px; line-height:1.2; margin:24px 0 8px;">2. Make backfills idempotent (so retries are safe)</h2><p style="margin:0 0 12px; font-size:15px; line-height:1.6; color:#1a1c1c;">Agents (and CI) will retry. Your backfill should be safe to run multiple times and should converge. Prefer chunked updates with a stable ordering to avoid long locks.</p><pre style="margin:0;background:#1a1c1c;color:#f1f1f1;padding:16px;border-radius:8px;overflow-x:auto;"><code style="font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono','Courier New',monospace;font-size:13px;line-height:1.6;">-- 2026-04-11_002_backfill_user_slug.up.sql
+-- Repeat-safe backfill: only fills missing slugs.
+WITH batch AS (
+  SELECT id
+  FROM users
+  WHERE slug IS NULL
+  ORDER BY id
+  LIMIT 500
+)
+UPDATE users u
+SET slug = lower(regexp_replace(u.name, '[^a-zA-Z0-9]+', '-', 'g')) || '-' || u.id
+FROM batch
+WHERE u.id = batch.id;</code></pre><h2 style="font-family:Manrope,Inter,system-ui; font-size:20px; line-height:1.2; margin:24px 0 8px;">3. Encode invariants in the database (not in prompts)</h2><p style="margin:0 0 12px; font-size:15px; line-height:1.6; color:#1a1c1c;">If an invariant matters, enforce it with constraints. Prompts are not enforcement mechanisms. This is especially important for agent-written CRUD because agents tend to miss edge cases.</p><pre style="margin:0;background:#1a1c1c;color:#f1f1f1;padding:16px;border-radius:8px;overflow-x:auto;"><code style="font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono','Courier New',monospace;font-size:13px;line-height:1.6;">-- 2026-04-11_003_enforce_slug_not_null.up.sql
+-- Only after verify.sql passes for a few deploys:
+ALTER TABLE users
+  ALTER COLUMN slug SET NOT NULL;</code></pre><h2 style="font-family:Manrope,Inter,system-ui; font-size:20px; line-height:1.2; margin:24px 0 8px;">4. Teach the agent your migration & review checklist</h2><p style="margin:0 0 12px; font-size:15px; line-height:1.6; color:#1a1c1c;">Put a short checklist in your repo (for example: docs/AGENTS.md) and refer to it in your system prompt. The agent should output: affected tables, lock risk, rollback plan, and verification queries.</p><pre style="margin:0;background:#1a1c1c;color:#f1f1f1;padding:16px;border-radius:8px;overflow-x:auto;"><code style="font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono','Courier New',monospace;font-size:13px;line-height:1.6;"># docs/AGENTS.md (excerpt)
+
+## DB Change Checklist
+- [ ] Migration includes verify.sql with an assertion query
+- [ ] Backfill is idempotent and chunked (LIMIT)
+- [ ] New constraints shipped only after data is clean
+- [ ] Indexes use CONCURRENTLY when safe
+- [ ] Rollback path is documented (down.sql or manual note)</code></pre>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding:18px 28px 18px 28px;">
+                <div style="background:#1a1c1c;color:#ffffff;padding:18px;border-left:4px solid #ff6b00;">
+                  <div style="font-family:Manrope,Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;font-weight:900;color:#ff6b00;font-size:14px;letter-spacing:1px;text-transform:uppercase;">PRO MOVE</div>
+                  <div style="margin-top:8px;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;font-size:15px;line-height:1.6;color:#f1f1f1;">
+                    <div style="font-weight:800;">Add a migration CI gate with a disposable Postgres</div>
+                    <div style="margin-top:6px;color:#d6d6d6;">In CI, spin up Postgres, apply all migrations from scratch, then run every verify.sql. If the agent proposes a migration that cannot be applied cleanly in a fresh database, you catch it before prod. This also forces deterministic migrations: no environment-specific assumptions, no manual steps, no hidden ordering bugs.</div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding:18px 28px 24px 28px;border-top:1px solid #eee;">
+                <div style="font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;font-size:13px;line-height:1.6;color:#555;">
+                  <a href="https://www.perplexity.ai/computer/a/devtips-llm-agent-dev-tips-V_IHjeQvTf.AxDfI6HnUVw" style="color:#ff6b00;font-weight:800;text-decoration:none;">View Tip #005 online</a>
+                  <span style="color:#bbb;">&nbsp;&bull;&nbsp;</span>
+                  <a href="https://www.perplexity.ai/computer/a/devtips-llm-agent-dev-tips-V_IHjeQvTf.AxDfI6HnUVw" style="color:#ff6b00;font-weight:800;text-decoration:none;">Browse archive</a>
+                </div>
+                <div style="margin-top:10px;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;font-size:11px;letter-spacing:1px;color:#999;text-transform:uppercase;">Daily LLM Agent Dev Tips &middot; SvelteKit + TypeScript</div>
+              </td>
+            </tr>
+
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
