@@ -248,3 +248,8 @@ Each tip belongs to one of 30 categories, cycling in order by tip number. Every 
 ### 35 · Unconventional Experiments with LLMs
 **Purpose:** Break the rules deliberately — the most interesting capabilities are found outside normal use patterns. Deliberate misuse is a discovery method.
 **Definition:** Using LLMs in ways they weren't explicitly designed for: as compilers, state machines, game engines, theorem provers, diff generators, linters, or runtime validators. Misuse as method — intentionally pushing models into unexpected roles to discover emergent capabilities, reveal failure boundaries, and uncover shortcuts that shave weeks off standard development paths. Topics include using an LLM as a Zod schema generator from freeform text, as a git conflict resolver, as a CSS-to-Tailwind transpiler, as a type-safe SQL query builder, or as a live test oracle. The best LLM trick you'll use this year probably hasn't been documented yet — this category finds it first.
+
+## Tips Index
+| Number | Title | Category | Date |
+|---:|---|---|---:|
+| 004 | [Tools aren’t “APIs”; they’re contracts: design tool schemas like you design libraries](tips-markdown/tip-004.md) | Agent Tooling | 2026-04-11 |
