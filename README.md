@@ -29,6 +29,9 @@ devdb/
 | 001 | Context Windows as Architecture | Context Management | 2026-04-10 |
 | 002 | Agent-First API Design | API Design | 2026-04-10 |
 | 003 | Prompt Chaining for UI Generation | Prompt Engineering | 2026-04-10 |
+| 004 | Tools aren't "APIs"; they're contracts | Agent Tooling | 2026-04-11 |
+| 005 | Migrations as a Safety Harness for Agents | Data Architecture | 2026-04-11 |
+| 006 | Tokens as a Design Budget | Design Systems | 2026-04-12 |
 
 ---
 

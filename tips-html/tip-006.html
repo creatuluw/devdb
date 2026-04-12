@@ -1,0 +1,182 @@
+<!doctype html>
+<html>
+  <body style="margin:0;padding:0;background:#f6f6f6;">
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#f6f6f6;">
+      <tr>
+        <td align="center" style="padding:24px 12px;">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="680" style="width:680px;max-width:680px;background:#ffffff;border:1px solid #e7e7e7;border-radius:16px;overflow:hidden;font-family:Manrope,Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;">
+            <tr>
+              <td style="padding:22px 22px 8px 22px;">
+                <div style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#ff6b00;font-weight:800;">DEVTIP #006</div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:0 22px 6px 22px;">
+                <div style="font-size:28px;line-height:1.15;font-weight:900;color:#141414;">Tokens as a Design Budget</div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:0 22px 14px 22px;">
+                <div style="font-size:14px;line-height:1.5;color:#4a4a4a;">Turn prompt length into an explicit cost model for features</div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:0 22px 18px 22px;">
+                <span style="display:inline-block;background:#ff6b00;color:#ffffff;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:800;">Design Systems</span>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding:0 22px 18px 22px;">
+                <div style="border-left:4px solid #ff6b00;background:#fff7f2;padding:14px 14px;">
+                  <div style="font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#ff6b00;font-weight:900;margin-bottom:8px;">WHY THIS MATTERS</div>
+                  <div style="font-size:14px;line-height:1.6;color:#222222;">
+                    Prompt size tends to grow until latency spikes, bills jump, and the agent starts missing key details. Treat tokens like a constrained palette: a budget that forces consistency, predictability, and reusable prompt parts.
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding:0 22px 10px 22px;">
+                <div style="font-size:16px;font-weight:900;color:#141414;margin:0 0 6px 0;">The core idea: a token budget table</div>
+                <div style="font-size:14px;line-height:1.7;color:#222222;">
+                  Define a budget by prompt layers and enforce it in code. A practical default for a feature-level agent call:
+                  <ul style="margin:10px 0 0 18px;padding:0;color:#222222;">
+                    <li style="margin:0 0 6px 0;">System instructions: 10&ndash;15%</li>
+                    <li style="margin:0 0 6px 0;">Project / app context: 15&ndash;25%</li>
+                    <li style="margin:0 0 6px 0;">Retrieved knowledge (RAG): 20&ndash;40%</li>
+                    <li style="margin:0 0 6px 0;">User request: 5&ndash;10%</li>
+                    <li style="margin:0 0 0 0;">Output allowance: 20&ndash;30%</li>
+                  </ul>
+                  <div style="margin-top:10px;">This turns &ldquo;we ran out of context&rdquo; into &ldquo;retrieval exceeded its allocation&rdquo; &rarr; a debuggable, reviewable event.</div>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding:0 22px 16px 22px;">
+                <div style="font-size:14px;font-weight:900;color:#141414;margin:12px 0 8px 0;">Example: encode budgets as config</div>
+                <pre style="margin:0;background:#1a1c1c;color:#f1f1f1;padding:14px;border-radius:12px;overflow-x:auto;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,monospace;font-size:12px;line-height:1.55;">// llm/budgets.ts
+export type BudgetKey =
+  | &quot;system&quot;
+  | &quot;appContext&quot;
+  | &quot;retrieval&quot;
+  | &quot;user&quot;
+  | &quot;output&quot;;
+
+export const DEFAULT_BUDGET: Record&lt;BudgetKey, number&gt; = {
+  system: 700,
+  appContext: 900,
+  retrieval: 1600,
+  user: 350,
+  output: 900,
+};
+
+export const TOTAL_BUDGET = Object.values(DEFAULT_BUDGET).reduce(
+  (a, b) =&gt; a + b,
+  0
+);</pre>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding:0 22px 16px 22px;">
+                <div style="font-size:14px;font-weight:900;color:#141414;margin:12px 0 8px 0;">Example: trim each layer deterministically</div>
+                <pre style="margin:0;background:#1a1c1c;color:#f1f1f1;padding:14px;border-radius:12px;overflow-x:auto;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,monospace;font-size:12px;line-height:1.55;">// llm/trim.ts
+import { encoding_for_model } from &quot;tiktoken&quot;;
+
+export function truncateToTokens(
+  input: string,
+  maxTokens: number,
+  model: string = &quot;gpt-4o-mini&quot;
+) {
+  const enc = encoding_for_model(model);
+  const tokens = enc.encode(input);
+
+  if (tokens.length &lt;= maxTokens) return input;
+
+  // Keep the end for logs / recent context.
+  const slice = tokens.slice(tokens.length - maxTokens);
+  const out = enc.decode(slice);
+  enc.free();
+  return out;
+}</pre>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding:0 22px 16px 22px;">
+                <div style="font-size:14px;font-weight:900;color:#141414;margin:12px 0 8px 0;">Example: build prompts from &ldquo;prompt components&rdquo;</div>
+                <div style="font-size:14px;line-height:1.7;color:#222222;margin-bottom:10px;">Co-locate prompt parts like UI components, then assemble with budgets.</div>
+                <pre style="margin:0;background:#1a1c1c;color:#f1f1f1;padding:14px;border-radius:12px;overflow-x:auto;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,monospace;font-size:12px;line-height:1.55;">// llm/promptParts.ts
+export function systemPreamble() {
+  return [
+    &quot;You are a senior TypeScript engineer.&quot;,
+    &quot;Return valid JSON that matches the schema.&quot;,
+    &quot;If unsure, ask for clarification in an 'issues' array.&quot;,
+  ].join(&quot;\n&quot;);
+}
+
+export function brandVoice() {
+  return [
+    &quot;Style: concise, direct, no fluff.&quot;,
+    &quot;Prefer bullet lists over paragraphs.&quot;,
+  ].join(&quot;\n&quot;);
+}</pre>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding:0 22px 18px 22px;">
+                <div style="font-size:14px;font-weight:900;color:#141414;margin:12px 0 8px 0;">Fail closed when budgets are violated</div>
+                <div style="font-size:14px;line-height:1.7;color:#222222;margin-bottom:10px;">If you only truncate, you may silently remove crucial facts. Add a budget report and refuse to run for high-stakes operations.</div>
+                <pre style="margin:0;background:#1a1c1c;color:#f1f1f1;padding:14px;border-radius:12px;overflow-x:auto;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,monospace;font-size:12px;line-height:1.55;">export function budgetReport(parts: Record&lt;string, string&gt;) {
+  // If you can, compute real token counts; string length is a quick proxy.
+  return Object.fromEntries(
+    Object.entries(parts).map(([k, v]) =&gt; [k, v.length])
+  );
+}
+
+export function assertNoHardTruncation(
+  original: string,
+  truncated: string,
+  label: string
+) {
+  if (original !== truncated) {
+    throw new Error(
+      `Budget exceeded for ${label}. Refuse to run with missing context.`
+    );
+  }
+}</pre>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding:0 22px 18px 22px;">
+                <div style="background:#1a1c1c;border-left:4px solid #ff6b00;padding:16px 14px;border-radius:12px;">
+                  <div style="font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#ff6b00;font-weight:900;margin-bottom:8px;">PRO MOVE</div>
+                  <div style="font-size:14px;line-height:1.7;color:#f1f1f1;">
+                    Add token budgets to code review like design tokens. Make it a PR checklist item, then wire a CI check that prints the budget report for key agent flows. You catch prompt bloat before it hits production latency and cost.
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding:16px 22px 22px 22px;border-top:1px solid #efefef;">
+                <div style="font-size:13px;line-height:1.6;color:#4a4a4a;">
+                  <a href="https://www.perplexity.ai/computer/a/devtips-llm-agent-dev-tips-V_IHjeQvTf.AxDfI6HnUVw" style="color:#ff6b00;font-weight:800;text-decoration:none;">View Tip #006 online</a>
+                  <span style="color:#c2c2c2;">&nbsp;&bull;&nbsp;</span>
+                  <a href="https://www.perplexity.ai/computer/a/devtips-llm-agent-dev-tips-V_IHjeQvTf.AxDfI6HnUVw" style="color:#ff6b00;font-weight:800;text-decoration:none;">Browse archive</a>
+                </div>
+                <div style="margin-top:10px;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#7a7a7a;">Daily LLM Agent Dev Tips &middot; SvelteKit + TypeScript</div>
+              </td>
+            </tr>
+
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

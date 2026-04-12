@@ -1,0 +1,357 @@
+<!doctype html>
+<html class="light" lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <title>DevTip #006 — Tokens as a Design Budget</title>
+        <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@400;500;600&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            .material-symbols-outlined {
+                font-variation-settings:
+                    "FILL" 0,
+                    "wght" 400,
+                    "GRAD" 0,
+                    "opsz" 24;
+            }
+            body {
+                font-family: "Inter", sans-serif;
+                background-color: #f9f9f9;
+                color: #1a1c1c;
+            }
+            h1, h2, h3, .headline {
+                font-family: "Manrope", sans-serif;
+            }
+            pre code {
+                font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+                font-size: 0.875rem;
+                line-height: 1.7;
+            }
+            pre {
+                background: #1a1c1c;
+                color: #f1f1f1;
+                border-radius: 0.5rem;
+                padding: 1.5rem;
+                overflow-x: auto;
+                margin: 0;
+            }
+            pre .comment { color: #6b7280; }
+            pre .keyword { color: #ff6b00; }
+            pre .string { color: #a5d6a7; }
+            pre .type { color: #90caf9; }
+            pre .fn { color: #ffcc80; }
+        </style>
+        <script id="tailwind-config">
+            tailwind.config = tailwind.config = {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        colors: {
+                            "secondary-container": "#e3e2e2",
+                            "on-secondary-container": "#646464",
+                            "tertiary-fixed-dim": "#ffb693",
+                            "surface-container-lowest": "#ffffff",
+                            "tertiary-container": "#ff6b00",
+                            "error-container": "#ffdad6",
+                            "primary-container": "#999999",
+                            "surface-dim": "#dadada",
+                            "on-tertiary": "#ffffff",
+                            outline: "#8e7164",
+                            "on-primary-fixed-variant": "#474747",
+                            "primary-fixed": "#e2e2e2",
+                            "on-tertiary-fixed-variant": "#7a3000",
+                            primary: "#5e5e5e",
+                            "on-secondary": "#ffffff",
+                            tertiary: "#a04100",
+                            "surface-tint": "#5e5e5e",
+                            "inverse-on-surface": "#f1f1f1",
+                            "on-secondary-fixed-variant": "#464747",
+                            "surface-bright": "#f9f9f9",
+                            "on-background": "#1a1c1c",
+                            "surface-variant": "#e2e2e2",
+                            "surface-container-highest": "#e2e2e2",
+                            "tertiary-fixed": "#ffdbcc",
+                            "surface-container-high": "#e8e8e8",
+                            "on-tertiary-fixed": "#351000",
+                            secondary: "#5e5e5e",
+                            "on-primary-container": "#313131",
+                            "secondary-fixed-dim": "#c7c6c6",
+                            "surface-container-low": "#f3f3f3",
+                            "outline-variant": "#e2bfb0",
+                            "on-secondary-fixed": "#1b1c1c",
+                            "on-surface-variant": "#5a4136",
+                            "on-primary-fixed": "#1b1b1b",
+                            error: "#ba1a1a",
+                            background: "#f9f9f9",
+                            "on-primary": "#ffffff",
+                            surface: "#f9f9f9",
+                            "on-tertiary-container": "#572000",
+                            "primary-fixed-dim": "#c6c6c6",
+                            "inverse-surface": "#2f3131",
+                            "surface-container": "#eeeeee",
+                            "inverse-primary": "#c6c6c6",
+                            "secondary-fixed": "#e3e2e2",
+                            "on-error-container": "#93000a",
+                            "on-surface": "#1a1c1c",
+                            "on-error": "#ffffff",
+                        },
+                        borderRadius: {
+                            DEFAULT: "0.125rem",
+                            lg: "0.25rem",
+                            xl: "0.5rem",
+                            full: "0.75rem",
+                        },
+                        fontFamily: {
+                            headline: ["Manrope"],
+                            body: ["Inter"],
+                            label: ["Inter"],
+                        },
+                    },
+                },
+            };
+        </script>
+    </head>
+
+    <body>
+        <div class="min-h-screen">
+            <nav class="bg-white border-b border-stone-200">
+                <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+                    <div class="flex h-16 items-center justify-between">
+                        <a href="../" class="flex items-center gap-2">
+                            <div class="h-9 w-9 rounded-lg bg-tertiary-container text-white flex items-center justify-center">
+                                <span class="material-symbols-outlined" style="font-size:20px;">tips_and_updates</span>
+                            </div>
+                            <div class="font-black tracking-tight" style="font-family:Manrope, Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;">DevTips</div>
+                        </a>
+                        <a href="../" class="text-sm font-semibold text-tertiary-container hover:opacity-80">&larr; All Tips</a>
+                    </div>
+                </div>
+            </nav>
+
+            <header class="bg-surface-container-low border-b border-stone-200">
+                <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-10">
+                    <div class="grid gap-8 lg:grid-cols-[1.4fr_0.6fr] lg:items-center">
+                        <div>
+                            <div class="text-xs font-black tracking-[0.24em] text-tertiary-container">DEVTIP #006</div>
+                            <h1 class="mt-3 text-4xl sm:text-5xl font-black tracking-tight text-on-background">Tokens as a Design Budget</h1>
+                            <p class="mt-4 text-lg text-on-secondary-container">Turn prompt length into an explicit cost model for features</p>
+                            <div class="mt-6 inline-flex items-center gap-2 rounded-full bg-tertiary-container px-3 py-1 text-xs font-extrabold text-white">
+                                Design Systems
+                            </div>
+                        </div>
+                        <div class="rounded-2xl bg-[#1a1c1c] text-white p-6">
+                            <div class="flex items-center justify-between">
+                                <div class="text-sm font-semibold text-white/80">Today&rsquo;s focus</div>
+                                <span class="material-symbols-outlined" style="font-size:28px;color:#ff6b00;">schema</span>
+                            </div>
+                            <div class="mt-3 text-xl font-black" style="font-family:Manrope, Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;">Budget prompts like UI tokens</div>
+                            <p class="mt-2 text-sm text-white/80">Make token usage explicit, reviewable, and enforced.</p>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <section class="bg-white">
+                <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-10">
+                    <div class="rounded-xl border border-stone-200 bg-[#fff7f2] p-6" style="border-left:4px solid #ff6b00;">
+                        <div class="text-xs font-black tracking-[0.24em] text-tertiary-container">WHY THIS MATTERS</div>
+                        <p class="mt-3 text-base leading-7 text-on-background">
+                            Prompts expand quietly: more context, more retrieval, more instructions. Then latency jumps, costs spike, and the agent starts dropping key details. Treat tokens as a constrained palette &mdash; a design budget you enforce per layer &mdash; and your system becomes predictable, debuggable, and easier to evolve.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-surface">
+                <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12">
+                    <h2 class="headline text-2xl font-black tracking-tight text-on-background">1) Define a budget table by prompt layer</h2>
+                    <p class="mt-4 text-base leading-7 text-on-secondary-container">
+                        Budgets force hard decisions. A practical baseline for a feature-level call:
+                        <span class="font-semibold text-on-background">system</span> (10&ndash;15%), <span class="font-semibold text-on-background">app context</span> (15&ndash;25%), <span class="font-semibold text-on-background">retrieval</span> (20&ndash;40%), <span class="font-semibold text-on-background">user</span> (5&ndash;10%), <span class="font-semibold text-on-background">output</span> (20&ndash;30%).
+                        Now &ldquo;we ran out of context&rdquo; becomes &ldquo;retrieval exceeded its allocation&rdquo; &mdash; a reviewable event.
+                    </p>
+                    <div class="mt-6">
+                        <pre><code><span class="comment">// llm/budgets.ts</span>
+<span class="keyword">export</span> <span class="keyword">type</span> <span class="type">BudgetKey</span> =
+  | <span class="string">&quot;system&quot;</span>
+  | <span class="string">&quot;appContext&quot;</span>
+  | <span class="string">&quot;retrieval&quot;</span>
+  | <span class="string">&quot;user&quot;</span>
+  | <span class="string">&quot;output&quot;</span>;
+
+<span class="keyword">export</span> <span class="keyword">const</span> <span class="fn">DEFAULT_BUDGET</span>: <span class="type">Record</span>&lt;<span class="type">BudgetKey</span>, <span class="type">number</span>&gt; = {
+  system: <span class="keyword">700</span>,
+  appContext: <span class="keyword">900</span>,
+  retrieval: <span class="keyword">1600</span>,
+  user: <span class="keyword">350</span>,
+  output: <span class="keyword">900</span>,
+};
+
+<span class="keyword">export</span> <span class="keyword">const</span> <span class="fn">TOTAL_BUDGET</span> = <span class="type">Object</span>.<span class="fn">values</span>(DEFAULT_BUDGET).<span class="fn">reduce</span>((a, b) =&gt; a + b, <span class="keyword">0</span>);
+</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-surface-container-low">
+                <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12">
+                    <h2 class="headline text-2xl font-black tracking-tight text-on-background">2) Trim deterministically (and choose what survives)</h2>
+                    <p class="mt-4 text-base leading-7 text-on-secondary-container">
+                        Truncation is inevitable. Make it deterministic and intentional: decide whether you keep the beginning (instructions) or the end (recent context/logs). The important part is that your behavior is stable across runs.
+                    </p>
+                    <div class="mt-6">
+                        <pre><code><span class="comment">// llm/trim.ts</span>
+<span class="keyword">import</span> { encoding_for_model } <span class="keyword">from</span> <span class="string">&quot;tiktoken&quot;</span>;
+
+<span class="keyword">export</span> <span class="keyword">function</span> <span class="fn">truncateToTokens</span>(
+  input: <span class="type">string</span>,
+  maxTokens: <span class="type">number</span>,
+  model: <span class="type">string</span> = <span class="string">&quot;gpt-4o-mini&quot;</span>
+) {
+  <span class="keyword">const</span> enc = <span class="fn">encoding_for_model</span>(model);
+  <span class="keyword">const</span> tokens = enc.encode(input);
+
+  <span class="keyword">if</span> (tokens.length &lt;= maxTokens) <span class="keyword">return</span> input;
+
+  <span class="comment">// Keep the end for logs / recent context.</span>
+  <span class="keyword">const</span> slice = tokens.slice(tokens.length - maxTokens);
+  <span class="keyword">const</span> out = enc.decode(slice);
+  enc.free();
+  <span class="keyword">return</span> out;
+}
+</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-white">
+                <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12">
+                    <h2 class="headline text-2xl font-black tracking-tight text-on-background">3) Build a prompt &ldquo;design system&rdquo; of reusable parts</h2>
+                    <p class="mt-4 text-base leading-7 text-on-secondary-container">
+                        Treat prompt chunks like components: co-locate, version, and compose. The budget table becomes the interface contract between prompt design and runtime.
+                    </p>
+                    <div class="mt-6">
+                        <pre><code><span class="comment">// llm/promptParts.ts</span>
+<span class="keyword">export</span> <span class="keyword">function</span> <span class="fn">systemPreamble</span>() {
+  <span class="keyword">return</span> [
+    <span class="string">&quot;You are a senior TypeScript engineer.&quot;</span>,
+    <span class="string">&quot;Return valid JSON that matches the schema.&quot;</span>,
+    <span class="string">&quot;If unsure, ask for clarification in an 'issues' array.&quot;</span>,
+  ].join(<span class="string">&quot;\n&quot;</span>);
+}
+
+<span class="keyword">export</span> <span class="keyword">function</span> <span class="fn">brandVoice</span>() {
+  <span class="keyword">return</span> [
+    <span class="string">&quot;Style: concise, direct, no fluff.&quot;</span>,
+    <span class="string">&quot;Prefer bullet lists over paragraphs.&quot;</span>,
+  ].join(<span class="string">&quot;\n&quot;</span>);
+}
+</code></pre>
+                    </div>
+                    <p class="mt-6 text-base leading-7 text-on-secondary-container">
+                        Then assemble with budgets:
+                    </p>
+                    <div class="mt-4">
+                        <pre><code><span class="keyword">import</span> { DEFAULT_BUDGET } <span class="keyword">from</span> <span class="string">&quot;./budgets&quot;</span>;
+<span class="keyword">import</span> { truncateToTokens } <span class="keyword">from</span> <span class="string">&quot;./trim&quot;</span>;
+<span class="keyword">import</span> { systemPreamble, brandVoice } <span class="keyword">from</span> <span class="string">&quot;./promptParts&quot;</span>;
+
+<span class="keyword">export</span> <span class="keyword">function</span> <span class="fn">buildPrompt</span>({ appContext, retrieved, user }: {
+  appContext: <span class="type">string</span>;
+  retrieved: <span class="type">string</span>;
+  user: <span class="type">string</span>;
+}) {
+  <span class="keyword">const</span> system = <span class="fn">truncateToTokens</span>(
+    <span class="fn">systemPreamble</span>() + <span class="string">&quot;\n\n&quot;</span> + <span class="fn">brandVoice</span>(),
+    DEFAULT_BUDGET.system
+  );
+
+  <span class="keyword">const</span> ctx = <span class="fn">truncateToTokens</span>(appContext, DEFAULT_BUDGET.appContext);
+  <span class="keyword">const</span> rag = <span class="fn">truncateToTokens</span>(retrieved, DEFAULT_BUDGET.retrieval);
+  <span class="keyword">const</span> usr = <span class="fn">truncateToTokens</span>(user, DEFAULT_BUDGET.user);
+
+  <span class="keyword">return</span> { system, ctx, rag, usr };
+}
+</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-surface-container-low">
+                <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12">
+                    <h2 class="headline text-2xl font-black tracking-tight text-on-background">4) Fail closed for high-stakes flows</h2>
+                    <p class="mt-4 text-base leading-7 text-on-secondary-container">
+                        Truncation can silently remove the one fact that makes the output safe. For billing, deletes, permissions, or production deploys, refuse to run when hard truncation occurs.
+                    </p>
+                    <div class="mt-6">
+                        <pre><code><span class="keyword">export</span> <span class="keyword">function</span> <span class="fn">budgetReport</span>(parts: <span class="type">Record</span>&lt;<span class="type">string</span>, <span class="type">string</span>&gt;) {
+  <span class="comment">// If you can, compute real token counts; string length is a quick proxy.</span>
+  <span class="keyword">return</span> <span class="type">Object</span>.<span class="fn">fromEntries</span>(
+    <span class="type">Object</span>.<span class="fn">entries</span>(parts).map(([k, v]) =&gt; [k, v.length])
+  );
+}
+
+<span class="keyword">export</span> <span class="keyword">function</span> <span class="fn">assertNoHardTruncation</span>(
+  original: <span class="type">string</span>,
+  truncated: <span class="type">string</span>,
+  label: <span class="type">string</span>
+) {
+  <span class="keyword">if</span> (original !== truncated) {
+    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="type">Error</span>(
+      <span class="string">`Budget exceeded for ${label}. Refuse to run with missing context.`</span>
+    );
+  }
+}
+</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-[#1a1c1c] text-white">
+                <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12">
+                    <div class="grid gap-8 lg:grid-cols-2 lg:items-start">
+                        <div>
+                            <div class="text-tertiary-container text-xs font-black tracking-[0.24em]">PRO MOVE</div>
+                            <h2 class="headline mt-3 text-3xl font-black tracking-tight">Make token budgets a code review artifact</h2>
+                        </div>
+                        <div class="text-white/90 leading-7">
+                            Add a PR checklist item: <span class="text-white font-semibold">&ldquo;Did we change prompt parts and update the budget table?&rdquo;</span> Then run a CI check that prints a budget report for key agent flows. You will catch prompt bloat before it becomes production latency and cost.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-white">
+                <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-10">
+                    <div class="mt-8 flex justify-center gap-4">
+                        <a href="../tip-005/" class="inline-flex items-center gap-2 rounded-full border border-stone-200 bg-white px-5 py-2 text-sm font-bold text-on-background hover:bg-surface-container-low">
+                            <span class="material-symbols-outlined" style="font-size:18px;">chevron_left</span>
+                            PREV: TIP #005
+                        </a>
+                        <a href="../tip-007/" class="inline-flex items-center gap-2 rounded-full bg-tertiary-container px-5 py-2 text-sm font-bold text-white hover:opacity-90">
+                            NEXT: TIP #007
+                            <span class="material-symbols-outlined" style="font-size:18px;">chevron_right</span>
+                        </a>
+                    </div>
+
+                    <div class="mt-10 text-center text-xs text-on-secondary-container">
+                        <a class="font-bold text-tertiary-container hover:opacity-80" href="../archive/">Browse archive</a>
+                        <span class="px-2 text-stone-300">&bull;</span>
+                        <a class="font-bold text-tertiary-container hover:opacity-80" href="../">All tips</a>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <a href="../" class="fixed bottom-6 right-6 inline-flex h-12 w-12 items-center justify-center rounded-full bg-tertiary-container text-white shadow-lg hover:opacity-90" aria-label="Home">
+            <span class="material-symbols-outlined" style="font-size:22px;">home</span>
+        </a>
+    </body>
+</html>
