@@ -1,0 +1,295 @@
+<!doctype html>
+<html class="light" lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <title>Idea #003 — SpecPulse</title>
+        <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@400;500;600&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            .material-symbols-outlined {
+                font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+            }
+            body { font-family: "Inter", sans-serif; background-color: #f9f9f9; color: #1a1c1c; }
+            h1, h2, h3, h4, .headline { font-family: "Manrope", sans-serif; }
+        </style>
+        <script id="tailwind-config">
+            tailwind.config = {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        colors: {
+                            "secondary-container": "#e3e2e2",
+                            "on-secondary-container": "#646464",
+                            "tertiary-fixed-dim": "#ffb693",
+                            "surface-container-lowest": "#ffffff",
+                            "tertiary-container": "#ff6b00",
+                            "error-container": "#ffdad6",
+                            "primary-container": "#999999",
+                            "surface-dim": "#dadada",
+                            "on-tertiary": "#ffffff",
+                            outline: "#8e7164",
+                            "on-primary-fixed-variant": "#474747",
+                            "primary-fixed": "#e2e2e2",
+                            "on-tertiary-fixed-variant": "#7a3000",
+                            primary: "#5e5e5e",
+                            "on-secondary": "#ffffff",
+                            tertiary: "#a04100",
+                            "surface-tint": "#5e5e5e",
+                            "inverse-on-surface": "#f1f1f1",
+                            "on-secondary-fixed-variant": "#464747",
+                            "surface-bright": "#f9f9f9",
+                            "on-background": "#1a1c1c",
+                            "surface-variant": "#e2e2e2",
+                            "surface-container-highest": "#e2e2e2",
+                            "tertiary-fixed": "#ffdbcc",
+                            "surface-container-high": "#e8e8e8",
+                            "on-tertiary-fixed": "#351000",
+                            secondary: "#5e5e5e",
+                            "on-primary-container": "#313131",
+                            "secondary-fixed-dim": "#c7c6c6",
+                            "surface-container-low": "#f3f3f3",
+                            "outline-variant": "#e2bfb0",
+                            "on-secondary-fixed": "#1b1c1c",
+                            "on-surface-variant": "#5a4136",
+                            "on-primary-fixed": "#1b1b1b",
+                            error: "#ba1a1a",
+                            background: "#f9f9f9",
+                            "on-primary": "#ffffff",
+                            surface: "#f9f9f9",
+                            "on-tertiary-container": "#572000",
+                            "primary-fixed-dim": "#c6c6c6",
+                            "inverse-surface": "#2f3131",
+                            "surface-container": "#eeeeee",
+                            "inverse-primary": "#c6c6c6",
+                            "secondary-fixed": "#e3e2e2",
+                            "on-error-container": "#93000a",
+                            "on-surface": "#1a1c1c",
+                            "on-error": "#ffffff",
+                        },
+                        borderRadius: { DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.5rem", full: "0.75rem" },
+                        fontFamily: { headline: ["Manrope"], body: ["Inter"], label: ["Inter"] },
+                    },
+                },
+            };
+        </script>
+    </head>
+    
+<body class="bg-surface selection:bg-tertiary-container selection:text-white">
+
+        <!-- Nav -->
+        <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl flex justify-between items-center px-8 py-4 border-b border-stone-100">
+            <a href="index.html" class="text-xl font-black tracking-tighter text-stone-900 font-manrope hover:text-tertiary-container transition-colors">
+                te9.dev/ideas
+            </a>
+            <div class="hidden md:flex items-center gap-8">
+                <a class="text-stone-500 hover:text-orange-600 transition-colors font-bold text-sm tracking-tight" href="#problem">Problem</a>
+                <a class="text-stone-500 hover:text-orange-600 transition-colors font-bold text-sm tracking-tight" href="#idea">Idea</a>
+                <a class="text-stone-500 hover:text-orange-600 transition-colors font-bold text-sm tracking-tight" href="#build">How to Build</a>
+                <a class="text-stone-500 hover:text-orange-600 transition-colors font-bold text-sm tracking-tight" href="#pitch">Pitch</a>
+            </div>
+            <a href="index.html" class="text-sm font-bold text-stone-500 hover:text-tertiary-container transition-colors flex items-center gap-1">
+                <span class="material-symbols-outlined text-base">arrow_back</span> All Ideas
+            </a>
+        </nav>
+
+        <main class="pt-20 pb-32">
+
+            <!-- Hero -->
+            <section class="px-8 md:px-24 py-20 bg-surface-container-low" id="hero">
+                <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+                    <div class="md:col-span-8">
+                        <span class="text-tertiary-container font-bold tracking-widest text-xs uppercase mb-4 block">Daily Idea · April 12, 2026 · #003</span>
+                        <h1 class="text-5xl md:text-7xl font-black tracking-tighter text-on-surface leading-none mb-8">SpecPulse</h1>
+                        <div class="p-8 bg-surface-container-lowest border-l-4 border-tertiary-container">
+                            <h2 class="text-xs font-bold uppercase tracking-widest text-primary mb-2">The Idea</h2>
+                            <p class="text-xl text-on-surface leading-relaxed font-medium italic">"Continuous agent-contract tests for APIs — publish what agents can safely do, and prove it stays true."</p>
+                        </div>
+                    </div>
+                    <div class="md:col-span-4">
+                        <div class="space-y-4">
+                            <div class="bg-surface-container-highest p-6">
+                                <span class="text-xs font-bold text-stone-400 uppercase tracking-widest block mb-1">Market</span>
+                                <span class="font-bold text-tertiary-container">Developer Tools / API Reliability</span>
+                            </div>
+                            <div class="bg-surface-container-highest p-6">
+                                <span class="text-xs font-bold text-stone-400 uppercase tracking-widest block mb-1">Business Model</span>
+                                <span class="font-bold">B2B SaaS</span>
+                            </div>
+                            <div class="bg-surface-container-highest p-6">
+                                <span class="text-xs font-bold text-stone-400 uppercase tracking-widest block mb-1">Build Effort</span>
+                                <span class="font-bold">Medium — 4-week MVP</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Problem -->
+            <section class="px-8 md:px-24 py-24 bg-surface" id="problem">
+                <div class="max-w-3xl mx-auto space-y-12">
+                    <div>
+                        <span class="text-tertiary-container font-bold tracking-widest text-xs uppercase mb-4 block">The Problem</span>
+                        <p class="text-2xl text-on-surface leading-snug font-light">Teams are shipping agents that call real APIs (payments, support, CRM, infra). But the ‘interface’ agents rely on is a mix of human docs, stale examples, and tribal knowledge. When an endpoint changes, a scope requirement shifts, or rate limits tighten, agents fail in production — or worse, do the wrong thing. There’s no standard place to publish a machine-checkable contract for agents, and no continuous test that says: ‘an agent can still complete task X safely with tool Y’. </p>
+                    </div>
+                    <blockquote class="pl-8 border-l border-surface-container-highest">
+                        <p class="text-lg italic text-secondary">"Agent governance requires operational visibility and auditability — but it also requires interfaces that agents can reliably execute against."</p>
+                        <footer class="mt-2 text-sm font-bold text-primary">— Synthesis from governance guidance</footer>
+                    </blockquote>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                        <div class="space-y-4">
+                            <h3 class="text-xl font-bold tracking-tight">The Gap Today</h3>
+                            <p class="text-secondary leading-relaxed">OpenAPI describes endpoints, not end-to-end tasks. CI checks unit tests, not whether an agent can still complete a workflow safely with the right scopes and constraints.</p>
+                        </div>
+                        <div class="space-y-4">
+                            <h3 class="text-xl font-bold tracking-tight text-tertiary-container">The Opportunity</h3>
+                            <p class="text-secondary leading-relaxed">As autonomous execution grows, APIs need an ‘agent readiness’ layer: versioned capability specs + continuous workflow proof, consumable by both humans and AI systems.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Idea -->
+            <section class="px-8 md:px-24 py-24 bg-surface-container-low" id="idea">
+                <div class="max-w-6xl mx-auto">
+                    <div class="flex justify-between items-baseline mb-16">
+                        <h2 class="text-4xl font-black tracking-tighter">The Solution</h2>
+                        <span class="text-sm font-bold text-tertiary-container uppercase tracking-widest">SpecPulse</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-1">
+                        <div class="group bg-surface p-10 hover:bg-surface-container-lowest transition-colors border-b md:border-b-0 md:border-r border-stone-200">
+                            <span class="text-xs font-bold text-stone-400 mb-4 block">01</span>
+                            <h4 class="text-xl font-bold mb-4 group-hover:text-tertiary-container transition-colors">Ingest your API + auth reality</h4>
+                            <p class="text-secondary leading-relaxed">Import OpenAPI, SDK snippets, and auth scopes. Capture rate limits, environment URLs, and safety constraints as first-class fields — not footnotes.</p>
+                        </div>
+                        <div class="group bg-surface p-10 hover:bg-surface-container-lowest transition-colors border-b border-stone-200">
+                            <span class="text-xs font-bold text-stone-400 mb-4 block">02</span>
+                            <h4 class="text-xl font-bold mb-4 group-hover:text-tertiary-container transition-colors">Define workflow contract tests</h4>
+                            <p class="text-secondary leading-relaxed">Describe real tasks ("refund an invoice", "close a ticket") as step-by-step tests with expected outputs, allowed side effects, and approval requirements.</p>
+                        </div>
+                        <div class="group bg-surface p-10 hover:bg-surface-container-lowest transition-colors md:border-r border-stone-200">
+                            <span class="text-xs font-bold text-stone-400 mb-4 block">03</span>
+                            <h4 class="text-xl font-bold mb-4 group-hover:text-tertiary-container transition-colors">Publish an agent capabilities feed</h4>
+                            <p class="text-secondary leading-relaxed">Serve <code class="bg-surface-container px-1 font-mono text-sm">/capabilities.json</code> with JSON Schema, scopes, constraints, and freshness signals, plus auto-generated MCP tool definitions.</p>
+                        </div>
+                        <div class="group bg-surface p-10 hover:bg-surface-container-lowest transition-colors">
+                            <span class="text-xs font-bold text-stone-400 mb-4 block">04</span>
+                            <h4 class="text-xl font-bold mb-4 group-hover:text-tertiary-container transition-colors">Alert, diff, and enforce</h4>
+                            <p class="text-secondary leading-relaxed">When a deploy breaks a contract, SpecPulse shows what changed and who owns it. Gate releases on failing agent workflows, not just unit tests.</p>
+                        </div>
+                    </div>
+                    <div class="mt-10 bg-surface-container-lowest p-8 border-l-4 border-tertiary-container">
+                        <h3 class="text-xs font-bold uppercase tracking-widest text-primary mb-2">In one sentence</h3>
+                        <p class="text-lg text-on-surface leading-relaxed font-semibold">SpecPulse is a webapp that turns your API + workflows into **agent contracts**: machine-readable capability specs (JSON Schema for parameters/outputs, auth scopes, rate limits, safety constraints, example calls) paired with **continuous contract tests** that run on a schedule and on every deploy. It publishes an agent-facing ‘capabilities feed’ and optional MCP/OpenAPI adapters, so humans can review changes and AI agents can automatically discover what’s safe and supported today.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Value props -->
+            <section class="px-8 md:px-24 py-24">
+                <div class="max-w-6xl mx-auto">
+                    <h2 class="text-3xl font-black tracking-tighter mb-12 text-center">Why It's Valuable</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="bg-surface-container-lowest p-8 min-h-[240px] flex flex-col justify-between border-b-4 border-stone-100 hover:border-tertiary-container transition-all">
+                            <span class="material-symbols-outlined text-stone-300">person</span>
+                            <div>
+                                <p class="text-lg font-bold leading-tight mb-3">For Humans</p>
+                                <p class="text-secondary text-sm leading-relaxed">Fewer broken automations and fewer incident tickets. Product and platform teams get a clear, versioned ‘what agents can do’ surface, plus change alerts when a deploy breaks a contract test. Compliance teams get evidence that risky workflows are gated and validated.</p>
+                            </div>
+                            <div class="w-8 h-1 bg-stone-200"></div>
+                        </div>
+                        <div class="bg-surface-container-lowest p-8 min-h-[240px] flex flex-col justify-between border-b-4 border-stone-100 hover:border-tertiary-container transition-all">
+                            <span class="material-symbols-outlined text-stone-300">smart_toy</span>
+                            <div>
+                                <p class="text-lg font-bold leading-tight mb-3">For Agents</p>
+                                <p class="text-secondary text-sm leading-relaxed">A stable, queryable capabilities feed with typed schemas and freshness signals. Agents can select tools by guaranteed-supported tasks, request just-in-time scopes, and adapt when a contract version changes.</p>
+                            </div>
+                            <div class="w-8 h-1 bg-stone-200"></div>
+                        </div>
+                        <div class="bg-surface-container-lowest p-8 min-h-[240px] flex flex-col justify-between border-b-4 border-stone-100 hover:border-tertiary-container transition-all">
+                            <span class="material-symbols-outlined text-stone-300">verified</span>
+                            <div>
+                                <p class="text-lg font-bold leading-tight mb-3">Compounding Moat</p>
+                                <p class="text-secondary text-sm leading-relaxed">As more workflows are tested, SpecPulse becomes the source of truth for ‘agent-safe’ operations and their historical reliability. The contract test corpus becomes a defensible dataset that improves recommendations and auto-generated adapters.</p>
+                            </div>
+                            <div class="w-8 h-1 bg-stone-200"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Build -->
+            <section class="px-8 md:px-24 py-24 bg-stone-950 text-white" id="build">
+                <div class="max-w-5xl mx-auto">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-16">
+                        <div class="md:col-span-4">
+                            <h2 class="text-4xl font-black tracking-tighter text-tertiary-container">How to Build It</h2>
+                            <p class="mt-4 text-stone-400 font-medium">4-week MVP. Solo developer. Ships on Railway.</p>
+                            <div class="mt-8 flex flex-wrap gap-2"><span class="text-xs bg-stone-800 text-stone-300 px-3 py-1 font-mono">SvelteKit</span><span class="text-xs bg-stone-800 text-stone-300 px-3 py-1 font-mono">TypeScript</span><span class="text-xs bg-stone-800 text-stone-300 px-3 py-1 font-mono">Postgres</span><span class="text-xs bg-stone-800 text-stone-300 px-3 py-1 font-mono">Prisma</span><span class="text-xs bg-stone-800 text-stone-300 px-3 py-1 font-mono">BullMQ/Redis</span><span class="text-xs bg-stone-800 text-stone-300 px-3 py-1 font-mono">OpenAPI parser</span><span class="text-xs bg-stone-800 text-stone-300 px-3 py-1 font-mono">JSON Schema</span><span class="text-xs bg-stone-800 text-stone-300 px-3 py-1 font-mono">Playwright (optional)</span><span class="text-xs bg-stone-800 text-stone-300 px-3 py-1 font-mono">Railway</span><span class="text-xs bg-stone-800 text-stone-300 px-3 py-1 font-mono">Slack API</span></div>
+                        </div>
+                        <div class="md:col-span-8 space-y-12">
+                            <div class="flex gap-6"><span class="text-4xl font-black text-stone-800 shrink-0">01</span><div><h4 class="text-xl font-bold mb-2">Week 1</h4><p class="text-stone-400 leading-relaxed">Data model + UI skeleton (SvelteKit) — APIs, Workflows, Contracts. Ingest OpenAPI + auth metadata. Store in Postgres.</p></div></div><div class="flex gap-6"><span class="text-4xl font-black text-stone-800 shrink-0">02</span><div><h4 class="text-xl font-bold mb-2">Week 2</h4><p class="text-stone-400 leading-relaxed">Contract runner — define workflow tests (YAML/JSON), run via worker (Node + Playwright/HTTP). Record results, latency, error traces.</p></div></div><div class="flex gap-6"><span class="text-4xl font-black text-stone-800 shrink-0">03</span><div><h4 class="text-xl font-bold mb-2">Week 3</h4><p class="text-stone-400 leading-relaxed">Publish capabilities — /capabilities.json with JSON Schema, versioning, and freshness. Generate MCP tool definitions + SDK snippet.</p></div></div><div class="flex gap-6"><span class="text-4xl font-black text-stone-800 shrink-0">04</span><div><h4 class="text-xl font-bold mb-2">Week 4</h4><p class="text-stone-400 leading-relaxed">Alerts + diffs — GitHub webhook, deployment hooks, Slack/email alerts, ‘what changed’ contract diff view. Ship hosted demo + docs.</p></div></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pitch -->
+            <section class="px-8 md:px-24 py-24 bg-surface-container-low" id="pitch">
+                <div class="max-w-6xl mx-auto">
+                    <div class="flex justify-between items-baseline mb-16">
+                        <h2 class="text-4xl font-black tracking-tighter">How to Pitch It</h2>
+                        <span class="text-sm font-bold text-tertiary-container uppercase tracking-widest">Go-to-market</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-1">
+                        <div class="bg-surface p-10 border-b md:border-b-0 md:border-r border-stone-200">
+                            <span class="text-xs font-bold text-stone-400 mb-4 block uppercase tracking-widest">One-liner</span>
+                            <p class="text-xl font-bold leading-snug">"CI for agent tools: publish an agent contract, then continuously prove it still works."</p>
+                        </div>
+                        <div class="bg-surface p-10 border-b border-stone-200">
+                            <span class="text-xs font-bold text-stone-400 mb-4 block uppercase tracking-widest">Target ICP</span>
+                            <p class="text-secondary leading-relaxed">API-first SaaS (B2B), platform teams shipping internal agents, and developer experience teams that maintain OpenAPI specs and SDKs.</p>
+                        </div>
+                        <div class="bg-surface p-10 border-b md:border-b-0 md:border-r border-stone-200">
+                            <span class="text-xs font-bold text-stone-400 mb-4 block uppercase tracking-widest">Go-to-market</span>
+                            <p class="text-secondary leading-relaxed">Start with an OpenAPI ‘agent contract’ linter + GitHub Action (free). Use it to upsell the hosted dashboard, continuous runners, capabilities feed hosting, and MCP adapter generation. Launch via ‘Show HN’, DX communities, and partner with API doc tools.</p>
+                        </div>
+                        <div class="bg-surface p-10">
+                            <span class="text-xs font-bold text-stone-400 mb-4 block uppercase tracking-widest">Pricing</span>
+                            <div class="space-y-2">
+                                <div class="flex justify-between text-sm"><span class="font-bold">Free</span><span class="text-secondary">1 API, 10 workflow tests, daily runs, public capabilities feed</span></div>
+                                <div class="flex justify-between text-sm"><span class="font-bold text-tertiary-container">Pro</span><span class="text-secondary">$39/mo — 5 APIs, hourly runs, Slack alerts, private feed</span></div>
+                                <div class="flex justify-between text-sm"><span class="font-bold">Enterprise</span><span class="text-secondary">$149/mo — unlimited APIs, SSO, audit exports, role-based approvals</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-10 bg-surface-container-lowest p-8">
+                        <span class="text-xs font-bold text-stone-400 mb-2 block uppercase tracking-widest">Investor angle</span>
+                        <p class="text-secondary leading-relaxed">As agents become a primary customer of APIs, ‘agent readiness’ becomes a new reliability layer. SpecPulse is the monitoring + contract system for that layer — a chokepoint between API changes and autonomous execution.</p>
+                    </div>
+                    <div class="mt-6 bg-surface-container-lowest p-8">
+                        <span class="text-xs font-bold text-stone-400 mb-3 block uppercase tracking-widest">Sources</span>
+                        <ul class="space-y-2 text-sm"><li><a class="text-tertiary-container font-bold hover:underline" href="https://boomi.com/blog/ai-agent-governance-framework/">Boomi — AI Agent Governance Framework</a></li><li><a class="text-tertiary-container font-bold hover:underline" href="https://www.cerbos.dev/blog/permission-management-for-ai-agents">Cerbos — Permission Management for AI Agents</a></li><li><a class="text-tertiary-container font-bold hover:underline" href="https://www.mintmcp.com/blog/ai-agent-security-audit">MintMCP — AI agent security audit</a></li></ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA -->
+            <section class="px-8 md:px-24 py-32 bg-white">
+                <div class="max-w-3xl mx-auto text-center">
+                    <span class="text-xs font-bold text-stone-400 uppercase tracking-widest mb-4 block">Next idea tomorrow</span>
+                    <h2 class="text-4xl md:text-5xl font-black tracking-tighter mb-10 leading-tight">One researched LLM webapp idea, every day.</h2>
+                    <a href="index.html" class="inline-flex items-center gap-2 bg-tertiary-container text-white px-8 py-4 font-bold tracking-tight hover:bg-orange-700 transition-colors"><span class="material-symbols-outlined">arrow_back</span> Back to archive</a>
+                </div>
+            </section>
+
+        </main>
+    </body>
+</html>
