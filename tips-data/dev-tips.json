@@ -1,8 +1,8 @@
 {
   "meta": {
-    "description": "LLM Agent Dev Tips — daily tips for SvelteKit + TypeScript developers",
+    "description": "LLM Agent Dev Tips \u2014 daily tips for SvelteKit + TypeScript developers",
     "last_updated": "2026-04-12",
-    "total_tips": 6,
+    "total_tips": 7,
     "categories": [
       "Context Management",
       "API Design",
@@ -51,7 +51,7 @@
       "subtitle": "Feed Agents the Right Slice",
       "category": "Context Management",
       "sent_date": "2026-04-10",
-      "summary": "An LLM agent is only as good as the context you hand it — structuring your SvelteKit codebase so that any feature's full picture fits in a single, coherent context window is the highest-leverage architectural decision you can make when working with coding agents.",
+      "summary": "An LLM agent is only as good as the context you hand it \u2014 structuring your SvelteKit codebase so that any feature's full picture fits in a single, coherent context window is the highest-leverage architectural decision you can make when working with coding agents.",
       "key_concepts": [
         "Feature-co-located folder structure",
         "Barrel exports as agent-readable manifests",
@@ -63,7 +63,7 @@
         "html": "tips-html/tip-001.html",
         "markdown": "tips-markdown/tip-001.md"
       },
-      "subject": "DevTip #001 — Context Windows as Architecture"
+      "subject": "DevTip #001 \u2014 Context Windows as Architecture"
     },
     {
       "id": "002",
@@ -72,7 +72,7 @@
       "subtitle": "Types Are the Spec",
       "category": "API Design",
       "sent_date": "2026-04-10",
-      "summary": "A well-typed, self-documenting TypeScript API surface lets an LLM agent reason about, extend, and debug your routes without ever needing you to explain business logic — your code is the documentation.",
+      "summary": "A well-typed, self-documenting TypeScript API surface lets an LLM agent reason about, extend, and debug your routes without ever needing you to explain business logic \u2014 your code is the documentation.",
       "key_concepts": [
         "Consistent REST to service function naming (1:1 mapping)",
         "Zod schemas as single source of truth",
@@ -85,7 +85,7 @@
         "html": "tips-html/tip-002.html",
         "markdown": "tips-markdown/tip-002.md"
       },
-      "subject": "DevTip #002 — Agent-First API Design"
+      "subject": "DevTip #002 \u2014 Agent-First API Design"
     },
     {
       "id": "003",
@@ -94,7 +94,7 @@
       "subtitle": "Consistent Components Every Time",
       "category": "Prompt Engineering",
       "sent_date": "2026-04-10",
-      "summary": "One-shot UI generation from LLM agents produces inconsistent, design-system-ignorant components — breaking the chain into discrete, primed steps produces output you can ship without a rewrite.",
+      "summary": "One-shot UI generation from LLM agents produces inconsistent, design-system-ignorant components \u2014 breaking the chain into discrete, primed steps produces output you can ship without a rewrite.",
       "key_concepts": [
         "4-step UI generation chain: prime, contract, generate, harden",
         "Design tokens file as agent context primer",
@@ -106,16 +106,16 @@
         "html": "tips-html/tip-003.html",
         "markdown": "tips-markdown/tip-003.md"
       },
-      "subject": "DevTip #003 — Prompt Chaining for UI Generation"
+      "subject": "DevTip #003 \u2014 Prompt Chaining for UI Generation"
     },
     {
       "id": "004",
       "number": 4,
-      "title": "Tools aren’t “APIs”; they’re contracts: design tool schemas like you design libraries",
-      "subtitle": "If a tool can’t fail predictably, your agent can’t recover.",
+      "title": "Tools aren\u2019t \u201cAPIs\u201d; they\u2019re contracts: design tool schemas like you design libraries",
+      "subtitle": "If a tool can\u2019t fail predictably, your agent can\u2019t recover.",
       "category": "Agent Tooling",
       "sent_date": "2026-04-11",
-      "summary": "Most agent failures aren’t “model problems” — they’re interface problems. If your tool call surface is underspecified (ambiguous inputs, untyped outputs, inconsistent errors), the agent can’t plan, can’t validate, and can’t recover.",
+      "summary": "Most agent failures aren\u2019t \u201cmodel problems\u201d \u2014 they\u2019re interface problems. If your tool call surface is underspecified (ambiguous inputs, untyped outputs, inconsistent errors), the agent can\u2019t plan, can\u2019t validate, and can\u2019t recover.",
       "key_concepts": [
         "Tool schema contracts",
         "Discriminated union results",
@@ -128,7 +128,7 @@
         "html": "tips-html/tip-004.html",
         "markdown": "tips-markdown/tip-004.md"
       },
-      "subject": "DevTip #004 — Tools aren’t “APIs”; they’re contracts: design tool schemas like you design libraries"
+      "subject": "DevTip #004 \u2014 Tools aren\u2019t \u201cAPIs\u201d; they\u2019re contracts: design tool schemas like you design libraries"
     },
     {
       "id": "005",
@@ -150,7 +150,7 @@
         "markdown": "tips-markdown/tip-005.md",
         "site": "tips-site/tip-005.html"
       },
-      "subject": "DevTip #005 — Migrations as a Safety Harness for Agents"
+      "subject": "DevTip #005 \u2014 Migrations as a Safety Harness for Agents"
     },
     {
       "id": "006",
@@ -172,7 +172,30 @@
         "markdown": "tips-markdown/tip-006.md",
         "site": "tips-site/tip-006.html"
       },
-      "subject": "DevTip #006 — Tokens as a Design Budget"
+      "subject": "DevTip #006 \u2014 Tokens as a Design Budget"
+    },
+    {
+      "id": "007",
+      "number": 7,
+      "title": "Zero Downtime agent deployments on Railway",
+      "subtitle": "Ship without interrupting running agent sessions",
+      "category": "DevOps and Infra",
+      "sent_date": "2026-04-12",
+      "summary": "Use explicit readiness plus SIGTERM draining so Railway can shift traffic to new instances without breaking in flight agent sessions.",
+      "key_concepts": [
+        "readiness",
+        "SIGTERM drain",
+        "health checks",
+        "Railway deploy config",
+        "websocket draining",
+        "release contract"
+      ],
+      "files": {
+        "html": "tips-html/tip-007.html",
+        "markdown": "tips-markdown/tip-007.md",
+        "site": "tips-site/tip-007.html"
+      },
+      "subject": "DevTip #007 -- Zero Downtime agent deployments on Railway"
     }
   ]
 }

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang=&quot;en&quot;>
+<head>
+<meta charset=&quot;utf-8&quot; />
+<meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot; />
+<title>DevTip #007</title>
+</head>
+<body style=&quot;margin:0; padding:0; background:#f6f6f6;&quot;>
+<table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; style=&quot;background:#f6f6f6;&quot;>
+<tr><td align=&quot;center&quot; style=&quot;padding:24px 12px;&quot;>
+<table role=&quot;presentation&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; width=&quot;640&quot; style=&quot;width:640px; max-width:640px; background:#ffffff; border:1px solid #f0f0f0; border-radius:16px; overflow:hidden; font-family:Manrope, Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Arial, sans-serif;&quot;>
+<tr><td style=&quot;padding:20px 22px 10px 22px;&quot;>
+<div style=&quot;font-size:12px; letter-spacing:0.14em; font-weight:800; color:#ff6b00;&quot;>DEVTIP #007</div>
+<div style=&quot;margin-top:10px; font-size:28px; line-height:1.2; font-weight:900; color:#111111;&quot;>Zero Downtime agent deployments on Railway</div>
+<div style=&quot;margin-top:8px; font-size:14px; line-height:1.5; color:#444444;&quot;>Ship without interrupting running agent sessions</div>
+<div style=&quot;margin-top:14px; display:inline-block; padding:6px 10px; background:#ff6b00; color:#ffffff; border-radius:999px; font-size:12px; font-weight:800;&quot;>DevOps and Infra</div>
+</td></tr>
+<tr><td style=&quot;padding:0 22px 14px 22px;&quot;>
+<div style=&quot;border-left:4px solid #ff6b00; background:#fff7f0; padding:12px 14px; border-radius:10px;&quot;>
+<div style=&quot;font-size:12px; font-weight:900; letter-spacing:0.12em; color:#ff6b00;&quot;>WHY THIS MATTERS</div>
+<div style=&quot;margin-top:6px; font-size:14px; line-height:1.6; color:#222222;&quot;>Agents are often long running processes: they hold websocket sessions, stream tool calls, and keep in flight work. A naive redeploy kills the process and you lose the current step, the local cache, and any pending writes. Railway can do near zero downtime deploys, but only if you give it explicit readiness and shutdown signals.</div>
+</div></td></tr>
+<tr><td style=&quot;padding:0 22px 18px 22px; color:#1b1b1b; font-size:14px; line-height:1.75;&quot;>
+<div style=&quot;font-weight:900; font-size:16px; margin:16px 0 6px 0;&quot;>The pattern: readiness plus draining</div>
+<div>Build a release contract: the new instance must prove it is ready before it receives traffic, and the old instance must drain active sessions before it exits.</div>
+<div style=&quot;font-weight:900; font-size:15px; margin:14px 0 6px 0;&quot;>Health endpoint</div>
+<pre style=&quot;margin:10px 0 14px 0; padding:12px 12px; background:#1a1c1c; color:#f1f1f1; border-radius:10px; overflow-x:auto; font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace; font-size:12px; line-height:1.6;&quot;><code>// src/routes/health/+server.ts
+import { json } from '@sveltejs/kit';
+
+let draining = false;
+
+export function startDrain() {
+  draining = true;
+}
+
+export function GET() {
+  // 503 tells Railway to keep traffic on the old instance
+  if (draining) return new Response('draining', { status: 503 });
+  return json({ ok: true });
+}</code></pre>
+<div style=&quot;font-weight:900; font-size:15px; margin:14px 0 6px 0;&quot;>Railway config</div>
+<pre style=&quot;margin:10px 0 14px 0; padding:12px 12px; background:#1a1c1c; color:#f1f1f1; border-radius:10px; overflow-x:auto; font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace; font-size:12px; line-height:1.6;&quot;><code># railway.toml
+[deploy]
+healthcheckPath = "/health"
+healthcheckTimeout = 300
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3</code></pre>
+<div style=&quot;font-weight:900; font-size:15px; margin:14px 0 6px 0;&quot;>SIGTERM draining</div>
+<pre style=&quot;margin:10px 0 14px 0; padding:12px 12px; background:#1a1c1c; color:#f1f1f1; border-radius:10px; overflow-x:auto; font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace; font-size:12px; line-height:1.6;&quot;><code>// src/hooks.server.ts
+import { startDrain } from './routes/health/+server';
+
+// Optional: keep a counter of active requests or sessions in your app.
+let active = 0;
+
+export async function handle({ event, resolve }) {
+  active++;
+  try {
+    return await resolve(event);
+  } finally {
+    active--;
+  }
+}
+
+process.on('SIGTERM', async () =&gt; {
+  // 1) Flip readiness so Railway stops routing traffic here.
+  startDrain();
+
+  // 2) Wait for in flight work to finish.
+  const deadlineMs = Date.now() + 20_000;
+  while (active &gt; 0 &amp;&amp; Date.now() &lt; deadlineMs) {
+    await new Promise(r =&gt; setTimeout(r, 250));
+  }
+
+  // 3) Exit so the platform can replace the instance.
+  process.exit(0);
+});</code></pre>
+<div style=&quot;margin-top:14px; padding:14px; background:#1a1c1c; color:#f1f1f1; border-left:4px solid #ff6b00; border-radius:10px;&quot;>
+<div style=&quot;font-weight:900; color:#ff6b00; letter-spacing:0.12em; font-size:12px;&quot;>PRO MOVE</div>
+<div style=&quot;margin-top:6px; font-size:13px; line-height:1.7;&quot;>Add a draining gate that is shared by both HTTP and websocket paths. If your agent streams tokens over websockets, track active socket count and only exit after sockets close or a deadline expires. Also record a deploy build id in logs so you can correlate errors to releases in minutes.</div>
+</div>
+</td></tr>
+<tr><td style=&quot;padding:14px 22px 22px 22px; border-top:1px solid #f0f0f0; font-size:12px; line-height:1.6; color:#555555;&quot;>
+<div><a href=&quot;https://www.perplexity.ai/computer/a/devtips-llm-agent-dev-tips-V_IHjeQvTf.AxDfI6HnUVw&quot; style=&quot;color:#ff6b00; text-decoration:none; font-weight:800;&quot;>View Tip #007 online</a>
+<span style=&quot;color:#999999;&quot;>&nbsp;&bull;&nbsp;</span>
+<a href=&quot;https://www.perplexity.ai/computer/a/devtips-llm-agent-dev-tips-V_IHjeQvTf.AxDfI6HnUVw&quot; style=&quot;color:#ff6b00; text-decoration:none; font-weight:800;&quot;>Browse archive</a></div>
+<div style=&quot;margin-top:8px; font-size:11px; color:#888888;&quot;>Daily LLM Agent Dev Tips &bull; SvelteKit + TypeScript</div>
+</td></tr>
+</table></td></tr></table>
+</body></html>

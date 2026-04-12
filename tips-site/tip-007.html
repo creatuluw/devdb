@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>DevTip #007 - Zero Downtime agent deployments on Railway</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>tailwind.config={theme:{extend:{colors:{"tertiary-container":"#ff6b00","surface":"#f6f6f6","surface-container-low":"#f2f2f2"}}}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=Manrope:wght@400;600;800;900&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+</head>
+<body class="bg-surface text-stone-900" style="font-family: Manrope, Inter, ui-sans-serif, system-ui">
+<header class="bg-white border-b border-stone-200"><div class="mx-auto max-w-5xl px-4 py-4 flex items-center justify-between">
+<a href="../" class="font-black tracking-tight text-xl">DevTips</a>
+<a href="../" class="text-sm font-bold text-stone-600 hover:text-stone-900">&larr; All Tips</a>
+</div></header>
+<section class="bg-surface-container-low"><div class="mx-auto max-w-5xl px-4 py-10 grid gap-6 md:grid-cols-[1fr_180px]">
+<div>
+<div class="text-xs font-extrabold tracking-[0.2em] text-tertiary-container">DEVTIP #007</div>
+<h1 class="mt-3 text-4xl md:text-5xl font-black tracking-tight">Zero Downtime agent deployments on Railway</h1>
+<p class="mt-3 text-lg text-stone-700">Ship without interrupting running agent sessions</p>
+<div class="mt-5 inline-flex items-center rounded-full bg-tertiary-container px-3 py-1 text-xs font-extrabold text-white">DevOps and Infra</div>
+</div>
+<div class="h-36 w-36 bg-stone-900 rounded-2xl flex items-center justify-center"><span class="material-symbols-outlined text-white text-5xl">rocket_launch</span></div>
+</div></section>
+<section class="bg-white"><div class="mx-auto max-w-5xl px-4 py-8">
+<div class="border border-stone-200 rounded-2xl p-5 border-l-4 border-l-tertiary-container">
+<div class="text-xs font-extrabold tracking-[0.2em] text-tertiary-container">WHY THIS MATTERS</div>
+<p class="mt-3 text-stone-700 leading-relaxed">Agents are often long running processes: they hold websocket sessions, stream tool calls, and keep in flight work. A naive redeploy kills the process and you lose the current step, the local cache, and any pending writes. Railway can do near zero downtime deploys, but only if you give it explicit readiness and shutdown signals.</p>
+</div></div></section>
+<section class="bg-surface"><div class="mx-auto max-w-5xl px-4 py-10">
+<h2 class="text-2xl font-black">The pattern: readiness plus draining</h2>
+<div class="prose prose-stone max-w-none mt-4"><p>Build a release contract: the new instance must prove it is ready before it receives traffic, and the old instance must drain active sessions before it exits.</p></div>
+</div></section>
+<section class="bg-surface-container-low"><div class="mx-auto max-w-5xl px-4 py-10">
+<h2 class="text-2xl font-black">Health endpoint</h2>
+<p class="mt-3 text-stone-700">Return 503 while draining so traffic stays on the old instance.</p>
+<pre class="mt-5 rounded-2xl bg-[#1a1c1c] p-5 overflow-x-auto text-sm text-[#f1f1f1]"><code>// src/routes/health/+server.ts
+import { json } from '@sveltejs/kit';
+
+let draining = false;
+
+export function startDrain() {
+  draining = true;
+}
+
+export function GET() {
+  // 503 tells Railway to keep traffic on the old instance
+  if (draining) return new Response('draining', { status: 503 });
+  return json({ ok: true });
+}</code></pre>
+</div></section>
+<section class="bg-white"><div class="mx-auto max-w-5xl px-4 py-10">
+<h2 class="text-2xl font-black">Railway deploy config</h2>
+<p class="mt-3 text-stone-700">Tell the platform what readiness means.</p>
+<pre class="mt-5 rounded-2xl bg-[#1a1c1c] p-5 overflow-x-auto text-sm text-[#f1f1f1]"><code># railway.toml
+[deploy]
+healthcheckPath = "/health"
+healthcheckTimeout = 300
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3</code></pre>
+</div></section>
+<section class="bg-surface-container-low"><div class="mx-auto max-w-5xl px-4 py-10">
+<h2 class="text-2xl font-black">Drain on SIGTERM</h2>
+<p class="mt-3 text-stone-700">Flip readiness first, then wait for active work to finish.</p>
+<pre class="mt-5 rounded-2xl bg-[#1a1c1c] p-5 overflow-x-auto text-sm text-[#f1f1f1]"><code>// src/hooks.server.ts
+import { startDrain } from './routes/health/+server';
+
+// Optional: keep a counter of active requests or sessions in your app.
+let active = 0;
+
+export async function handle({ event, resolve }) {
+  active++;
+  try {
+    return await resolve(event);
+  } finally {
+    active--;
+  }
+}
+
+process.on('SIGTERM', async () =&gt; {
+  // 1) Flip readiness so Railway stops routing traffic here.
+  startDrain();
+
+  // 2) Wait for in flight work to finish.
+  const deadlineMs = Date.now() + 20_000;
+  while (active &gt; 0 &amp;&amp; Date.now() &lt; deadlineMs) {
+    await new Promise(r =&gt; setTimeout(r, 250));
+  }
+
+  // 3) Exit so the platform can replace the instance.
+  process.exit(0);
+});</code></pre>
+</div></section>
+<section class="bg-[#1a1c1c] text-white"><div class="mx-auto max-w-5xl px-4 py-12 grid gap-8 md:grid-cols-2 items-start">
+<div><div class="text-xs font-extrabold tracking-[0.2em] text-tertiary-container">PRO MOVE</div><h2 class="mt-3 text-3xl font-black">Drain websockets, not just HTTP</h2></div>
+<div class="text-white/80 leading-relaxed"><p>Add a draining gate that is shared by both HTTP and websocket paths. If your agent streams tokens over websockets, track active socket count and only exit after sockets close or a deadline expires. Also record a deploy build id in logs so you can correlate errors to releases in minutes.</p></div>
+</div></section>
+<section class="bg-white"><div class="mx-auto max-w-5xl px-4 py-10">
+<div class="mt-8 flex justify-center gap-4">
+<a href="../tip-006/index.html" class="inline-flex items-center gap-2 rounded-full border border-stone-300 px-5 py-3 text-sm font-extrabold text-stone-700 hover:bg-stone-50">PREV: TIP #006</a>
+<a href="../tip-008/index.html" class="inline-flex items-center gap-2 rounded-full bg-tertiary-container px-5 py-3 text-sm font-extrabold text-white hover:opacity-90">NEXT: TIP #008</a>
+</div></div></section>
+<a href="../" class="fixed bottom-6 right-6 h-12 w-12 rounded-full bg-tertiary-container text-white flex items-center justify-center shadow-lg" aria-label="Home">
+<span class="material-symbols-outlined">home</span></a>
+</body></html>
