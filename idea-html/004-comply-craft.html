@@ -1,0 +1,300 @@
+<!doctype html>
+<html class="light" lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <title>Idea #004 — ComplyCraft</title>
+        <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+        <style>
+            .material-symbols-outlined { font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24; }
+            body { font-family: "Inter", sans-serif; background-color: #f9f9f9; color: #1a1c1c; }
+            h1, h2, h3, h4, .headline { font-family: "Manrope", sans-serif; }
+        </style>
+        <script>
+            tailwind.config = {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        colors: {
+                            "secondary-container": "#e3e2e2", "on-secondary-container": "#646464",
+                            "tertiary-fixed-dim": "#ffb693", "surface-container-lowest": "#ffffff",
+                            "tertiary-container": "#ff6b00", "primary-container": "#999999",
+                            "surface-dim": "#dadada", "on-tertiary": "#ffffff", outline: "#8e7164",
+                            primary: "#5e5e5e", "on-secondary": "#ffffff", tertiary: "#a04100",
+                            "surface-tint": "#5e5e5e", "inverse-on-surface": "#f1f1f1",
+                            "surface-bright": "#f9f9f9", "on-background": "#1a1c1c",
+                            "surface-variant": "#e2e2e2", "surface-container-highest": "#e2e2e2",
+                            "tertiary-fixed": "#ffdbcc", "surface-container-high": "#e8e8e8",
+                            secondary: "#5e5e5e", "on-primary-container": "#313131",
+                            "surface-container-low": "#f3f3f3", "outline-variant": "#e2bfb0",
+                            error: "#ba1a1a", background: "#f9f9f9", "on-primary": "#ffffff",
+                            surface: "#f9f9f9", "on-tertiary-container": "#572000",
+                            "inverse-surface": "#2f3131", "surface-container": "#eeeeee",
+                            "inverse-primary": "#c6c6c6", "on-surface": "#1a1c1c", "on-error": "#ffffff",
+                        },
+                        fontFamily: { headline: ["Manrope"], body: ["Inter"], label: ["Inter"] },
+                    },
+                },
+            };
+        </script>
+    </head>
+    <body class="bg-surface selection:bg-tertiary-container selection:text-white">
+
+        <!-- Nav -->
+        <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl flex justify-between items-center px-8 py-4 border-b border-stone-100">
+            <a href="index.html" class="text-xl font-black tracking-tighter text-stone-900 hover:text-tertiary-container transition-colors">te9.dev/ideas</a>
+            <div class="hidden md:flex items-center gap-8">
+                <a class="text-stone-500 hover:text-orange-600 transition-colors font-bold text-sm tracking-tight" href="#problem">Problem</a>
+                <a class="text-stone-500 hover:text-orange-600 transition-colors font-bold text-sm tracking-tight" href="#idea">Idea</a>
+                <a class="text-stone-500 hover:text-orange-600 transition-colors font-bold text-sm tracking-tight" href="#build">How to Build</a>
+                <a class="text-stone-500 hover:text-orange-600 transition-colors font-bold text-sm tracking-tight" href="#pitch">Pitch</a>
+            </div>
+            <a href="index.html" class="text-sm font-bold text-stone-500 hover:text-tertiary-container transition-colors flex items-center gap-1">
+                <span class="material-symbols-outlined text-base">arrow_back</span> All Ideas
+            </a>
+        </nav>
+
+        <main class="pt-20 pb-32">
+
+            <!-- Hero -->
+            <section class="px-8 md:px-24 py-20 bg-surface-container-low" id="hero">
+                <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+                    <div class="md:col-span-8">
+                        <span class="text-tertiary-container font-bold tracking-widest text-xs uppercase mb-4 block">Daily Idea · April 13, 2026 · #004</span>
+                        <h1 class="text-5xl md:text-7xl font-black tracking-tighter text-on-surface leading-none mb-8">ComplyCraft</h1>
+                        <div class="p-8 bg-surface-container-lowest border-l-4 border-tertiary-container">
+                            <h2 class="text-xs font-bold uppercase tracking-widest text-primary mb-2">The Idea</h2>
+                            <p class="text-xl text-on-surface leading-relaxed font-medium italic">
+                                "An agent-ready compliance evidence workspace that collects, attests, and serves audit evidence for SMBs &mdash; consumable by both humans and AI agents."
+                            </p>
+                        </div>
+                    </div>
+                    <div class="md:col-span-4">
+                        <div class="space-y-4">
+                            <div class="bg-surface-container-highest p-6">
+                                <span class="text-xs font-bold text-stone-400 uppercase tracking-widest block mb-1">Market</span>
+                                <span class="font-bold text-tertiary-container">GRC / Compliance for SMB</span>
+                            </div>
+                            <div class="bg-surface-container-highest p-6">
+                                <span class="text-xs font-bold text-stone-400 uppercase tracking-widest block mb-1">Business Model</span>
+                                <span class="font-bold">B2B SaaS</span>
+                            </div>
+                            <div class="bg-surface-container-highest p-6">
+                                <span class="text-xs font-bold text-stone-400 uppercase tracking-widest block mb-1">Build Effort</span>
+                                <span class="font-bold">Medium &mdash; 4-week MVP</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Problem -->
+            <section class="px-8 md:px-24 py-24 bg-surface" id="problem">
+                <div class="max-w-3xl mx-auto space-y-12">
+                    <div>
+                        <span class="text-tertiary-container font-bold tracking-widest text-xs uppercase mb-4 block">The Problem</span>
+                        <p class="text-2xl text-on-surface leading-snug font-light">
+                            Every growing startup hits the same wall: a customer sends a <span class="font-bold text-tertiary-container underline decoration-2 underline-offset-4">security questionnaire</span>, an auditor requests evidence for SOC 2, or a finance review demands proof of controls. Teams scramble through Notion pages, Google Drive folders, and Slack messages to collect screenshots, export CSVs, and assemble evidence packages manually.
+                        </p>
+                    </div>
+                    <blockquote class="pl-8 border-l border-surface-container-highest">
+                        <p class="text-lg italic text-secondary">
+                            "Compliance evidence collection involves gathering screenshots, configs, and policy docs from dozens of systems &mdash; then manually mapping them to controls. It's repetitive, error-prone, and expensive."
+                        </p>
+                        <footer class="mt-2 text-sm font-bold text-primary">&mdash; <a href="https://secureframe.com/blog/automated-evidence-collection" class="hover:text-tertiary-container transition-colors underline">Secureframe, 2026</a></footer>
+                    </blockquote>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                        <div class="space-y-4">
+                            <h3 class="text-xl font-bold tracking-tight">The Gap Today</h3>
+                            <p class="text-secondary leading-relaxed">Enterprise GRC tools (Secureframe, Vanta, Drata) cost $15K+/yr and require deep integrations. They're overkill for a 20-person startup that just needs to answer 10 common audit asks. Meanwhile, AI agents are starting to handle security reviews &mdash; but they have no structured evidence to reference.</p>
+                        </div>
+                        <div class="space-y-4">
+                            <h3 class="text-xl font-bold tracking-tight text-tertiary-container">The Opportunity</h3>
+                            <p class="text-secondary leading-relaxed">SMBs need a lightweight tool that collects evidence once, keeps it fresh, and serves it in a format that both auditors and AI agents can consume. Cryptographic attestations give evidence chain-of-custody without a full GRC platform.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Idea -->
+            <section class="px-8 md:px-24 py-24 bg-surface-container-low" id="idea">
+                <div class="max-w-6xl mx-auto">
+                    <div class="flex justify-between items-baseline mb-16">
+                        <h2 class="text-4xl font-black tracking-tighter">The Solution</h2>
+                        <span class="text-sm font-bold text-tertiary-container uppercase tracking-widest">ComplyCraft</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-1">
+                        <div class="group bg-surface p-10 hover:bg-surface-container-lowest transition-colors border-b md:border-b-0 md:border-r border-stone-200">
+                            <span class="text-xs font-bold text-stone-400 mb-4 block">01</span>
+                            <h4 class="text-xl font-bold mb-4 group-hover:text-tertiary-container transition-colors">Evidence Recipes</h4>
+                            <p class="text-secondary leading-relaxed">Pre-built workflow templates for the 10 most common audit asks (SOC 2 access reviews, MFA enforcement proof, encryption configs, backup verification). Each recipe defines what to collect, from where, and what format.</p>
+                        </div>
+                        <div class="group bg-surface p-10 hover:bg-surface-container-lowest transition-colors border-b border-stone-200">
+                            <span class="text-xs font-bold text-stone-400 mb-4 block">02</span>
+                            <h4 class="text-xl font-bold mb-4 group-hover:text-tertiary-container transition-colors">Auto-Collection</h4>
+                            <p class="text-secondary leading-relaxed">Connect GitHub, AWS, Google Workspace, or Slack via OAuth. ComplyCraft pulls screenshots, configs, and exports on a schedule. Human-in-the-loop checkpoints for sensitive items. Timestamped and hashed for chain-of-custody.</p>
+                        </div>
+                        <div class="group bg-surface p-10 hover:bg-surface-container-lowest transition-colors md:border-r border-stone-200">
+                            <span class="text-xs font-bold text-stone-400 mb-4 block">03</span>
+                            <h4 class="text-xl font-bold mb-4 group-hover:text-tertiary-container transition-colors">Agent-Facing API</h4>
+                            <p class="text-secondary leading-relaxed">A structured JSON/MCP endpoint that AI agents can query: "Do we have current MFA evidence?" "When was the last backup verification?" Other agents can reference and cite your evidence inventory directly.</p>
+                        </div>
+                        <div class="group bg-surface p-10 hover:bg-surface-container-lowest transition-colors">
+                            <span class="text-xs font-bold text-stone-400 mb-4 block">04</span>
+                            <h4 class="text-xl font-bold mb-4 group-hover:text-tertiary-container transition-colors">Evidence Packages</h4>
+                            <p class="text-secondary leading-relaxed">One-click export of a complete evidence package for an auditor or customer questionnaire. PDF with attestation hashes, or a shared link with role-based access. Auto-refreshes when underlying evidence updates.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Value props -->
+            <section class="px-8 md:px-24 py-24">
+                <div class="max-w-6xl mx-auto">
+                    <h2 class="text-3xl font-black tracking-tighter mb-12 text-center">Why It's Valuable</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="bg-surface-container-lowest p-8 min-h-[240px] flex flex-col justify-between border-b-4 border-stone-100 hover:border-tertiary-container transition-all">
+                            <span class="material-symbols-outlined text-stone-300">business</span>
+                            <div>
+                                <p class="text-lg font-bold leading-tight mb-3">For SMBs</p>
+                                <p class="text-secondary text-sm leading-relaxed">Answer security questionnaires and audit requests in hours instead of weeks. No $15K/yr GRC platform needed. Focus on the 10 things auditors actually ask for.</p>
+                            </div>
+                            <div class="w-8 h-1 bg-stone-200"></div>
+                        </div>
+                        <div class="bg-surface-container-lowest p-8 min-h-[240px] flex flex-col justify-between border-b-4 border-stone-100 hover:border-tertiary-container transition-all">
+                            <span class="material-symbols-outlined text-stone-300">smart_toy</span>
+                            <div>
+                                <p class="text-lg font-bold leading-tight mb-3">For Agents</p>
+                                <p class="text-secondary text-sm leading-relaxed">Machine-readable evidence inventory. An agent handling a security review can query ComplyCraft to check what evidence exists, its freshness, and its attestation status &mdash; then cite it directly.</p>
+                            </div>
+                            <div class="w-8 h-1 bg-stone-200"></div>
+                        </div>
+                        <div class="bg-surface-container-lowest p-8 min-h-[240px] flex flex-col justify-between border-b-4 border-stone-100 hover:border-tertiary-container transition-all">
+                            <span class="material-symbols-outlined text-stone-300">verified</span>
+                            <div>
+                                <p class="text-lg font-bold leading-tight mb-3">Trust Layer</p>
+                                <p class="text-secondary text-sm leading-relaxed">Cryptographic hashes on every evidence artifact create chain-of-custody without blockchain overhead. Auditors trust it. Agents can verify it programmatically.</p>
+                            </div>
+                            <div class="w-8 h-1 bg-stone-200"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Build -->
+            <section class="px-8 md:px-24 py-24 bg-stone-950 text-white" id="build">
+                <div class="max-w-5xl mx-auto">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-16">
+                        <div class="md:col-span-4">
+                            <h2 class="text-4xl font-black tracking-tighter text-tertiary-container">How to Build It</h2>
+                            <p class="mt-4 text-stone-400 font-medium">4-week MVP. Solo developer. Ships on Railway.</p>
+                            <div class="mt-8 flex flex-wrap gap-2">
+                                <span class="text-xs bg-stone-800 text-stone-300 px-3 py-1 font-mono">SvelteKit</span>
+                                <span class="text-xs bg-stone-800 text-stone-300 px-3 py-1 font-mono">TypeScript</span>
+                                <span class="text-xs bg-stone-800 text-stone-300 px-3 py-1 font-mono">Postgres</span>
+                                <span class="text-xs bg-stone-800 text-stone-300 px-3 py-1 font-mono">S3</span>
+                                <span class="text-xs bg-stone-800 text-stone-300 px-3 py-1 font-mono">SHA-256</span>
+                                <span class="text-xs bg-stone-800 text-stone-300 px-3 py-1 font-mono">OAuth</span>
+                                <span class="text-xs bg-stone-800 text-stone-300 px-3 py-1 font-mono">MCP SDK</span>
+                                <span class="text-xs bg-stone-800 text-stone-300 px-3 py-1 font-mono">Railway</span>
+                            </div>
+                        </div>
+                        <div class="md:col-span-8 space-y-12">
+                            <div class="flex gap-6">
+                                <span class="text-4xl font-black text-stone-800 shrink-0">01</span>
+                                <div>
+                                    <h4 class="text-xl font-bold mb-2">Evidence Model + Recipes</h4>
+                                    <p class="text-stone-400 leading-relaxed">Postgres schema for evidence artifacts (type, source, collected_at, hash, status, control_mapping). Pre-seed 10 recipe templates in JSON. SvelteKit dashboard to browse and trigger recipes.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-6">
+                                <span class="text-4xl font-black text-stone-800 shrink-0">02</span>
+                                <div>
+                                    <h4 class="text-xl font-bold mb-2">Connectors + Collection</h4>
+                                    <p class="text-stone-400 leading-relaxed">OAuth integrations for GitHub (repo settings, branch protection), AWS (IAM policies, S3 configs), Google Workspace (MFA status, sharing settings). Each connector pulls evidence, stores to S3, hashes with <code class="text-orange-400 font-mono text-sm">SHA-256</code>, records metadata in Postgres.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-6">
+                                <span class="text-4xl font-black text-stone-800 shrink-0">03</span>
+                                <div>
+                                    <h4 class="text-xl font-bold mb-2">Agent API + MCP Server</h4>
+                                    <p class="text-stone-400 leading-relaxed">REST + MCP endpoint: <code class="text-orange-400 font-mono text-sm">list_evidence</code>, <code class="text-orange-400 font-mono text-sm">get_evidence</code>, <code class="text-orange-400 font-mono text-sm">check_control_status</code>. Returns structured JSON with freshness, hash, and attestation status. Agents can programmatically verify and cite evidence.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-6">
+                                <span class="text-4xl font-black text-stone-800 shrink-0">04</span>
+                                <div>
+                                    <h4 class="text-xl font-bold mb-2">Export + Sharing</h4>
+                                    <p class="text-stone-400 leading-relaxed">One-click evidence package export: PDF with attestation summary, or a shareable link with role-based access. Auto-refresh when underlying evidence updates. Scheduled re-collection with staleness alerts.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pitch -->
+            <section class="px-8 md:px-24 py-24 bg-surface-container-low" id="pitch">
+                <div class="max-w-6xl mx-auto">
+                    <div class="flex justify-between items-baseline mb-16">
+                        <h2 class="text-4xl font-black tracking-tighter">How to Pitch It</h2>
+                        <span class="text-sm font-bold text-tertiary-container uppercase tracking-widest">Go-to-market</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-1">
+                        <div class="bg-surface p-10 border-b md:border-b-0 md:border-r border-stone-200">
+                            <span class="text-xs font-bold text-stone-400 mb-4 block uppercase tracking-widest">One-liner</span>
+                            <p class="text-xl font-bold leading-snug">"Compliance evidence on autopilot. Collect once, serve to auditors and AI agents forever."</p>
+                        </div>
+                        <div class="bg-surface p-10 border-b border-stone-200">
+                            <span class="text-xs font-bold text-stone-400 mb-4 block uppercase tracking-widest">Target ICP</span>
+                            <p class="text-secondary leading-relaxed">Seed to Series B startups (10&ndash;200 people) facing their first SOC 2 audit, enterprise customer security questionnaires, or finance PBC requests. Engineering leads and ops managers who own compliance without a dedicated team.</p>
+                        </div>
+                        <div class="bg-surface p-10 border-b md:border-b-0 md:border-r border-stone-200">
+                            <span class="text-xs font-bold text-stone-400 mb-4 block uppercase tracking-widest">Go-to-market</span>
+                            <p class="text-secondary leading-relaxed">Open-source the evidence recipe format + CLI collector. "Show HN" launch. Template library as content marketing. Monetize the hosted dashboard, MCP endpoint, scheduled collection, and shareable evidence packages.</p>
+                        </div>
+                        <div class="bg-surface p-10">
+                            <span class="text-xs font-bold text-stone-400 mb-4 block uppercase tracking-widest">Pricing</span>
+                            <div class="space-y-2">
+                                <div class="flex justify-between text-sm"><span class="font-bold">Free</span><span class="text-secondary">3 recipes, manual collection</span></div>
+                                <div class="flex justify-between text-sm"><span class="font-bold text-tertiary-container">Pro $39/mo</span><span class="text-secondary">All recipes, auto-collect, MCP API</span></div>
+                                <div class="flex justify-between text-sm"><span class="font-bold">Team $99/mo</span><span class="text-secondary">Unlimited, shareable packages, SSO</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sources -->
+            <section class="px-8 md:px-24 py-16 bg-surface">
+                <div class="max-w-3xl mx-auto">
+                    <h3 class="text-xs font-bold text-stone-400 uppercase tracking-widest mb-6">Sources</h3>
+                    <div class="space-y-2">
+                        <a href="https://aws.amazon.com/blogs/machine-learning/building-an-ai-powered-system-for-compliance-evidence-collection/" class="block text-sm text-secondary hover:text-tertiary-container transition-colors">AWS &mdash; Building an AI-powered system for compliance evidence collection</a>
+                        <a href="https://www.floqast.com/blog/10-must-have-features-in-audit-evidence-management-tools" class="block text-sm text-secondary hover:text-tertiary-container transition-colors">FloQast &mdash; 10 Must-Have Features in Audit Evidence Management Tools</a>
+                        <a href="https://secureframe.com/blog/automated-evidence-collection" class="block text-sm text-secondary hover:text-tertiary-container transition-colors">Secureframe &mdash; A Guide to Automated Evidence Collection for Compliance</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA -->
+            <section class="px-8 md:px-24 py-32 bg-white">
+                <div class="max-w-3xl mx-auto text-center">
+                    <span class="text-xs font-bold text-stone-400 uppercase tracking-widest mb-4 block">Next idea tomorrow</span>
+                    <h2 class="text-4xl md:text-5xl font-black tracking-tighter mb-10 leading-tight">One researched LLM webapp idea, every day.</h2>
+                    <a class="inline-flex items-center gap-4 bg-tertiary-container text-white px-10 py-5 font-bold hover:scale-105 transition-transform group" href="index.html">
+                        <span>BACK TO ALL IDEAS</span>
+                        <span class="material-symbols-outlined group-hover:translate-x-2 transition-transform">arrow_forward</span>
+                    </a>
+                </div>
+            </section>
+
+        </main>
+
+        <a href="index.html" class="fixed bottom-8 right-8 w-14 h-14 bg-tertiary-container text-white flex items-center justify-center shadow-2xl hover:scale-110 transition-transform z-50">
+            <span class="material-symbols-outlined">format_list_bulleted</span>
+        </a>
+    </body>
+</html>

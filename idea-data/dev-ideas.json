@@ -1,8 +1,8 @@
 {
   "meta": {
-    "description": "Daily LLM Webapp Ideas \u2014 one researched idea per day, valuable for humans and AI agents",
-    "last_updated": "2026-04-11",
-    "total_ideas": 2,
+    "description": "Daily LLM Webapp Ideas — one researched idea per day, valuable for humans and AI agents",
+    "last_updated": "2026-04-13",
+    "total_ideas": 4,
     "count": 3
   },
   "ideas": [
@@ -17,18 +17,18 @@
       "date": "2026-04-10",
       "slug": "living-docs",
       "one_liner": "robots.txt was for Google. LivingDocs is for AI agents. One line of code and your product is readable by every AI in the world.",
-      "problem": "AI agents are blind to most of the web. Only 5\u201315% of websites have implemented llms.txt, and most implementations are static, manually maintained files that go stale within weeks. Google, AWS, and Microsoft have all shipped MCP servers for their own docs \u2014 mid-size SaaS and open-source projects have the same need but no budget to build this themselves.",
-      "idea": "A webapp that takes any URL, sitemap, or GitHub repo and automatically generates a continuously-synced agent-readable knowledge layer: a structured llms.txt, llms-full.txt, and an optional hosted MCP server endpoint \u2014 all kept fresh via webhooks or scheduled re-indexing.",
+      "problem": "AI agents are blind to most of the web. Only 5–15% of websites have implemented llms.txt, and most implementations are static, manually maintained files that go stale within weeks. Google, AWS, and Microsoft have all shipped MCP servers for their own docs — mid-size SaaS and open-source projects have the same need but no budget to build this themselves.",
+      "idea": "A webapp that takes any URL, sitemap, or GitHub repo and automatically generates a continuously-synced agent-readable knowledge layer: a structured llms.txt, llms-full.txt, and an optional hosted MCP server endpoint — all kept fresh via webhooks or scheduled re-indexing.",
       "value": {
         "for_humans": "Product shows up accurately in Cursor, Claude, and Copilot. Higher AI-referred conversion (ChatGPT converts at 15.9%).",
         "for_agents": "Clean, token-efficient, semantic MCP entry point. No HTML parsing, no stale snapshots.",
-        "for_builders": "Gartner says 30%+ of new API demand in 2026 comes from LLM tools \u2014 this is infrastructure for that wave.",
-        "moat": "Value compounds \u2014 the longer a site is indexed, the richer the version history."
+        "for_builders": "Gartner says 30%+ of new API demand in 2026 comes from LLM tools — this is infrastructure for that wave.",
+        "moat": "Value compounds — the longer a site is indexed, the richer the version history."
       },
       "build": {
         "timeline": "4-week MVP",
         "weeks": [
-          "Week 1: SvelteKit + URL crawler \u2192 chunk + embed with OpenAI text-embedding-3-small \u2192 Postgres/pgvector",
+          "Week 1: SvelteKit + URL crawler → chunk + embed with OpenAI text-embedding-3-small → Postgres/pgvector",
           "Week 2: LLM pass (GPT-4o-mini) to generate versioned llms.txt + llms-full.txt",
           "Week 3: MCP-compatible endpoint (search_document + get_document tools), deploy via Railway",
           "Week 4: Webhook sync (GitHub, Notion, Gitbook) + agent traffic analytics dashboard"
@@ -45,19 +45,19 @@
         ]
       },
       "pitch": {
-        "icp": "Developer tools, SaaS products with public docs, open-source maintainers, internal tooling teams at 50\u2013500 person companies",
+        "icp": "Developer tools, SaaS products with public docs, open-source maintainers, internal tooling teams at 50–500 person companies",
         "gtm": "Product Hunt + Hacker News Show HN. Open-source the llms.txt generator. Monetize MCP hosting, sync automation, and analytics.",
         "pricing": {
           "free": "1 site, manual refresh",
-          "pro": "$19/mo \u2014 5 sites, auto-sync, analytics",
-          "team": "$79/mo \u2014 unlimited sites, MCP endpoint, webhook triggers, version history"
+          "pro": "$19/mo — 5 sites, auto-sync, analytics",
+          "team": "$79/mo — unlimited sites, MCP endpoint, webhook triggers, version history"
         },
-        "investor_angle": "API infra for the agent economy. Comparable to how Algolia became essential for search \u2014 LivingDocs becomes essential for agent discoverability."
+        "investor_angle": "API infra for the agent economy. Comparable to how Algolia became essential for search — LivingDocs becomes essential for agent discoverability."
       },
       "signals": [
-        "Fern, Mintlify, and Scalar compete on llms.txt generation \u2014 but only for API docs platforms, not the general web",
+        "Fern, Mintlify, and Scalar compete on llms.txt generation — but only for API docs platforms, not the general web",
         "Google launched its Developer Knowledge API (MCP) in Feb 2026. AWS and Microsoft followed.",
-        "Only 5\u201315% of websites have llms.txt today"
+        "Only 5–15% of websites have llms.txt today"
       ],
       "files": {
         "html": "idea-html/001-living-docs.html",
@@ -80,7 +80,7 @@
       "date": "2026-04-11",
       "slug": "tool-gate",
       "one_liner": "IAM for AI agents. Every tool call gets a policy, an approval gate, and a log.",
-      "problem": "AI agents can now call tools \u2014 send emails, create PRs, query databases, make purchases. But there is no standard way to enforce who approved what, what schemas are allowed, or to produce an audit trail. Observability tools trace after the fact, but nobody provides an app-agnostic policy gateway that enforces allow/deny/approval-required at runtime with typed schema contracts.",
+      "problem": "AI agents can now call tools — send emails, create PRs, query databases, make purchases. But there is no standard way to enforce who approved what, what schemas are allowed, or to produce an audit trail. Observability tools trace after the fact, but nobody provides an app-agnostic policy gateway that enforces allow/deny/approval-required at runtime with typed schema contracts.",
       "idea": "A webapp that acts as a policy gateway for AI agent tool calls. It sits between agents and their tools, enforcing typed JSON Schema contracts, routing high-risk actions through human approval gates (Slack, email, dashboard), and producing audit-grade logs queryable by both humans and other agents.",
       "value": {
         "for_enterprises": "Ship agents to production with confidence. Every tool call has a policy, an approval flow, and a log. SOC 2 and ISO 27001 auditors get the paper trail they need.",
@@ -90,9 +90,9 @@
       "build": {
         "timeline": "4-week MVP",
         "weeks": [
-          "Week 1: Lightweight HTTP proxy + policy engine (YAML rules, JSON Schema validation) \u2192 Postgres",
-          "Week 2: Approval flow \u2014 hold in Redis, Slack/email notification, /approve/:id endpoint, timeout + escalation",
-          "Week 3: Audit log + SvelteKit dashboard \u2014 real-time feed, filterable, JSON/CSV export for compliance",
+          "Week 1: Lightweight HTTP proxy + policy engine (YAML rules, JSON Schema validation) → Postgres",
+          "Week 2: Approval flow — hold in Redis, Slack/email notification, /approve/:id endpoint, timeout + escalation",
+          "Week 3: Audit log + SvelteKit dashboard — real-time feed, filterable, JSON/CSV export for compliance",
           "Week 4: TypeScript SDK, Express/Hono middleware, /capabilities endpoint for agent policy discovery, Railway deploy"
         ],
         "stack": [
@@ -111,10 +111,10 @@
         "gtm": "Open-source the proxy + policy engine. Show HN launch. Free for single-agent use. Monetize team dashboards, SSO, advanced approval workflows, compliance exports.",
         "pricing": {
           "free": "1 agent, 1K calls/mo, basic logs",
-          "pro": "$29/mo \u2014 10 agents, approval flows, Slack integration",
-          "enterprise": "$149/mo \u2014 unlimited agents, SSO, compliance exports"
+          "pro": "$29/mo — 10 agents, approval flows, Slack integration",
+          "enterprise": "$149/mo — unlimited agents, SSO, compliance exports"
         },
-        "investor_angle": "IAM for the agent economy. Every enterprise deploying agents will need a policy layer \u2014 ToolGate is the natural chokepoint. Comparable to how Okta became essential for human identity."
+        "investor_angle": "IAM for the agent economy. Every enterprise deploying agents will need a policy layer — ToolGate is the natural chokepoint. Comparable to how Okta became essential for human identity."
       },
       "signals": [
         "Browser agents are less safe than chat models and need runtime guardrails (Invariant Labs)",
@@ -123,27 +123,27 @@
       ],
       "sources": [
         {
-          "name": "Invariant Labs \u2014 Enhancing Browser Agent Safety",
+          "name": "Invariant Labs — Enhancing Browser Agent Safety",
           "url": "https://invariantlabs.ai/blog/enhancing-browser-agent-safety"
         },
         {
-          "name": "Agent Patterns \u2014 Human Approval For AI Agents",
+          "name": "Agent Patterns — Human Approval For AI Agents",
           "url": "https://www.agentpatterns.tech/en/governance/human-approval"
         },
         {
-          "name": "Stacklok ToolHive \u2014 Custom MCP Registry",
+          "name": "Stacklok ToolHive — Custom MCP Registry",
           "url": "https://docs.stacklok.com/toolhive/tutorials/custom-registry"
         },
         {
-          "name": "Moveworks \u2014 Policy Validators for AI Compliance",
+          "name": "Moveworks — Policy Validators for AI Compliance",
           "url": "https://www.moveworks.com/us/en/resources/blog/how-policy-validators-help-ai-compliance"
         },
         {
-          "name": "AWS \u2014 Amazon Bedrock Guardrails",
+          "name": "AWS — Amazon Bedrock Guardrails",
           "url": "https://aws.amazon.com/bedrock/guardrails/"
         },
         {
-          "name": "TrueFoundry \u2014 What is MCP Registry?",
+          "name": "TrueFoundry — What is MCP Registry?",
           "url": "https://www.truefoundry.com/blog/what-is-mcp-registry"
         }
       ],
@@ -160,27 +160,27 @@
       "id": "003",
       "number": 3,
       "title": "SpecPulse",
-      "tagline": "Continuous agent-contract tests for APIs \u2014 publish what agents can safely do, and prove it stays true.",
+      "tagline": "Continuous agent-contract tests for APIs — publish what agents can safely do, and prove it stays true.",
       "market": "Developer Tools / API Reliability",
       "model": "B2B SaaS",
       "effort": "Medium",
       "date": "2026-04-12",
       "slug": "spec-pulse",
       "one_liner": "CI for agent tools: publish an agent contract, then continuously prove it still works.",
-      "problem": "Teams are shipping agents that call real APIs (payments, support, CRM, infra). But the \u2018interface\u2019 agents rely on is a mix of human docs, stale examples, and tribal knowledge. When an endpoint changes, a scope requirement shifts, or rate limits tighten, agents fail in production \u2014 or worse, do the wrong thing. There\u2019s no standard place to publish a machine-checkable contract for agents, and no continuous test that says: \u2018an agent can still complete task X safely with tool Y\u2019.",
-      "idea": "SpecPulse is a webapp that turns your API + workflows into **agent contracts**: machine-readable capability specs (JSON Schema for parameters/outputs, auth scopes, rate limits, safety constraints, example calls) paired with **continuous contract tests** that run on a schedule and on every deploy. It publishes an agent-facing \u2018capabilities feed\u2019 and optional MCP/OpenAPI adapters, so humans can review changes and AI agents can automatically discover what\u2019s safe and supported today.",
+      "problem": "Teams are shipping agents that call real APIs (payments, support, CRM, infra). But the ‘interface’ agents rely on is a mix of human docs, stale examples, and tribal knowledge. When an endpoint changes, a scope requirement shifts, or rate limits tighten, agents fail in production — or worse, do the wrong thing. There’s no standard place to publish a machine-checkable contract for agents, and no continuous test that says: ‘an agent can still complete task X safely with tool Y’.",
+      "idea": "SpecPulse is a webapp that turns your API + workflows into **agent contracts**: machine-readable capability specs (JSON Schema for parameters/outputs, auth scopes, rate limits, safety constraints, example calls) paired with **continuous contract tests** that run on a schedule and on every deploy. It publishes an agent-facing ‘capabilities feed’ and optional MCP/OpenAPI adapters, so humans can review changes and AI agents can automatically discover what’s safe and supported today.",
       "value": {
-        "for_humans": "Fewer broken automations and fewer incident tickets. Product and platform teams get a clear, versioned \u2018what agents can do\u2019 surface, plus change alerts when a deploy breaks a contract test. Compliance teams get evidence that risky workflows are gated and validated.",
+        "for_humans": "Fewer broken automations and fewer incident tickets. Product and platform teams get a clear, versioned ‘what agents can do’ surface, plus change alerts when a deploy breaks a contract test. Compliance teams get evidence that risky workflows are gated and validated.",
         "for_agents": "A stable, queryable capabilities feed with typed schemas and freshness signals. Agents can select tools by guaranteed-supported tasks, request just-in-time scopes, and adapt when a contract version changes.",
-        "compounding_moat": "As more workflows are tested, SpecPulse becomes the source of truth for \u2018agent-safe\u2019 operations and their historical reliability. The contract test corpus becomes a defensible dataset that improves recommendations and auto-generated adapters."
+        "compounding_moat": "As more workflows are tested, SpecPulse becomes the source of truth for ‘agent-safe’ operations and their historical reliability. The contract test corpus becomes a defensible dataset that improves recommendations and auto-generated adapters."
       },
       "build": {
         "timeline": "4-week MVP",
         "weeks": [
-          "Week 1: Data model + UI skeleton (SvelteKit) \u2014 APIs, Workflows, Contracts. Ingest OpenAPI + auth metadata. Store in Postgres.",
-          "Week 2: Contract runner \u2014 define workflow tests (YAML/JSON), run via worker (Node + Playwright/HTTP). Record results, latency, error traces.",
-          "Week 3: Publish capabilities \u2014 /capabilities.json with JSON Schema, versioning, and freshness. Generate MCP tool definitions + SDK snippet.",
-          "Week 4: Alerts + diffs \u2014 GitHub webhook, deployment hooks, Slack/email alerts, \u2018what changed\u2019 contract diff view. Ship hosted demo + docs."
+          "Week 1: Data model + UI skeleton (SvelteKit) — APIs, Workflows, Contracts. Ingest OpenAPI + auth metadata. Store in Postgres.",
+          "Week 2: Contract runner — define workflow tests (YAML/JSON), run via worker (Node + Playwright/HTTP). Record results, latency, error traces.",
+          "Week 3: Publish capabilities — /capabilities.json with JSON Schema, versioning, and freshness. Generate MCP tool definitions + SDK snippet.",
+          "Week 4: Alerts + diffs — GitHub webhook, deployment hooks, Slack/email alerts, ‘what changed’ contract diff view. Ship hosted demo + docs."
         ],
         "stack": [
           "SvelteKit",
@@ -197,30 +197,30 @@
       },
       "pitch": {
         "icp": "API-first SaaS (B2B), platform teams shipping internal agents, and developer experience teams that maintain OpenAPI specs and SDKs.",
-        "gtm": "Start with an OpenAPI \u2018agent contract\u2019 linter + GitHub Action (free). Use it to upsell the hosted dashboard, continuous runners, capabilities feed hosting, and MCP adapter generation. Launch via \u2018Show HN\u2019, DX communities, and partner with API doc tools.",
+        "gtm": "Start with an OpenAPI ‘agent contract’ linter + GitHub Action (free). Use it to upsell the hosted dashboard, continuous runners, capabilities feed hosting, and MCP adapter generation. Launch via ‘Show HN’, DX communities, and partner with API doc tools.",
         "pricing": {
           "free": "1 API, 10 workflow tests, daily runs, public capabilities feed",
-          "pro": "$39/mo \u2014 5 APIs, hourly runs, Slack alerts, private feed",
-          "team": "$149/mo \u2014 unlimited APIs, SSO, audit exports, role-based approvals"
+          "pro": "$39/mo — 5 APIs, hourly runs, Slack alerts, private feed",
+          "team": "$149/mo — unlimited APIs, SSO, audit exports, role-based approvals"
         },
-        "investor_angle": "As agents become a primary customer of APIs, \u2018agent readiness\u2019 becomes a new reliability layer. SpecPulse is the monitoring + contract system for that layer \u2014 a chokepoint between API changes and autonomous execution."
+        "investor_angle": "As agents become a primary customer of APIs, ‘agent readiness’ becomes a new reliability layer. SpecPulse is the monitoring + contract system for that layer — a chokepoint between API changes and autonomous execution."
       },
       "signals": [
-        "Agent governance discussions are shifting from \u2018chat safety\u2019 to \u2018autonomous execution safety\u2019.",
+        "Agent governance discussions are shifting from ‘chat safety’ to ‘autonomous execution safety’.",
         "OpenAPI is necessary but insufficient: agents need task-level workflow guarantees, scopes, and freshness signals.",
-        "Enterprises increasingly require auditability and operational visibility for agent actions \u2014 contracts make that measurable."
+        "Enterprises increasingly require auditability and operational visibility for agent actions — contracts make that measurable."
       ],
       "sources": [
         {
-          "name": "Boomi \u2014 AI Agent Governance Framework",
+          "name": "Boomi — AI Agent Governance Framework",
           "url": "https://boomi.com/blog/ai-agent-governance-framework/"
         },
         {
-          "name": "Cerbos \u2014 Permission Management for AI Agents",
+          "name": "Cerbos — Permission Management for AI Agents",
           "url": "https://www.cerbos.dev/blog/permission-management-for-ai-agents"
         },
         {
-          "name": "MintMCP \u2014 AI agent security audit",
+          "name": "MintMCP — AI agent security audit",
           "url": "https://www.mintmcp.com/blog/ai-agent-security-audit"
         }
       ],
@@ -231,6 +231,81 @@
       },
       "links": {
         "live_page": "http://te9.dev/ideas/spec-pulse.html"
+      }
+    },
+    {
+      "id": "004",
+      "number": 4,
+      "title": "ComplyCraft",
+      "tagline": "An agent-ready compliance evidence workspace that collects, attests, and serves audit evidence for SMBs",
+      "market": "GRC / Compliance for SMB",
+      "model": "B2B SaaS",
+      "effort": "Medium",
+      "date": "2026-04-13",
+      "slug": "comply-craft",
+      "one_liner": "Compliance evidence on autopilot. Collect once, serve to auditors and AI agents forever.",
+      "problem": "Every growing startup hits the compliance wall: security questionnaires, SOC 2 audits, finance reviews. Teams scramble through Notion, Drive, and Slack to assemble evidence manually. Enterprise GRC tools cost $15K+/yr and are overkill for SMBs. AI agents handling security reviews have no structured evidence to reference.",
+      "idea": "A lightweight compliance evidence workspace that auto-collects evidence from existing tools (GitHub, AWS, Google Workspace), attests it with cryptographic hashes for chain-of-custody, and serves it through both a human dashboard and a machine-readable MCP API.",
+      "value": {
+        "for_smbs": "Answer security questionnaires and audit requests in hours instead of weeks. No $15K/yr GRC platform needed.",
+        "for_agents": "Machine-readable evidence inventory. Agents can query freshness, attestation status, and cite evidence directly.",
+        "trust_layer": "Cryptographic hashes on every artifact create chain-of-custody. Auditors trust it. Agents can verify it programmatically."
+      },
+      "build": {
+        "timeline": "4-week MVP",
+        "weeks": [
+          "Week 1: Evidence model (Postgres) + 10 pre-built recipe templates + SvelteKit dashboard",
+          "Week 2: OAuth connectors (GitHub, AWS, Google Workspace) + S3 storage + SHA-256 hashing",
+          "Week 3: REST + MCP endpoint (list_evidence, get_evidence, check_control_status)",
+          "Week 4: Evidence package export (PDF + shared links) + scheduled re-collection + staleness alerts"
+        ],
+        "stack": [
+          "SvelteKit",
+          "TypeScript",
+          "Postgres",
+          "S3",
+          "SHA-256",
+          "OAuth",
+          "MCP SDK",
+          "Railway"
+        ]
+      },
+      "pitch": {
+        "icp": "Seed to Series B startups (10-200 people), engineering leads and ops managers who own compliance without a dedicated team",
+        "gtm": "Open-source the evidence recipe format + CLI collector. Show HN launch. Template library as content marketing. Monetize hosted dashboard, MCP endpoint, scheduled collection, shareable packages.",
+        "pricing": {
+          "free": "3 recipes, manual collection",
+          "pro": "$39/mo — all recipes, auto-collect, MCP API",
+          "team": "$99/mo — unlimited, shareable packages, SSO"
+        },
+        "investor_angle": "Compliance infrastructure for the SMB tier. Vanta and Secureframe own enterprise — nobody owns the lightweight, agent-native layer for smaller teams."
+      },
+      "signals": [
+        "AWS published a reference architecture for AI-powered compliance evidence collection",
+        "Enterprise GRC tools ($15K+/yr) are overkill for SMBs — massive underserved market",
+        "AI agents are starting to handle security reviews but lack structured evidence sources"
+      ],
+      "sources": [
+        {
+          "name": "AWS — AI-powered compliance evidence collection",
+          "url": "https://aws.amazon.com/blogs/machine-learning/building-an-ai-powered-system-for-compliance-evidence-collection/"
+        },
+        {
+          "name": "FloQast — Audit Evidence Management Features",
+          "url": "https://www.floqast.com/blog/10-must-have-features-in-audit-evidence-management-tools"
+        },
+        {
+          "name": "Secureframe — Automated Evidence Collection",
+          "url": "https://secureframe.com/blog/automated-evidence-collection"
+        }
+      ],
+      "files": {
+        "html": "idea-html/004-comply-craft.html",
+        "markdown": "idea-markdown/004-comply-craft.md",
+        "data": "idea-data/dev-ideas.json"
+      },
+      "links": {
+        "live_page": "http://te9.dev/ideas/comply-craft.html"
       }
     }
   ]
