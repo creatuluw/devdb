@@ -1,0 +1,298 @@
+<!doctype html>
+<html>
+  <body style="margin:0;padding:0;background-color:#f6f7f9;">
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;background-color:#f6f7f9;">
+      <tr>
+        <td align="center" style="padding:24px 12px;">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="640" style="border-collapse:collapse;width:640px;max-width:640px;background-color:#ffffff;border:1px solid #e7e7ea;">
+            <tr>
+              <td style="padding:24px 24px 8px 24px;">
+                <div style="font-family:Manrope,Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:12px;letter-spacing:0.12em;font-weight:800;color:#ff6b00;">WEEKLY DIGEST</div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:0 24px 8px 24px;">
+                <div style="font-family:Manrope,Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:28px;line-height:34px;font-weight:800;color:#111827;">DevTips Weekly — Week of April 13, 2026</div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:0 24px 16px 24px;">
+                <div style="font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#374151;">8 tips this week</div>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding:0 24px;">
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;">
+
+                  <tr>
+                    <td style="padding:18px 0 14px 0;">
+                      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;">
+                        <tr>
+                          <td valign="top" style="width:72px;padding-right:12px;">
+                            <div style="display:inline-block;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:12px;line-height:12px;font-weight:800;color:#ff6b00;border:1px solid #ff6b00;border-radius:999px;padding:6px 10px;">#001</div>
+                          </td>
+                          <td valign="top" style="padding:0;">
+                            <div style="font-family:Manrope,Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:18px;line-height:24px;font-weight:800;color:#111827;">Context Windows as Architecture</div>
+                            <div style="padding-top:8px;">
+                              <span style="display:inline-block;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:12px;line-height:12px;color:#111827;background-color:#fff3ec;border:1px solid #ffd2bd;border-radius:999px;padding:6px 10px;">Context Management</span>
+                            </div>
+                            <div style="padding-top:10px;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#374151;">An LLM agent is only as good as the context you hand it — structuring your SvelteKit codebase so that any feature's full picture fits in a single, coherent context window is the highest-leverage architectural decision you can make when working with coding agents.</div>
+                            <div style="padding-top:10px;">
+                              <ul style="margin:0;padding-left:18px;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#374151;">
+                                <li style="margin:0 0 6px 0;">Feature-co-located folder structure</li>
+                                <li style="margin:0 0 6px 0;">Barrel exports as agent-readable manifests</li>
+                                <li style="margin:0 0 6px 0;">Co-located types per feature</li>
+                                <li style="margin:0 0 6px 0;">Context budgeting: 4-file rule per task</li>
+                                <li style="margin:0;">AGENTS.md living contract file</li>
+                              </ul>
+                            </div>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+
+                  <tr><td style="border-top:1px solid #ececef;line-height:1px;font-size:1px;">&nbsp;</td></tr>
+
+                  <tr>
+                    <td style="padding:18px 0 14px 0;">
+                      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;">
+                        <tr>
+                          <td valign="top" style="width:72px;padding-right:12px;">
+                            <div style="display:inline-block;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:12px;line-height:12px;font-weight:800;color:#ff6b00;border:1px solid #ff6b00;border-radius:999px;padding:6px 10px;">#002</div>
+                          </td>
+                          <td valign="top" style="padding:0;">
+                            <div style="font-family:Manrope,Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:18px;line-height:24px;font-weight:800;color:#111827;">Agent-First API Design</div>
+                            <div style="padding-top:8px;">
+                              <span style="display:inline-block;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:12px;line-height:12px;color:#111827;background-color:#fff3ec;border:1px solid #ffd2bd;border-radius:999px;padding:6px 10px;">API Design</span>
+                            </div>
+                            <div style="padding-top:10px;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#374151;">A well-typed, self-documenting TypeScript API surface lets an LLM agent reason about, extend, and debug your routes without ever needing you to explain business logic — your code is the documentation.</div>
+                            <div style="padding-top:10px;">
+                              <ul style="margin:0;padding-left:18px;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#374151;">
+                                <li style="margin:0 0 6px 0;">Consistent REST to service function naming (1:1 mapping)</li>
+                                <li style="margin:0 0 6px 0;">Zod schemas as single source of truth</li>
+                                <li style="margin:0 0 6px 0;">Derived TypeScript types from Zod</li>
+                                <li style="margin:0 0 6px 0;">JSDoc as machine-readable business logic spec</li>
+                                <li style="margin:0 0 6px 0;">Typed ApiSuccess&lt;T&gt; / ApiError response envelopes</li>
+                                <li style="margin:0;">Auto-generate OpenAPI spec from Zod at build time</li>
+                              </ul>
+                            </div>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+
+                  <tr><td style="border-top:1px solid #ececef;line-height:1px;font-size:1px;">&nbsp;</td></tr>
+
+                  <tr>
+                    <td style="padding:18px 0 14px 0;">
+                      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;">
+                        <tr>
+                          <td valign="top" style="width:72px;padding-right:12px;">
+                            <div style="display:inline-block;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:12px;line-height:12px;font-weight:800;color:#ff6b00;border:1px solid #ff6b00;border-radius:999px;padding:6px 10px;">#003</div>
+                          </td>
+                          <td valign="top" style="padding:0;">
+                            <div style="font-family:Manrope,Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:18px;line-height:24px;font-weight:800;color:#111827;">Prompt Chaining for UI Generation</div>
+                            <div style="padding-top:8px;">
+                              <span style="display:inline-block;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:12px;line-height:12px;color:#111827;background-color:#fff3ec;border:1px solid #ffd2bd;border-radius:999px;padding:6px 10px;">Prompt Engineering</span>
+                            </div>
+                            <div style="padding-top:10px;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#374151;">One-shot UI generation from LLM agents produces inconsistent, design-system-ignorant components — breaking the chain into discrete, primed steps produces output you can ship without a rewrite.</div>
+                            <div style="padding-top:10px;">
+                              <ul style="margin:0;padding-left:18px;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#374151;">
+                                <li style="margin:0 0 6px 0;">4-step UI generation chain: prime, contract, generate, harden</li>
+                                <li style="margin:0 0 6px 0;">Design tokens file as agent context primer</li>
+                                <li style="margin:0 0 6px 0;">Exemplar components as few-shot examples</li>
+                                <li style="margin:0 0 6px 0;">One-shot vs multi-turn decision framework</li>
+                                <li style="margin:0;">agent-ui-context.md reusable prompt prefix</li>
+                              </ul>
+                            </div>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+
+                  <tr><td style="border-top:1px solid #ececef;line-height:1px;font-size:1px;">&nbsp;</td></tr>
+
+                  <tr>
+                    <td style="padding:18px 0 14px 0;">
+                      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;">
+                        <tr>
+                          <td valign="top" style="width:72px;padding-right:12px;">
+                            <div style="display:inline-block;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:12px;line-height:12px;font-weight:800;color:#ff6b00;border:1px solid #ff6b00;border-radius:999px;padding:6px 10px;">#004</div>
+                          </td>
+                          <td valign="top" style="padding:0;">
+                            <div style="font-family:Manrope,Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:18px;line-height:24px;font-weight:800;color:#111827;">Tools aren’t “APIs”; they’re contracts: design tool schemas like you design libraries</div>
+                            <div style="padding-top:8px;">
+                              <span style="display:inline-block;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:12px;line-height:12px;color:#111827;background-color:#fff3ec;border:1px solid #ffd2bd;border-radius:999px;padding:6px 10px;">Agent Tooling</span>
+                            </div>
+                            <div style="padding-top:10px;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#374151;">Most agent failures aren’t “model problems” — they’re interface problems. If your tool call surface is underspecified (ambiguous inputs, untyped outputs, inconsistent errors), the agent can’t plan, can’t validate, and can’t recover.</div>
+                            <div style="padding-top:10px;">
+                              <ul style="margin:0;padding-left:18px;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#374151;">
+                                <li style="margin:0 0 6px 0;">Tool schema contracts</li>
+                                <li style="margin:0 0 6px 0;">Discriminated union results</li>
+                                <li style="margin:0 0 6px 0;">Typed error taxonomies</li>
+                                <li style="margin:0 0 6px 0;">Retryability + idempotency</li>
+                                <li style="margin:0 0 6px 0;">Optimistic concurrency</li>
+                                <li style="margin:0;">Contract tests</li>
+                              </ul>
+                            </div>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+
+                  <tr><td style="border-top:1px solid #ececef;line-height:1px;font-size:1px;">&nbsp;</td></tr>
+
+                  <tr>
+                    <td style="padding:18px 0 14px 0;">
+                      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;">
+                        <tr>
+                          <td valign="top" style="width:72px;padding-right:12px;">
+                            <div style="display:inline-block;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:12px;line-height:12px;font-weight:800;color:#ff6b00;border:1px solid #ff6b00;border-radius:999px;padding:6px 10px;">#005</div>
+                          </td>
+                          <td valign="top" style="padding:0;">
+                            <div style="font-family:Manrope,Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:18px;line-height:24px;font-weight:800;color:#111827;">Migrations as a Safety Harness for Agents</div>
+                            <div style="padding-top:8px;">
+                              <span style="display:inline-block;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:12px;line-height:12px;color:#111827;background-color:#fff3ec;border:1px solid #ffd2bd;border-radius:999px;padding:6px 10px;">Data Architecture</span>
+                            </div>
+                            <div style="padding-top:10px;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#374151;">A migration workflow that separates DDL, idempotent backfills, and verification queries makes agent-driven schema changes safe to ship.</div>
+                            <div style="padding-top:10px;">
+                              <ul style="margin:0;padding-left:18px;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#374151;">
+                                <li style="margin:0 0 6px 0;">up/down/verify migrations</li>
+                                <li style="margin:0 0 6px 0;">idempotent backfills</li>
+                                <li style="margin:0 0 6px 0;">constraints as invariants</li>
+                                <li style="margin:0 0 6px 0;">concurrent indexes</li>
+                                <li style="margin:0;">CI migration gates</li>
+                              </ul>
+                            </div>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+
+                  <tr><td style="border-top:1px solid #ececef;line-height:1px;font-size:1px;">&nbsp;</td></tr>
+
+                  <tr>
+                    <td style="padding:18px 0 14px 0;">
+                      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;">
+                        <tr>
+                          <td valign="top" style="width:72px;padding-right:12px;">
+                            <div style="display:inline-block;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:12px;line-height:12px;font-weight:800;color:#ff6b00;border:1px solid #ff6b00;border-radius:999px;padding:6px 10px;">#006</div>
+                          </td>
+                          <td valign="top" style="padding:0;">
+                            <div style="font-family:Manrope,Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:18px;line-height:24px;font-weight:800;color:#111827;">Tokens as a Design Budget</div>
+                            <div style="padding-top:8px;">
+                              <span style="display:inline-block;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:12px;line-height:12px;color:#111827;background-color:#fff3ec;border:1px solid #ffd2bd;border-radius:999px;padding:6px 10px;">Design Systems</span>
+                            </div>
+                            <div style="padding-top:10px;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#374151;">Treat tokens like a constrained palette: define a per-layer token budget (system, app context, retrieval, user, output), enforce it deterministically, and fail closed for high-stakes flows so prompt bloat becomes a reviewable, debuggable event.</div>
+                            <div style="padding-top:10px;">
+                              <ul style="margin:0;padding-left:18px;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#374151;">
+                                <li style="margin:0 0 6px 0;">Token budgets per prompt layer</li>
+                                <li style="margin:0 0 6px 0;">Deterministic truncation policy</li>
+                                <li style="margin:0 0 6px 0;">Prompt parts as reusable components</li>
+                                <li style="margin:0 0 6px 0;">Budget reports for observability</li>
+                                <li style="margin:0;">Fail-closed on hard truncation for high-stakes tasks</li>
+                              </ul>
+                            </div>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+
+                  <tr><td style="border-top:1px solid #ececef;line-height:1px;font-size:1px;">&nbsp;</td></tr>
+
+                  <tr>
+                    <td style="padding:18px 0 14px 0;">
+                      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;">
+                        <tr>
+                          <td valign="top" style="width:72px;padding-right:12px;">
+                            <div style="display:inline-block;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:12px;line-height:12px;font-weight:800;color:#ff6b00;border:1px solid #ff6b00;border-radius:999px;padding:6px 10px;">#007</div>
+                          </td>
+                          <td valign="top" style="padding:0;">
+                            <div style="font-family:Manrope,Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:18px;line-height:24px;font-weight:800;color:#111827;">Zero Downtime agent deployments on Railway</div>
+                            <div style="padding-top:8px;">
+                              <span style="display:inline-block;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:12px;line-height:12px;color:#111827;background-color:#fff3ec;border:1px solid #ffd2bd;border-radius:999px;padding:6px 10px;">DevOps and Infra</span>
+                            </div>
+                            <div style="padding-top:10px;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#374151;">Use explicit readiness plus SIGTERM draining so Railway can shift traffic to new instances without breaking in flight agent sessions.</div>
+                            <div style="padding-top:10px;">
+                              <ul style="margin:0;padding-left:18px;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#374151;">
+                                <li style="margin:0 0 6px 0;">readiness</li>
+                                <li style="margin:0 0 6px 0;">SIGTERM drain</li>
+                                <li style="margin:0 0 6px 0;">health checks</li>
+                                <li style="margin:0 0 6px 0;">Railway deploy config</li>
+                                <li style="margin:0 0 6px 0;">websocket draining</li>
+                                <li style="margin:0;">release contract</li>
+                              </ul>
+                            </div>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+
+                  <tr><td style="border-top:1px solid #ececef;line-height:1px;font-size:1px;">&nbsp;</td></tr>
+
+                  <tr>
+                    <td style="padding:18px 0 14px 0;">
+                      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;">
+                        <tr>
+                          <td valign="top" style="width:72px;padding-right:12px;">
+                            <div style="display:inline-block;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:12px;line-height:12px;font-weight:800;color:#ff6b00;border:1px solid #ff6b00;border-radius:999px;padding:6px 10px;">#008</div>
+                          </td>
+                          <td valign="top" style="padding:0;">
+                            <div style="font-family:Manrope,Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:18px;line-height:24px;font-weight:800;color:#111827;">Contract Tests for Agent Tool Interfaces</div>
+                            <div style="padding-top:8px;">
+                              <span style="display:inline-block;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:12px;line-height:12px;color:#111827;background-color:#fff3ec;border:1px solid #ffd2bd;border-radius:999px;padding:6px 10px;">Testing &amp; Quality</span>
+                            </div>
+                            <div style="padding-top:10px;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#374151;">Agent-written code ships fast -- so fast that the seams between your tools and the agent become the highest-risk surface. Contract tests lock the tool interface down so CI breaks before the agent ever runs.</div>
+                            <div style="padding-top:10px;">
+                              <ul style="margin:0;padding-left:18px;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#374151;">
+                                <li style="margin:0 0 6px 0;">ToolResult discriminated union</li>
+                                <li style="margin:0 0 6px 0;">Vitest contract tests</li>
+                                <li style="margin:0 0 6px 0;">Zod schema source of truth</li>
+                                <li style="margin:0 0 6px 0;">output schema regression tests</li>
+                                <li style="margin:0;">CI pre-flight check</li>
+                              </ul>
+                            </div>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+
+                </table>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding:18px 24px 6px 24px;">
+                <div style="font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;font-weight:700;color:#111827;">Links</div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:0 24px 18px 24px;">
+                <div style="font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;line-height:22px;color:#374151;">
+                  <a href="https://www.perplexity.ai/computer/a/llm-dev-tips-V_IHjeQvTf.AxDfI6HnUVw" style="color:#ff6b00;text-decoration:none;font-weight:700;">Browse all tips</a>
+                  <span style="color:#9ca3af;">&nbsp;·&nbsp;</span>
+                  <a href="https://www.perplexity.ai/computer/a/llm-dev-tips-V_IHjeQvTf.AxDfI6HnUVw" style="color:#ff6b00;text-decoration:none;font-weight:700;">View archive</a>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:14px 24px 22px 24px;border-top:1px solid #ececef;background-color:#fbfbfc;">
+                <div style="font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:12px;line-height:18px;color:#6b7280;">Weekly Digest · LLM Agent Dev Tips · SvelteKit + TypeScript</div>
+              </td>
+            </tr>
+
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
