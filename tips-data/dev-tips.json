@@ -2,7 +2,7 @@
   "meta": {
     "description": "LLM Agent Dev Tips — daily tips for SvelteKit + TypeScript developers",
     "last_updated": "2026-04-13",
-    "total_tips": 8,
+    "total_tips": 9,
     "categories": [
       "Context Management",
       "API Design",
@@ -218,6 +218,27 @@
         "site": "tips-site/tip-008.html"
       },
       "subject": "DevTip #008 -- Contract Tests for Agent Tool Interfaces"
+    },
+    {
+      "id": "009",
+      "number": 9,
+      "title": "RAG Quality Gates for Production Agents",
+      "subtitle": "Measure retrieval before the model sees it",
+      "category": "Knowledge Bases",
+      "sent_date": "2026-04-13",
+      "summary": "Add cheap retrieval signals and CI tests so RAG stays reliable",
+      "key_concepts": [
+        "RAG gates",
+        "retrieval metrics",
+        "golden queries",
+        "SvelteKit tool endpoint"
+      ],
+      "files": {
+        "html": "tips-html/tip-009.html",
+        "markdown": "tips-markdown/tip-009.md",
+        "site": "tips-site/tip-009.html"
+      },
+      "subject": "DevTip #009 -- RAG Quality Gates for Production Agents"
     }
   ]
 }

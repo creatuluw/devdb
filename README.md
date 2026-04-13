@@ -262,3 +262,4 @@ Each tip belongs to one of 30 categories, cycling in order by tip number. Every 
 
 | 007 | Zero Downtime agent deployments on Railway | DevOps and Infra | 2026-04-12 |
 | 008 | Contract Tests for Agent Tool Interfaces | Testing & Quality | 2026-04-13 |
+| 009 | RAG Quality Gates for Production Agents | Knowledge Bases | 2026-04-13 |

@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+<body style="margin:0;padding:0;background-color:#f6f6f6;font-family:Manrope,Inter,system-ui,Arial,sans-serif;">
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;background-color:#f6f6f6;">
+<tr><td align="center" style="padding:24px 12px;">
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="680" style="border-collapse:collapse;background-color:#ffffff;border:1px solid #e8e8e8;">
+<tr><td style="padding:28px 32px 6px 32px;"><div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#ff6b00;font-weight:800;">DEVTIP #009</div></td></tr>
+<tr><td style="padding:0 32px 8px 32px;"><div style="font-size:26px;line-height:1.2;color:#111111;font-weight:800;">RAG Quality Gates for Production Agents</div></td></tr>
+<tr><td style="padding:0 32px 16px 32px;"><div style="font-size:14px;line-height:1.6;color:#666666;">Measure retrieval before the model sees it</div></td></tr>
+<tr><td style="padding:0 32px 20px 32px;"><span style="display:inline-block;background-color:#fff0e6;color:#ff6b00;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:4px 10px;border-radius:4px;">Knowledge Bases</span></td></tr>
+<tr><td style="padding:0 32px 20px 32px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;"><tr><td style="padding:16px 18px;border-left:4px solid #ff6b00;background-color:#fff7f0;"><div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#ff6b00;font-weight:800;margin-bottom:8px;">WHY THIS MATTERS</div><div style="font-size:14px;line-height:1.7;color:#1a1c1c;">If retrieval is noisy, your agent will confidently answer from the wrong chunks. A simple quality gate in front of generation turns RAG from a demo into a dependable system: fail fast, ask for clarification, or broaden retrieval before you burn tokens on an answer.</div></td></tr></table></td></tr>
+<tr><td style="padding:0 32px 8px 32px;"><div style="font-size:16px;font-weight:800;color:#111111;margin-bottom:6px;">1. Define a retrieval contract (what good looks like)</div><div style="font-size:14px;line-height:1.75;color:#333333;margin-bottom:10px;">Treat retrieval as an API with a typed output. The agent should never see raw vector hits; it should see a normalized set of candidates with scores and metadata you can test and log.</div></td></tr>
+<tr><td style="padding:0 32px 16px 32px;"><div style="max-width:100%;overflow-x:auto;display:block;"><pre style="margin:0;background-color:#1a1c1c;color:#f1f1f1;padding:16px 18px;border-radius:6px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;line-height:1.6;white-space:pre;">// src/lib/rag/types.ts
+export type DocChunk = {
+  id: string;
+  docId: string;
+  title: string;
+  url: string;
+  text: string;
+  score: number;
+};
+
+export type RetrievalResult = {
+  query: string;
+  candidates: DocChunk[];
+  topScore: number;
+  uniqueDocs: number;
+};
+</pre></div></td></tr>
+<tr><td style="padding:0 32px 8px 32px;"><div style="font-size:16px;font-weight:800;color:#111111;margin-bottom:6px;">2. Add a quality gate before generation</div><div style="font-size:14px;line-height:1.75;color:#333333;margin-bottom:10px;">Gate on a few cheap signals: top score, number of unique docs, and how concentrated the evidence is. If the gate fails, return an explicit tool error so the agent can ask a follow-up question or broaden the query.</div></td></tr>
+<tr><td style="padding:0 32px 16px 32px;"><div style="max-width:100%;overflow-x:auto;display:block;"><pre style="margin:0;background-color:#1a1c1c;color:#f1f1f1;padding:16px 18px;border-radius:6px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;line-height:1.6;white-space:pre;">// src/lib/rag/gate.ts
+import type { RetrievalResult } from "$lib/rag/types";
+
+export type GateDecision =
+  | { ok: true }
+  | { ok: false; reason: string; hint: string };
+
+export function gateRetrieval(r: RetrievalResult): GateDecision {
+  if (r.candidates.length === 0)
+    return { ok: false, reason: "NO_HITS", hint: "Try broader keywords" };
+
+  if (r.topScore &lt; 0.72)
+    return { ok: false, reason: "LOW_CONFIDENCE", hint: "Ask a clarifying question" };
+
+  if (r.uniqueDocs &lt; 2)
+    return { ok: false, reason: "TOO_NARROW", hint: "Expand retrieval to more documents" };
+
+  return { ok: true };
+}
+</pre></div></td></tr>
+<tr><td style="padding:0 32px 8px 32px;"><div style="font-size:16px;font-weight:800;color:#111111;margin-bottom:6px;">3. Wire it into a SvelteKit server tool</div><div style="font-size:14px;line-height:1.75;color:#333333;margin-bottom:10px;">Expose retrieval as a server-side tool that returns either a clean context pack or a structured failure. This lets your agent planner decide to re-query, ask the user, or proceed with generation.</div></td></tr>
+<tr><td style="padding:0 32px 16px 32px;"><div style="max-width:100%;overflow-x:auto;display:block;"><pre style="margin:0;background-color:#1a1c1c;color:#f1f1f1;padding:16px 18px;border-radius:6px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;line-height:1.6;white-space:pre;">// src/routes/api/tools/retrieve/+server.ts
+import { json } from "@sveltejs/kit";
+import { gateRetrieval } from "$lib/rag/gate";
+import { searchVector } from "$lib/rag/vector";
+
+export async function POST({ request }) {
+  const { query } = await request.json();
+  const r = await searchVector(query);
+  const decision = gateRetrieval(r);
+
+  if (!decision.ok) {
+    return json({
+      ok: false,
+      error: { code: decision.reason, message: decision.hint, retryable: true }
+    });
+  }
+
+  const context = r.candidates.slice(0, 6).map((c) =&gt; ({
+    title: c.title,
+    url: c.url,
+    text: c.text
+  }));
+
+  return json({ ok: true, data: { query, context } });
+}
+</pre></div></td></tr>
+<tr><td style="padding:0 32px 8px 32px;"><div style="font-size:16px;font-weight:800;color:#111111;margin-bottom:6px;">4. Add a retrieval eval test you can run in CI</div><div style="font-size:14px;line-height:1.75;color:#333333;margin-bottom:10px;">Create a tiny golden set of queries with expected documents. Your test does not need perfect recall; it needs to catch regressions when chunking, embeddings, or filters change.</div></td></tr>
+<tr><td style="padding:0 32px 16px 32px;"><div style="max-width:100%;overflow-x:auto;display:block;"><pre style="margin:0;background-color:#1a1c1c;color:#f1f1f1;padding:16px 18px;border-radius:6px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;line-height:1.6;white-space:pre;">// tests/rag/golden.test.ts
+import { describe, it, expect } from "vitest";
+import { searchVector } from "$lib/rag/vector";
+
+const GOLDEN = [
+  { query: "reset password", mustContainDocId: "auth-playbook" },
+  { query: "webhook retries", mustContainDocId: "webhooks" },
+];
+
+describe("rag: golden retrieval", () =&gt; {
+  it.each(GOLDEN)("retrieves %s", async ({ query, mustContainDocId }) =&gt; {
+    const r = await searchVector(query);
+    const docIds = new Set(r.candidates.map((c) =&gt; c.docId));
+    expect(docIds.has(mustContainDocId)).toBe(true);
+  });
+});
+</pre></div></td></tr>
+<tr><td style="padding:0 32px 20px 32px;"><div style="height:1px;background-color:#eeeeee;"></div></td></tr>
+<tr><td style="padding:0 32px 20px 32px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;"><tr><td style="padding:20px 22px;background-color:#1a1c1c;border-left:4px solid #ff6b00;border-radius:6px;"><div style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#ff6b00;font-weight:800;margin-bottom:8px;">PRO MOVE</div><div style="font-size:13px;line-height:1.7;color:#cccccc;">Log a compact retrieval trace for every agent run: query, topScore, uniqueDocs, docIds, and gate outcome. Then add a weekly job that samples low-confidence runs and turns them into new golden queries. This is the fastest path to a knowledge base that improves with real usage, not guesswork.</div></td></tr></table></td></tr>
+<tr><td style="padding:20px 32px 8px 32px;text-align:center;"><a href="https://www.perplexity.ai/computer/a/devtips-llm-agent-dev-tips-V_IHjeQvTf.AxDfI6HnUVw" style="display:inline-block;color:#ff6b00;font-weight:700;font-size:13px;text-decoration:none;margin:0 12px;">View Tip #009 online</a><span style="color:#cccccc;font-size:13px;">&middot;</span><a href="https://www.perplexity.ai/computer/a/devtips-llm-agent-dev-tips-V_IHjeQvTf.AxDfI6HnUVw" style="display:inline-block;color:#ff6b00;font-weight:700;font-size:13px;text-decoration:none;margin:0 12px;">Browse archive</a></td></tr>
+<tr><td style="padding:0 32px 24px 32px;text-align:center;"><div style="font-size:11px;color:#aaaaaa;letter-spacing:0.04em;">Daily LLM Agent Dev Tips &middot; SvelteKit + TypeScript</div></td></tr>
+</table></td></tr></table>
+</body>
+</html>
