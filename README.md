@@ -261,3 +261,4 @@ Each tip belongs to one of 30 categories, cycling in order by tip number. Every 
 | 004 | [Tools aren’t “APIs”; they’re contracts: design tool schemas like you design libraries](tips-markdown/tip-004.md) | Agent Tooling | 2026-04-11 |
 
 | 007 | Zero Downtime agent deployments on Railway | DevOps and Infra | 2026-04-12 |
+| 008 | Contract Tests for Agent Tool Interfaces | Testing & Quality | 2026-04-13 |

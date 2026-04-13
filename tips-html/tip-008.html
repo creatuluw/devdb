@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<body style="margin:0;padding:0;background-color:#f6f6f6;font-family:Manrope,Inter,system-ui,Arial,sans-serif;">
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;background-color:#f6f6f6;">
+<tr><td align="center" style="padding:24px 12px;">
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="680" style="border-collapse:collapse;background-color:#ffffff;border:1px solid #e8e8e8;">
+<tr><td style="padding:28px 32px 6px 32px;"><div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#ff6b00;font-weight:800;">DEVTIP #008</div></td></tr>
+<tr><td style="padding:0 32px 8px 32px;"><div style="font-size:26px;line-height:1.2;color:#111111;font-weight:800;">Contract Tests for Agent Tool Interfaces</div></td></tr>
+<tr><td style="padding:0 32px 16px 32px;"><div style="font-size:14px;line-height:1.6;color:#666666;">Every tool your agent calls needs a test that runs in CI</div></td></tr>
+<tr><td style="padding:0 32px 20px 32px;"><span style="display:inline-block;background-color:#fff0e6;color:#ff6b00;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:4px 10px;border-radius:4px;">Testing &amp; Quality</span></td></tr>
+<tr><td style="padding:0 32px 20px 32px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;"><tr><td style="padding:16px 18px;border-left:4px solid #ff6b00;background-color:#fff7f0;"><div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#ff6b00;font-weight:800;margin-bottom:8px;">WHY THIS MATTERS</div><div style="font-size:14px;line-height:1.7;color:#1a1c1c;">Agent-written code ships fast &mdash; so fast that the seams between your tools and the agent that calls them become the highest-risk surface in your stack. A model will confidently call a tool with the wrong argument shape, expect a field that got renamed, or retry on an error it should abort on. Contract tests lock the tool interface down. If the contract breaks, CI breaks &mdash; before the agent ever runs.</div></td></tr></table></td></tr>
+<tr><td style="padding:0 32px 8px 32px;"><div style="font-size:16px;font-weight:800;color:#111111;margin-bottom:6px;">1. The ToolResult contract</div><div style="font-size:14px;line-height:1.75;color:#333333;margin-bottom:10px;">Every tool returns a discriminated union. The contract test verifies the shape, not the data:</div></td></tr>
+<tr><td style="padding:0 32px 16px 32px;"><div style="max-width:100%;overflow-x:auto;display:block;"><pre style="margin:0;background-color:#1a1c1c;color:#f1f1f1;padding:16px 18px;border-radius:6px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;line-height:1.6;white-space:pre;">export type ToolOk&lt;T&gt; = { ok: true; data: T };
+export type ToolErr = {
+  ok: false;
+  error: { code: string; message: string; retryable: boolean };
+};
+export type ToolResult&lt;T&gt; = ToolOk&lt;T&gt; | ToolErr;</pre></div></td></tr>
+<tr><td style="padding:0 32px 8px 32px;"><div style="font-size:16px;font-weight:800;color:#111111;margin-bottom:6px;">2. Contract test in Vitest</div><div style="font-size:14px;line-height:1.75;color:#333333;margin-bottom:10px;">Three assertions cover the full contract: shape, error code, and retryable flag:</div></td></tr>
+<tr><td style="padding:0 32px 16px 32px;"><div style="max-width:100%;overflow-x:auto;display:block;"><pre style="margin:0;background-color:#1a1c1c;color:#f1f1f1;padding:16px 18px;border-radius:6px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;line-height:1.6;white-space:pre;">describe("contract: searchDocs", () =&gt; {
+  it("always returns ToolResult shape", async () =&gt; {
+    const result = await searchDocs({ query: "" } as any);
+    expect(result).toHaveProperty("ok");
+  });
+
+  it("maps validation failure to INVALID_INPUT", async () =&gt; {
+    const result = await searchDocs({ query: "" } as any);
+    if (!result.ok) {
+      expect(result.error.code).toBe("INVALID_INPUT");
+      expect(typeof result.error.retryable).toBe("boolean");
+    }
+  });
+});</pre></div></td></tr>
+<tr><td style="padding:0 32px 8px 32px;"><div style="font-size:16px;font-weight:800;color:#111111;margin-bottom:6px;">3. Zod schema as contract source of truth</div><div style="font-size:14px;line-height:1.75;color:#333333;margin-bottom:10px;">Co-locate the schema with the tool. The schema IS the contract &mdash; derive types from it, never the other way:</div></td></tr>
+<tr><td style="padding:0 32px 16px 32px;"><div style="max-width:100%;overflow-x:auto;display:block;"><pre style="margin:0;background-color:#1a1c1c;color:#f1f1f1;padding:16px 18px;border-radius:6px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;line-height:1.6;white-space:pre;">export const SearchDocsInput = z.object({
+  query: z.string().min(1),
+  limit: z.number().int().min(1).max(50).default(10),
+});
+
+export async function searchDocs(
+  raw: unknown
+): Promise&lt;ToolResult&lt;SearchDocsData&gt;&gt; {
+  const parsed = SearchDocsInput.safeParse(raw);
+  if (!parsed.success) {
+    return { ok: false, error: {
+      code: "INVALID_INPUT",
+      message: parsed.error.message,
+      retryable: false,
+    }};
+  }
+  // ... implementation
+}</pre></div></td></tr>
+<tr><td style="padding:0 32px 8px 32px;"><div style="font-size:16px;font-weight:800;color:#111111;margin-bottom:6px;">4. Output schema contract test</div><div style="font-size:14px;line-height:1.75;color:#333333;margin-bottom:10px;">Test that the output shape never silently regresses:</div></td></tr>
+<tr><td style="padding:0 32px 20px 32px;"><div style="max-width:100%;overflow-x:auto;display:block;"><pre style="margin:0;background-color:#1a1c1c;color:#f1f1f1;padding:16px 18px;border-radius:6px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;line-height:1.6;white-space:pre;">const OutputSchema = z.object({
+  ok: z.literal(true),
+  data: z.object({
+    items: z.array(z.object({
+      id: z.string(),
+      title: z.string(),
+      excerpt: z.string(),
+    })),
+    total: z.number(),
+  }),
+});
+
+it("success output matches schema", async () =&gt; {
+  const result = await searchDocs({ query: "sveltekit", limit: 3 });
+  if (result.ok) {
+    expect(() =&gt; OutputSchema.parse(result)).not.toThrow();
+  }
+});</pre></div></td></tr>
+<tr><td style="padding:0 32px 20px 32px;"><div style="height:1px;background-color:#eeeeee;"></div></td></tr>
+<tr><td style="padding:0 32px 20px 32px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;"><tr><td style="padding:20px 22px;background-color:#1a1c1c;border-left:4px solid #ff6b00;border-radius:6px;"><div style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#ff6b00;font-weight:800;margin-bottom:8px;">PRO MOVE</div><div style="font-size:15px;font-weight:800;color:#ffffff;margin-bottom:8px;">Add a tools-contract.test.ts barrel to CI</div><div style="font-size:13px;line-height:1.7;color:#cccccc;">Create a barrel file that imports and runs contract tests for every tool in your toolbox. Wire it as a separate Vitest project in vitest.config.ts so it runs in CI independently from unit tests &mdash; and fails loudly before any agent session starts. Think of it as a pre-flight check: if any tool contract is broken, the agent never launches.</div></td></tr></table></td></tr>
+<tr><td style="padding:20px 32px 8px 32px;text-align:center;"><a href="https://www.perplexity.ai/computer/a/devtips-llm-agent-dev-tips-V_IHjeQvTf.AxDfI6HnUVw" style="display:inline-block;color:#ff6b00;font-weight:700;font-size:13px;text-decoration:none;margin:0 12px;">View Tip #008 online</a><span style="color:#cccccc;font-size:13px;">&middot;</span><a href="https://www.perplexity.ai/computer/a/devtips-llm-agent-dev-tips-V_IHjeQvTf.AxDfI6HnUVw" style="display:inline-block;color:#ff6b00;font-weight:700;font-size:13px;text-decoration:none;margin:0 12px;">Browse archive</a></td></tr>
+<tr><td style="padding:0 32px 24px 32px;text-align:center;"><div style="font-size:11px;color:#aaaaaa;letter-spacing:0.04em;">Daily LLM Agent Dev Tips &middot; SvelteKit + TypeScript</div></td></tr>
+</table></td></tr></table>
+</body>
+</html>

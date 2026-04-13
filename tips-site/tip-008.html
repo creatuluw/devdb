@@ -1,0 +1,216 @@
+<!doctype html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>DevTip #008 — Contract Tests for Agent Tool Interfaces</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <style>
+        .material-symbols-outlined { font-variation-settings: "FILL" 0,"wght" 400,"GRAD" 0,"opsz" 24; }
+        body { font-family: "Inter", sans-serif; background-color: #f9f9f9; color: #1a1c1c; }
+        h1,h2,h3 { font-family: "Manrope", sans-serif; }
+        pre { background:#1a1c1c;color:#f1f1f1;border-radius:0.5rem;padding:1.5rem;overflow-x:auto;margin:0;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:0.875rem;line-height:1.7; }
+    </style>
+    <script>
+        tailwind.config = {
+            darkMode:"class",
+            theme:{ extend:{ colors:{
+                "tertiary-container":"#ff6b00","tertiary-fixed":"#ffdbcc","tertiary-fixed-dim":"#ffb693",
+                "surface-container-low":"#f3f3f3","surface-container-lowest":"#ffffff","surface-container":"#eeeeee",
+                "surface-container-high":"#e8e8e8","surface-dim":"#dadada","surface-bright":"#f9f9f9",
+                "on-surface":"#1a1c1c","on-surface-variant":"#5a4136","secondary":"#5e5e5e",
+                "on-tertiary":"#ffffff","on-tertiary-container":"#572000",
+                background:"#f9f9f9",surface:"#f9f9f9",
+            }, fontFamily:{ headline:["Manrope"],body:["Inter"] } } }
+        };
+    </script>
+</head>
+<body class="bg-surface">
+
+<nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl flex justify-between items-center px-8 py-4 border-b border-stone-100">
+    <a href="../" class="text-2xl font-black tracking-tighter text-stone-900 font-headline hover:text-tertiary-container transition-colors">DevTips</a>
+    <div class="hidden md:flex items-center gap-2">
+        <span class="text-xs font-bold text-tertiary-container uppercase tracking-widest bg-tertiary-fixed px-3 py-1">SvelteKit</span>
+        <span class="text-xs font-bold text-stone-500 uppercase tracking-widest">· TypeScript · LLM Agents</span>
+    </div>
+    <a href="../" class="text-stone-900 font-bold hover:scale-95 duration-200 text-sm flex items-center gap-1">
+        <span class="material-symbols-outlined text-sm">arrow_back</span> All Tips
+    </a>
+</nav>
+
+<main class="pt-20 pb-32">
+
+    <!-- Hero -->
+    <section class="px-8 md:px-24 py-20 bg-surface-container-low">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+            <div class="md:col-span-8">
+                <span class="text-tertiary-container font-bold tracking-widest text-xs uppercase mb-4 block">DEVTIP #008 &middot; Testing &amp; Quality</span>
+                <h1 class="text-5xl md:text-7xl font-black tracking-tighter text-on-surface leading-none mb-4">
+                    Contract Tests for Agent Tool Interfaces
+                </h1>
+                <p class="text-2xl text-secondary font-light leading-snug">Every tool your agent calls needs a test that runs in CI</p>
+            </div>
+            <div class="md:col-span-4 flex items-center justify-center">
+                <div class="w-32 h-32 bg-stone-900 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-tertiary-container text-6xl">fact_check</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why This Matters -->
+    <section class="px-8 md:px-24 py-16 bg-white">
+        <div class="max-w-3xl mx-auto">
+            <div class="p-8 bg-surface-container-lowest border-l-4 border-tertiary-container">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-secondary mb-2">WHY THIS MATTERS</h2>
+                <p class="text-xl text-on-surface leading-relaxed font-medium italic">
+                    "Agent-written code ships fast &mdash; so fast that the seams between your tools and the agent that calls them become the highest-risk surface in your stack. A model will confidently call a tool with the wrong argument shape, expect a field that got renamed, or retry on an error it should abort on. Contract tests lock the interface down. If the contract breaks, CI breaks &mdash; before the agent ever runs."
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 1 -->
+    <section class="px-8 md:px-24 py-20 bg-surface">
+        <div class="max-w-3xl mx-auto space-y-6">
+            <h2 class="text-3xl font-black tracking-tighter">1. The ToolResult contract</h2>
+            <p class="text-lg text-secondary leading-relaxed">Every tool returns a discriminated union. The contract test verifies the shape, not the data:</p>
+            <pre><code>// lib/tool-result.ts
+export type ToolOk&lt;T&gt; = { ok: true; data: T };
+export type ToolErr = {
+  ok: false;
+  error: { code: string; message: string; retryable: boolean };
+};
+export type ToolResult&lt;T&gt; = ToolOk&lt;T&gt; | ToolErr;</code></pre>
+        </div>
+    </section>
+
+    <!-- Section 2 -->
+    <section class="px-8 md:px-24 py-20 bg-surface-container-low">
+        <div class="max-w-3xl mx-auto space-y-6">
+            <h2 class="text-3xl font-black tracking-tighter">2. Contract test in Vitest</h2>
+            <p class="text-lg text-secondary leading-relaxed">Three assertions cover the full contract: shape, error code, and retryable flag:</p>
+            <pre><code>// tests/contracts/tool-shape.test.ts
+import { describe, expect, it } from "vitest";
+import { searchDocs } from "$lib/tools/searchDocs";
+
+describe("contract: searchDocs", () =&gt; {
+  it("always returns ToolResult shape", async () =&gt; {
+    const result = await searchDocs({ query: "" } as any);
+    expect(result).toHaveProperty("ok");
+  });
+
+  it("maps validation failure to INVALID_INPUT", async () =&gt; {
+    const result = await searchDocs({ query: "" } as any);
+    if (!result.ok) {
+      expect(result.error.code).toBe("INVALID_INPUT");
+      expect(typeof result.error.retryable).toBe("boolean");
+    }
+  });
+
+  it("retryable is false for INVALID_INPUT", async () =&gt; {
+    const result = await searchDocs({ query: "" } as any);
+    if (!result.ok &amp;&amp; result.error.code === "INVALID_INPUT") {
+      expect(result.error.retryable).toBe(false);
+    }
+  });
+});</code></pre>
+        </div>
+    </section>
+
+    <!-- Section 3 -->
+    <section class="px-8 md:px-24 py-20 bg-white">
+        <div class="max-w-3xl mx-auto space-y-6">
+            <h2 class="text-3xl font-black tracking-tighter">3. Zod schema as contract source of truth</h2>
+            <p class="text-lg text-secondary leading-relaxed">Co-locate the schema with the tool. The schema IS the contract &mdash; derive types from it, never the other way:</p>
+            <pre><code>// lib/tools/searchDocs.ts
+export const SearchDocsInput = z.object({
+  query: z.string().min(1),
+  limit: z.number().int().min(1).max(50).default(10),
+});
+
+export type SearchDocsArgs = z.infer&lt;typeof SearchDocsInput&gt;;
+
+export async function searchDocs(
+  raw: unknown
+): Promise&lt;ToolResult&lt;SearchDocsData&gt;&gt; {
+  const parsed = SearchDocsInput.safeParse(raw);
+  if (!parsed.success) {
+    return { ok: false, error: {
+      code: "INVALID_INPUT",
+      message: parsed.error.message,
+      retryable: false,
+    }};
+  }
+  // ... implementation
+}</code></pre>
+        </div>
+    </section>
+
+    <!-- Section 4 -->
+    <section class="px-8 md:px-24 py-20 bg-surface-container-low">
+        <div class="max-w-3xl mx-auto space-y-6">
+            <h2 class="text-3xl font-black tracking-tighter">4. Output schema contract test</h2>
+            <p class="text-lg text-secondary leading-relaxed">Test that the output shape never silently regresses:</p>
+            <pre><code>const OutputSchema = z.object({
+  ok: z.literal(true),
+  data: z.object({
+    items: z.array(z.object({
+      id: z.string(),
+      title: z.string(),
+      excerpt: z.string(),
+    })),
+    total: z.number(),
+  }),
+});
+
+it("success output matches schema", async () =&gt; {
+  const result = await searchDocs({ query: "sveltekit", limit: 3 });
+  if (result.ok) {
+    expect(() =&gt; OutputSchema.parse(result)).not.toThrow();
+  }
+});</code></pre>
+        </div>
+    </section>
+
+    <!-- Pro Move -->
+    <section class="px-8 md:px-24 py-24 bg-[#1a1c1c] text-white">
+        <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-16">
+            <div class="md:col-span-4">
+                <h2 class="text-4xl font-black tracking-tighter text-tertiary-container">Pro Move</h2>
+                <p class="mt-4 text-stone-400 font-medium">Add a contract barrel to CI as a pre-flight check</p>
+            </div>
+            <div class="md:col-span-8 space-y-6">
+                <p class="text-stone-300 leading-relaxed text-lg">Create a <code class="bg-stone-800 px-2 py-0.5 text-sm font-mono text-tertiary-fixed-dim">tools-contract.test.ts</code> barrel that imports and runs contract tests for every tool in your toolbox. Wire it as a separate Vitest project in <code class="bg-stone-800 px-2 py-0.5 text-sm font-mono text-tertiary-fixed-dim">vitest.config.ts</code> so it runs in CI independently from unit tests.</p>
+                <p class="text-stone-400 leading-relaxed">Think of it as a pre-flight check: if any tool contract is broken, the agent never launches. This is the fastest way to catch interface regressions before they reach a running agent session.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer nav -->
+    <section class="px-8 md:px-24 py-20 bg-white">
+        <div class="max-w-3xl mx-auto text-center">
+            <span class="text-xs font-bold text-stone-400 uppercase tracking-widest mb-4 block">Daily LLM Agent Dev Tips</span>
+            <p class="text-lg text-secondary font-medium">For SvelteKit + TypeScript developers</p>
+            <div class="mt-8 flex justify-center gap-4 flex-wrap">
+                <a href="../tip-007/" class="inline-flex items-center gap-2 border border-stone-200 text-stone-600 px-8 py-4 font-bold hover:scale-105 transition-transform group text-sm">
+                    <span class="material-symbols-outlined group-hover:-translate-x-1 transition-transform text-sm">arrow_back</span>
+                    <span>PREV: TIP #007</span>
+                </a>
+                <a href="../tip-009/" class="inline-flex items-center gap-4 bg-tertiary-container text-white px-10 py-5 font-bold hover:scale-105 transition-transform group">
+                    <span>NEXT: TIP #009</span>
+                    <span class="material-symbols-outlined group-hover:translate-x-2 transition-transform">arrow_forward</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<a href="../" class="fixed bottom-8 right-8 w-14 h-14 bg-tertiary-container text-white flex items-center justify-center shadow-2xl hover:scale-110 transition-transform z-50">
+    <span class="material-symbols-outlined">home</span>
+</a>
+</body>
+</html>
