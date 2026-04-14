@@ -1,0 +1,302 @@
+<!doctype html>
+<html class="light" lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <title>Idea #005 — IncidentPack</title>
+        <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+        <style>
+            .material-symbols-outlined { font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24; }
+            body { font-family: "Inter", sans-serif; background-color: #f9f9f9; color: #1a1c1c; }
+            h1, h2, h3, h4, .headline { font-family: "Manrope", sans-serif; }
+        </style>
+        <script>
+            tailwind.config = {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        colors: {
+                            "secondary-container": "#e3e2e2", "on-secondary-container": "#646464",
+                            "tertiary-fixed-dim": "#ffb693", "surface-container-lowest": "#ffffff",
+                            "tertiary-container": "#ff6b00", "primary-container": "#999999",
+                            "surface-dim": "#dadada", "on-tertiary": "#ffffff", outline: "#8e7164",
+                            primary: "#5e5e5e", "on-secondary": "#ffffff", tertiary: "#a04100",
+                            "surface-tint": "#5e5e5e", "inverse-on-surface": "#f1f1f1",
+                            "surface-bright": "#f9f9f9", "on-background": "#1a1c1c",
+                            "surface-variant": "#e2e2e2", "surface-container-highest": "#e2e2e2",
+                            "tertiary-fixed": "#ffdbcc", "surface-container-high": "#e8e8e8",
+                            secondary: "#5e5e5e", "on-primary-container": "#313131",
+                            "surface-container-low": "#f3f3f3", "outline-variant": "#e2bfb0",
+                            error: "#ba1a1a", background: "#f9f9f9", "on-primary": "#ffffff",
+                            surface: "#f9f9f9", "on-tertiary-container": "#572000",
+                            "inverse-surface": "#2f3131", "surface-container": "#eeeeee",
+                            "inverse-primary": "#c6c6c6", "on-surface": "#1a1c1c", "on-error": "#ffffff",
+                        },
+                        fontFamily: { headline: ["Manrope"], body: ["Inter"], label: ["Inter"] },
+                    },
+                },
+            };
+        </script>
+    </head>
+    <body class="bg-surface selection:bg-tertiary-container selection:text-white">
+
+        <!-- Nav -->
+        <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl flex justify-between items-center px-8 py-4 border-b border-stone-100">
+            <a href="index.html" class="text-xl font-black tracking-tighter text-stone-900 hover:text-tertiary-container transition-colors">te9.dev/ideas</a>
+            <div class="hidden md:flex items-center gap-8">
+                <a class="text-stone-500 hover:text-orange-600 transition-colors font-bold text-sm tracking-tight" href="#problem">Problem</a>
+                <a class="text-stone-500 hover:text-orange-600 transition-colors font-bold text-sm tracking-tight" href="#idea">Idea</a>
+                <a class="text-stone-500 hover:text-orange-600 transition-colors font-bold text-sm tracking-tight" href="#build">How to Build</a>
+                <a class="text-stone-500 hover:text-orange-600 transition-colors font-bold text-sm tracking-tight" href="#pitch">Pitch</a>
+            </div>
+            <a href="index.html" class="text-sm font-bold text-stone-500 hover:text-tertiary-container transition-colors flex items-center gap-1">
+                <span class="material-symbols-outlined text-base">arrow_back</span> All Ideas
+            </a>
+        </nav>
+
+        <main class="pt-20 pb-32">
+
+            <!-- Hero -->
+            <section class="px-8 md:px-24 py-20 bg-surface-container-low" id="hero">
+                <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+                    <div class="md:col-span-8">
+                        <span class="text-tertiary-container font-bold tracking-widest text-xs uppercase mb-4 block">Daily Idea · April 14, 2026 · #005</span>
+                        <h1 class="text-5xl md:text-7xl font-black tracking-tighter text-on-surface leading-none mb-8">IncidentPack</h1>
+                        <div class="p-8 bg-surface-container-lowest border-l-4 border-tertiary-container">
+                            <h2 class="text-xs font-bold uppercase tracking-widest text-primary mb-2">The Idea</h2>
+                            <p class="text-xl text-on-surface leading-relaxed font-medium italic">
+                                "Your production incident just happened. IncidentPack already has the evidence."
+                            </p>
+                        </div>
+                    </div>
+                    <div class="md:col-span-4">
+                        <div class="space-y-4">
+                            <div class="bg-surface-container-highest p-6">
+                                <span class="text-xs font-bold text-stone-400 uppercase tracking-widest block mb-1">Market</span>
+                                <span class="font-bold text-tertiary-container">DevOps / SRE / Incident Management</span>
+                            </div>
+                            <div class="bg-surface-container-highest p-6">
+                                <span class="text-xs font-bold text-stone-400 uppercase tracking-widest block mb-1">Business Model</span>
+                                <span class="font-bold">B2B SaaS</span>
+                            </div>
+                            <div class="bg-surface-container-highest p-6">
+                                <span class="text-xs font-bold text-stone-400 uppercase tracking-widest block mb-1">Build Effort</span>
+                                <span class="font-bold">Medium &mdash; 4-week MVP</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Problem -->
+            <section class="px-8 md:px-24 py-24 bg-surface" id="problem">
+                <div class="max-w-3xl mx-auto space-y-12">
+                    <div>
+                        <span class="text-tertiary-container font-bold tracking-widest text-xs uppercase mb-4 block">The Problem</span>
+                        <p class="text-2xl text-on-surface leading-snug font-light">
+                            When a production incident fires, the clock starts ticking. Engineers scramble across five browser tabs — Datadog, Slack, GitHub, PagerDuty, the deployment dashboard — trying to assemble a picture of <span class="font-bold text-tertiary-container underline decoration-2 underline-offset-4">what broke, when, and why</span>. By the time someone writes a postmortem, half the evidence has scrolled off Slack and the incident timeline is already fuzzy.
+                        </p>
+                    </div>
+                    <blockquote class="pl-8 border-l border-surface-container-highest">
+                        <p class="text-lg italic text-secondary">
+                            "Human-in-the-loop runbook improvement requires structured, reproducible incident data &mdash; but most incident records are fragmented across tools, unstructured, and manually assembled after the fact."
+                        </p>
+                        <footer class="mt-2 text-sm font-bold text-primary">&mdash; <a href="https://www.amazon.science/publications/human-in-the-loop-runbook-improvement-with-agentic-support-automation" class="hover:text-tertiary-container transition-colors underline">Amazon Science, 2025</a></footer>
+                    </blockquote>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                        <div class="space-y-4">
+                            <h3 class="text-xl font-bold tracking-tight">The Gap Today</h3>
+                            <p class="text-secondary leading-relaxed">PagerDuty and Opsgenie own alerting. Rootly and incident.io own incident coordination. But nobody owns the <em>evidence chain</em>. After an incident closes, assembling logs, metrics, Slack threads, git diffs, and deployment history into a coherent postmortem takes hours of manual work — and the result is often a Google Doc nobody reads.</p>
+                        </div>
+                        <div class="space-y-4">
+                            <h3 class="text-xl font-bold tracking-tight text-tertiary-container">The Opportunity</h3>
+                            <p class="text-secondary leading-relaxed">AI agents are starting to participate in incident response — but they have no structured evidence to reason over. Regulated industries (SOC 2, HIPAA, PCI-DSS) require incident evidence preservation. And postmortem fatigue is real: teams skip them because assembling the evidence is too painful. IncidentPack eliminates that friction entirely.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Idea -->
+            <section class="px-8 md:px-24 py-24 bg-surface-container-low" id="idea">
+                <div class="max-w-6xl mx-auto">
+                    <div class="flex justify-between items-baseline mb-16">
+                        <h2 class="text-4xl font-black tracking-tighter">The Solution</h2>
+                        <span class="text-sm font-bold text-tertiary-container uppercase tracking-widest">IncidentPack</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-1">
+                        <div class="group bg-surface p-10 hover:bg-surface-container-lowest transition-colors border-b md:border-b-0 md:border-r border-stone-200">
+                            <span class="text-xs font-bold text-stone-400 mb-4 block">01</span>
+                            <h4 class="text-xl font-bold mb-4 group-hover:text-tertiary-container transition-colors">Auto Evidence Collection</h4>
+                            <p class="text-secondary leading-relaxed">The moment an incident fires (PagerDuty, Opsgenie, or Grafana webhook), IncidentPack begins collecting: logs from Datadog or Loki, Slack thread messages, git diffs and recent commits, deployment events from Railway or Vercel. Every artifact is SHA-256 hashed for chain-of-custody.</p>
+                        </div>
+                        <div class="group bg-surface p-10 hover:bg-surface-container-lowest transition-colors border-b border-stone-200">
+                            <span class="text-xs font-bold text-stone-400 mb-4 block">02</span>
+                            <h4 class="text-xl font-bold mb-4 group-hover:text-tertiary-container transition-colors">Signed Package + Manifest</h4>
+                            <p class="text-secondary leading-relaxed">All evidence is assembled into a signed, hash-anchored package with two outputs: a structured <code class="text-orange-500 font-mono text-sm">manifest.json</code> for agents (queryable, typed, versioned) and a clean PDF/web report for human stakeholders. The package is immutable — evidence cannot be altered after collection.</p>
+                        </div>
+                        <div class="group bg-surface p-10 hover:bg-surface-container-lowest transition-colors md:border-r border-stone-200">
+                            <span class="text-xs font-bold text-stone-400 mb-4 block">03</span>
+                            <h4 class="text-xl font-bold mb-4 group-hover:text-tertiary-container transition-colors">Agent-Queryable MCP Endpoint</h4>
+                            <p class="text-secondary leading-relaxed">An MCP server exposes three tools: <code class="text-orange-500 font-mono text-sm">query_incident</code>, <code class="text-orange-500 font-mono text-sm">get_evidence</code>, <code class="text-orange-500 font-mono text-sm">get_timeline</code>. Agents can answer "what caused the outage?" or "was the fix deployed?" by querying the structured evidence package — no Slack archaeology required.</p>
+                        </div>
+                        <div class="group bg-surface p-10 hover:bg-surface-container-lowest transition-colors">
+                            <span class="text-xs font-bold text-stone-400 mb-4 block">04</span>
+                            <h4 class="text-xl font-bold mb-4 group-hover:text-tertiary-container transition-colors">LLM Postmortem Drafts</h4>
+                            <p class="text-secondary leading-relaxed">Once evidence is collected, an LLM summarizes it into a structured postmortem draft: root cause analysis, impact timeline, contributing factors, and action items. Teams review and publish — instead of writing from scratch across multiple disconnected tabs.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Value props -->
+            <section class="px-8 md:px-24 py-24">
+                <div class="max-w-6xl mx-auto">
+                    <h2 class="text-3xl font-black tracking-tighter mb-12 text-center">Why It's Valuable</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="bg-surface-container-lowest p-8 min-h-[240px] flex flex-col justify-between border-b-4 border-stone-100 hover:border-tertiary-container transition-all">
+                            <span class="material-symbols-outlined text-stone-300">engineering</span>
+                            <div>
+                                <p class="text-lg font-bold leading-tight mb-3">For SRE &amp; DevOps</p>
+                                <p class="text-secondary text-sm leading-relaxed">Stop spending 3 hours assembling postmortem evidence after a 2-hour incident. IncidentPack collects while you're still firefighting — so the evidence is ready before the retro even starts.</p>
+                            </div>
+                            <div class="w-8 h-1 bg-stone-200"></div>
+                        </div>
+                        <div class="bg-surface-container-lowest p-8 min-h-[240px] flex flex-col justify-between border-b-4 border-stone-100 hover:border-tertiary-container transition-all">
+                            <span class="material-symbols-outlined text-stone-300">smart_toy</span>
+                            <div>
+                                <p class="text-lg font-bold leading-tight mb-3">For AI Agents</p>
+                                <p class="text-secondary text-sm leading-relaxed">Structured, signed evidence packages give AI agents the context they need to participate meaningfully in incident response and RCA — instead of reasoning over raw Slack noise or reconstructed timelines.</p>
+                            </div>
+                            <div class="w-8 h-1 bg-stone-200"></div>
+                        </div>
+                        <div class="bg-surface-container-lowest p-8 min-h-[240px] flex flex-col justify-between border-b-4 border-stone-100 hover:border-tertiary-container transition-all">
+                            <span class="material-symbols-outlined text-stone-300">verified_user</span>
+                            <div>
+                                <p class="text-lg font-bold leading-tight mb-3">For Compliance</p>
+                                <p class="text-secondary text-sm leading-relaxed">SOC 2, HIPAA, and PCI-DSS all require incident evidence preservation. IncidentPack's signed, hash-anchored packages satisfy auditor requirements without any extra manual effort from the engineering team.</p>
+                            </div>
+                            <div class="w-8 h-1 bg-stone-200"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Build -->
+            <section class="px-8 md:px-24 py-24 bg-stone-950 text-white" id="build">
+                <div class="max-w-5xl mx-auto">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-16">
+                        <div class="md:col-span-4">
+                            <h2 class="text-4xl font-black tracking-tighter text-tertiary-container">How to Build It</h2>
+                            <p class="mt-4 text-stone-400 font-medium">4-week MVP. Solo developer. Ships on Railway.</p>
+                            <div class="mt-8 flex flex-wrap gap-2">
+                                <span class="text-xs bg-stone-800 text-stone-300 px-3 py-1 font-mono">SvelteKit</span>
+                                <span class="text-xs bg-stone-800 text-stone-300 px-3 py-1 font-mono">TypeScript</span>
+                                <span class="text-xs bg-stone-800 text-stone-300 px-3 py-1 font-mono">Postgres</span>
+                                <span class="text-xs bg-stone-800 text-stone-300 px-3 py-1 font-mono">S3</span>
+                                <span class="text-xs bg-stone-800 text-stone-300 px-3 py-1 font-mono">Datadog API</span>
+                                <span class="text-xs bg-stone-800 text-stone-300 px-3 py-1 font-mono">Slack API</span>
+                                <span class="text-xs bg-stone-800 text-stone-300 px-3 py-1 font-mono">GitHub API</span>
+                                <span class="text-xs bg-stone-800 text-stone-300 px-3 py-1 font-mono">MCP SDK</span>
+                                <span class="text-xs bg-stone-800 text-stone-300 px-3 py-1 font-mono">Railway</span>
+                            </div>
+                        </div>
+                        <div class="md:col-span-8 space-y-12">
+                            <div class="flex gap-6">
+                                <span class="text-4xl font-black text-stone-800 shrink-0">01</span>
+                                <div>
+                                    <h4 class="text-xl font-bold mb-2">Dashboard + Incident Model</h4>
+                                    <p class="text-stone-400 leading-relaxed">SvelteKit dashboard + Postgres incident schema. Webhook receivers for PagerDuty, Opsgenie, and Grafana alerts. When an alert fires, create an incident record and begin the evidence collection pipeline.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-6">
+                                <span class="text-4xl font-black text-stone-800 shrink-0">02</span>
+                                <div>
+                                    <h4 class="text-xl font-bold mb-2">Evidence Collectors</h4>
+                                    <p class="text-stone-400 leading-relaxed">Pull logs from Datadog or Loki API, Slack threads via OAuth, git diffs and deployment events from GitHub API and Railway/Vercel webhooks. Each artifact is stored to S3 and hashed with <code class="text-orange-400 font-mono text-sm">SHA-256</code> for chain-of-custody.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-6">
+                                <span class="text-4xl font-black text-stone-800 shrink-0">03</span>
+                                <div>
+                                    <h4 class="text-xl font-bold mb-2">Package Assembler + MCP</h4>
+                                    <p class="text-stone-400 leading-relaxed">Generate a signed <code class="text-orange-400 font-mono text-sm">manifest.json</code> (agent-readable), an incident timeline view, and a PDF export (human-readable). MCP server exposes: <code class="text-orange-400 font-mono text-sm">query_incident</code>, <code class="text-orange-400 font-mono text-sm">get_evidence</code>, <code class="text-orange-400 font-mono text-sm">get_timeline</code>.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-6">
+                                <span class="text-4xl font-black text-stone-800 shrink-0">04</span>
+                                <div>
+                                    <h4 class="text-xl font-bold mb-2">Postmortem Generator</h4>
+                                    <p class="text-stone-400 leading-relaxed">LLM summarizes collected evidence into a structured postmortem draft: RCA, impact, timeline, action items. Dashboard for browsing incidents, comparing patterns across time, and exporting stakeholder-ready reports.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pitch -->
+            <section class="px-8 md:px-24 py-24 bg-surface-container-low" id="pitch">
+                <div class="max-w-6xl mx-auto">
+                    <div class="flex justify-between items-baseline mb-16">
+                        <h2 class="text-4xl font-black tracking-tighter">How to Pitch It</h2>
+                        <span class="text-sm font-bold text-tertiary-container uppercase tracking-widest">Go-to-market</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-1">
+                        <div class="bg-surface p-10 border-b md:border-b-0 md:border-r border-stone-200">
+                            <span class="text-xs font-bold text-stone-400 mb-4 block uppercase tracking-widest">One-liner</span>
+                            <p class="text-xl font-bold leading-snug">"Your production incident just happened. IncidentPack already has the evidence."</p>
+                        </div>
+                        <div class="bg-surface p-10 border-b border-stone-200">
+                            <span class="text-xs font-bold text-stone-400 mb-4 block uppercase tracking-widest">Target ICP</span>
+                            <p class="text-secondary leading-relaxed">SRE and DevOps teams at Series A&ndash;C startups (50&ndash;500 people), platform engineering teams, and incident commanders at companies with compliance requirements. Teams that run more than 2 incidents per month and still don't have a reliable postmortem process.</p>
+                        </div>
+                        <div class="bg-surface p-10 border-b md:border-b-0 md:border-r border-stone-200">
+                            <span class="text-xs font-bold text-stone-400 mb-4 block uppercase tracking-widest">Go-to-market</span>
+                            <p class="text-secondary leading-relaxed">Open-source the evidence collector CLI and manifest spec. Show HN launch. Free tier for up to 5 incidents/month. Content marketing around incident management best practices and postmortem culture.</p>
+                        </div>
+                        <div class="bg-surface p-10">
+                            <span class="text-xs font-bold text-stone-400 mb-4 block uppercase tracking-widest">Pricing</span>
+                            <div class="space-y-2">
+                                <div class="flex justify-between text-sm"><span class="font-bold">Free</span><span class="text-secondary">5 incidents/mo, manual collection</span></div>
+                                <div class="flex justify-between text-sm"><span class="font-bold text-tertiary-container">Pro $49/mo</span><span class="text-secondary">Unlimited, auto-collect, MCP API, postmortem drafts</span></div>
+                                <div class="flex justify-between text-sm"><span class="font-bold">Team $129/mo</span><span class="text-secondary">SSO, custom integrations, SLA reporting</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sources -->
+            <section class="px-8 md:px-24 py-16 bg-surface">
+                <div class="max-w-3xl mx-auto">
+                    <h3 class="text-xs font-bold text-stone-400 uppercase tracking-widest mb-6">Sources</h3>
+                    <div class="space-y-2">
+                        <a href="https://aws.amazon.com/blogs/machine-learning/building-an-ai-powered-system-for-compliance-evidence-collection/" class="block text-sm text-secondary hover:text-tertiary-container transition-colors">AWS &mdash; Building an AI-powered system for compliance evidence collection</a>
+                        <a href="https://goteleport.com/blog/ai-agents-soc-2/" class="block text-sm text-secondary hover:text-tertiary-container transition-colors">Teleport &mdash; How AI Agents Impact SOC 2</a>
+                        <a href="https://www.amazon.science/publications/human-in-the-loop-runbook-improvement-with-agentic-support-automation" class="block text-sm text-secondary hover:text-tertiary-container transition-colors">Amazon Science &mdash; Human-in-the-loop runbook improvement with agentic support automation</a>
+                        <a href="https://koder.ai/blog/build-web-app-centralized-audit-evidence-collection" class="block text-sm text-secondary hover:text-tertiary-container transition-colors">Koder.ai &mdash; Centralized Audit Evidence Collection</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA -->
+            <section class="px-8 md:px-24 py-32 bg-white">
+                <div class="max-w-3xl mx-auto text-center">
+                    <span class="text-xs font-bold text-stone-400 uppercase tracking-widest mb-4 block">Next idea tomorrow</span>
+                    <h2 class="text-4xl md:text-5xl font-black tracking-tighter mb-10 leading-tight">One researched LLM webapp idea, every day.</h2>
+                    <a class="inline-flex items-center gap-4 bg-tertiary-container text-white px-10 py-5 font-bold hover:scale-105 transition-transform group" href="index.html">
+                        <span>BACK TO ALL IDEAS</span>
+                        <span class="material-symbols-outlined group-hover:translate-x-2 transition-transform">arrow_forward</span>
+                    </a>
+                </div>
+            </section>
+
+        </main>
+
+        <a href="index.html" class="fixed bottom-8 right-8 w-14 h-14 bg-tertiary-container text-white flex items-center justify-center shadow-2xl hover:scale-110 transition-transform z-50">
+            <span class="material-symbols-outlined">format_list_bulleted</span>
+        </a>
+    </body>
+</html>

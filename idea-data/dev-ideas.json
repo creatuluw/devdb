@@ -1,8 +1,8 @@
 {
   "meta": {
     "description": "Daily LLM Webapp Ideas — one researched idea per day, valuable for humans and AI agents",
-    "last_updated": "2026-04-13",
-    "total_ideas": 4,
+    "last_updated": "2026-04-14",
+    "total_ideas": 5,
     "count": 3
   },
   "ideas": [
@@ -167,12 +167,12 @@
       "date": "2026-04-12",
       "slug": "spec-pulse",
       "one_liner": "CI for agent tools: publish an agent contract, then continuously prove it still works.",
-      "problem": "Teams are shipping agents that call real APIs (payments, support, CRM, infra). But the ‘interface’ agents rely on is a mix of human docs, stale examples, and tribal knowledge. When an endpoint changes, a scope requirement shifts, or rate limits tighten, agents fail in production — or worse, do the wrong thing. There’s no standard place to publish a machine-checkable contract for agents, and no continuous test that says: ‘an agent can still complete task X safely with tool Y’.",
-      "idea": "SpecPulse is a webapp that turns your API + workflows into **agent contracts**: machine-readable capability specs (JSON Schema for parameters/outputs, auth scopes, rate limits, safety constraints, example calls) paired with **continuous contract tests** that run on a schedule and on every deploy. It publishes an agent-facing ‘capabilities feed’ and optional MCP/OpenAPI adapters, so humans can review changes and AI agents can automatically discover what’s safe and supported today.",
+      "problem": "Teams are shipping agents that call real APIs (payments, support, CRM, infra). But the 'interface' agents rely on is a mix of human docs, stale examples, and tribal knowledge. When an endpoint changes, a scope requirement shifts, or rate limits tighten, agents fail in production — or worse, do the wrong thing. There's no standard place to publish a machine-checkable contract for agents, and no continuous test that says: 'an agent can still complete task X safely with tool Y'.",
+      "idea": "SpecPulse is a webapp that turns your API + workflows into **agent contracts**: machine-readable capability specs (JSON Schema for parameters/outputs, auth scopes, rate limits, safety constraints, example calls) paired with **continuous contract tests** that run on a schedule and on every deploy. It publishes an agent-facing 'capabilities feed' and optional MCP/OpenAPI adapters, so humans can review changes and AI agents can automatically discover what's safe and supported today.",
       "value": {
-        "for_humans": "Fewer broken automations and fewer incident tickets. Product and platform teams get a clear, versioned ‘what agents can do’ surface, plus change alerts when a deploy breaks a contract test. Compliance teams get evidence that risky workflows are gated and validated.",
+        "for_humans": "Fewer broken automations and fewer incident tickets. Product and platform teams get a clear, versioned 'what agents can do' surface, plus change alerts when a deploy breaks a contract test. Compliance teams get evidence that risky workflows are gated and validated.",
         "for_agents": "A stable, queryable capabilities feed with typed schemas and freshness signals. Agents can select tools by guaranteed-supported tasks, request just-in-time scopes, and adapt when a contract version changes.",
-        "compounding_moat": "As more workflows are tested, SpecPulse becomes the source of truth for ‘agent-safe’ operations and their historical reliability. The contract test corpus becomes a defensible dataset that improves recommendations and auto-generated adapters."
+        "compounding_moat": "As more workflows are tested, SpecPulse becomes the source of truth for 'agent-safe' operations and their historical reliability. The contract test corpus becomes a defensible dataset that improves recommendations and auto-generated adapters."
       },
       "build": {
         "timeline": "4-week MVP",
@@ -180,7 +180,7 @@
           "Week 1: Data model + UI skeleton (SvelteKit) — APIs, Workflows, Contracts. Ingest OpenAPI + auth metadata. Store in Postgres.",
           "Week 2: Contract runner — define workflow tests (YAML/JSON), run via worker (Node + Playwright/HTTP). Record results, latency, error traces.",
           "Week 3: Publish capabilities — /capabilities.json with JSON Schema, versioning, and freshness. Generate MCP tool definitions + SDK snippet.",
-          "Week 4: Alerts + diffs — GitHub webhook, deployment hooks, Slack/email alerts, ‘what changed’ contract diff view. Ship hosted demo + docs."
+          "Week 4: Alerts + diffs — GitHub webhook, deployment hooks, Slack/email alerts, 'what changed' contract diff view. Ship hosted demo + docs."
         ],
         "stack": [
           "SvelteKit",
@@ -197,16 +197,16 @@
       },
       "pitch": {
         "icp": "API-first SaaS (B2B), platform teams shipping internal agents, and developer experience teams that maintain OpenAPI specs and SDKs.",
-        "gtm": "Start with an OpenAPI ‘agent contract’ linter + GitHub Action (free). Use it to upsell the hosted dashboard, continuous runners, capabilities feed hosting, and MCP adapter generation. Launch via ‘Show HN’, DX communities, and partner with API doc tools.",
+        "gtm": "Start with an OpenAPI 'agent contract' linter + GitHub Action (free). Use it to upsell the hosted dashboard, continuous runners, capabilities feed hosting, and MCP adapter generation. Launch via 'Show HN', DX communities, and partner with API doc tools.",
         "pricing": {
           "free": "1 API, 10 workflow tests, daily runs, public capabilities feed",
           "pro": "$39/mo — 5 APIs, hourly runs, Slack alerts, private feed",
           "team": "$149/mo — unlimited APIs, SSO, audit exports, role-based approvals"
         },
-        "investor_angle": "As agents become a primary customer of APIs, ‘agent readiness’ becomes a new reliability layer. SpecPulse is the monitoring + contract system for that layer — a chokepoint between API changes and autonomous execution."
+        "investor_angle": "As agents become a primary customer of APIs, 'agent readiness' becomes a new reliability layer. SpecPulse is the monitoring + contract system for that layer — a chokepoint between API changes and autonomous execution."
       },
       "signals": [
-        "Agent governance discussions are shifting from ‘chat safety’ to ‘autonomous execution safety’.",
+        "Agent governance discussions are shifting from 'chat safety' to 'autonomous execution safety'.",
         "OpenAPI is necessary but insufficient: agents need task-level workflow guarantees, scopes, and freshness signals.",
         "Enterprises increasingly require auditability and operational visibility for agent actions — contracts make that measurable."
       ],
@@ -306,6 +306,86 @@
       },
       "links": {
         "live_page": "http://te9.dev/ideas/comply-craft.html"
+      }
+    },
+    {
+      "id": "005",
+      "number": 5,
+      "title": "IncidentPack",
+      "tagline": "Auto-assembles incident postmortem evidence packages when production incidents occur — signed, hash-anchored, and queryable by both humans and AI agents",
+      "market": "DevOps / SRE / Incident Management",
+      "model": "B2B SaaS",
+      "effort": "Medium",
+      "date": "2026-04-14",
+      "slug": "incident-pack",
+      "one_liner": "Your production incident just happened. IncidentPack already has the evidence.",
+      "problem": "When a production incident fires, engineers scramble across five browser tabs — Datadog, Slack, GitHub, PagerDuty, the deployment dashboard — trying to assemble a picture of what broke, when, and why. By the time someone writes a postmortem, half the evidence has scrolled off Slack and the timeline is fuzzy. PagerDuty owns alerting, Rootly/incident.io own coordination — nobody owns the evidence chain.",
+      "idea": "A webapp that auto-assembles incident postmortem evidence packages the moment production incidents occur. It pulls logs, metrics, alerts, Slack threads, git diffs, and deployment history into a signed, hash-anchored package with both a human-readable postmortem report and an agent-readable manifest. Agents can query the package to answer 'what caused the outage?' or 'was the fix deployed?' Humans get a clean PDF/web report for stakeholders.",
+      "value": {
+        "for_sre_devops": "Stop spending 3 hours assembling postmortem evidence after a 2-hour incident. IncidentPack collects while you're still firefighting — so the evidence is ready before the retro even starts.",
+        "for_agents": "Structured, signed evidence packages give AI agents the context they need to participate meaningfully in incident response and RCA — instead of reasoning over raw Slack noise.",
+        "for_compliance": "SOC 2, HIPAA, and PCI-DSS all require incident evidence preservation. IncidentPack's signed, hash-anchored packages satisfy auditor requirements with no extra manual effort."
+      },
+      "build": {
+        "timeline": "4-week MVP",
+        "weeks": [
+          "Week 1: SvelteKit dashboard + incident model (Postgres) + webhook receivers for PagerDuty/Opsgenie/Grafana alerts",
+          "Week 2: Evidence collectors — pull logs (Datadog/Loki API), Slack threads (via OAuth), git diffs (GitHub API), deployment events (Railway/Vercel webhooks). SHA-256 hash each artifact.",
+          "Week 3: Package assembler — generates a signed manifest.json (agent-readable), a timeline view, and a PDF export (human-readable). MCP endpoint: query_incident, get_evidence, get_timeline.",
+          "Week 4: Postmortem generator — LLM summarizes the evidence into a draft postmortem (RCA, impact, timeline, action items). Dashboard for browsing incidents, comparing across time."
+        ],
+        "stack": [
+          "SvelteKit",
+          "TypeScript",
+          "Postgres",
+          "S3",
+          "Datadog API",
+          "Slack API",
+          "GitHub API",
+          "MCP SDK",
+          "Railway"
+        ]
+      },
+      "pitch": {
+        "icp": "SRE/DevOps teams at Series A-C startups (50-500 people), platform engineering teams, incident commanders",
+        "gtm": "Open-source the evidence collector CLI + manifest spec. Show HN. Free for 5 incidents/mo. Content marketing around incident management best practices.",
+        "pricing": {
+          "free": "5 incidents/mo, manual collection",
+          "pro": "$49/mo — unlimited, auto-collect, MCP API, postmortem drafts",
+          "team": "$129/mo — SSO, custom integrations, SLA reporting"
+        },
+        "investor_angle": "Evidence layer for the incident lifecycle. PagerDuty owns alerting, Rootly/incident.io own coordination — nobody owns the evidence chain. IncidentPack sits between them."
+      },
+      "signals": [
+        "Regulated industries require incident evidence preservation (SOC 2, HIPAA, PCI-DSS)",
+        "AI agents are starting to participate in incident response but lack structured evidence to reason over",
+        "Postmortem fatigue is real — teams skip them because assembling evidence is too painful"
+      ],
+      "sources": [
+        {
+          "name": "AWS — Building an AI-powered system for compliance evidence collection",
+          "url": "https://aws.amazon.com/blogs/machine-learning/building-an-ai-powered-system-for-compliance-evidence-collection/"
+        },
+        {
+          "name": "Teleport — How AI Agents Impact SOC 2",
+          "url": "https://goteleport.com/blog/ai-agents-soc-2/"
+        },
+        {
+          "name": "Amazon Science — Human-in-the-loop runbook improvement with agentic support automation",
+          "url": "https://www.amazon.science/publications/human-in-the-loop-runbook-improvement-with-agentic-support-automation"
+        },
+        {
+          "name": "Koder.ai — Centralized Audit Evidence Collection",
+          "url": "https://koder.ai/blog/build-web-app-centralized-audit-evidence-collection"
+        }
+      ],
+      "files": {
+        "html": "idea-html/005-incident-pack.html",
+        "markdown": "idea-markdown/005-incident-pack.md",
+        "data": "idea-data/dev-ideas.json"
+      },
+      "links": {
+        "live_page": "http://te9.dev/ideas/incident-pack.html"
       }
     }
   ]
