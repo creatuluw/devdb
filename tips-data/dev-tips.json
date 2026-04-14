@@ -1,8 +1,8 @@
 {
   "meta": {
     "description": "LLM Agent Dev Tips — daily tips for SvelteKit + TypeScript developers",
-    "last_updated": "2026-04-13",
-    "total_tips": 9,
+    "last_updated": "2026-04-14",
+    "total_tips": 10,
     "categories": [
       "Context Management",
       "API Design",
@@ -239,6 +239,28 @@
         "site": "tips-site/tip-009.html"
       },
       "subject": "DevTip #009 -- RAG Quality Gates for Production Agents"
+    },
+    {
+      "id": "010",
+      "number": 10,
+      "title": "Docs as a Build Artifact, Not a Write-Up",
+      "subtitle": "Make documentation reproducible: generated from code, gated in CI, and versioned with releases.",
+      "category": "Documentation",
+      "sent_date": "2026-04-14",
+      "summary": "Documentation is a build artifact: generate OpenAPI and living docs from code, add CI gates, and publish from the same pipeline that ships the system.",
+      "key_concepts": [
+        "docs as build artifact",
+        "openapi generation",
+        "ci doc gates",
+        "adr automation",
+        "drift detection"
+      ],
+      "files": {
+        "html": "tips-html/tip-010.html",
+        "markdown": "tips-markdown/tip-010.md",
+        "site": "tips-site/tip-010.html"
+      },
+      "subject": "DevTip #010 -- Docs as a Build Artifact, Not a Write-Up"
     }
   ]
 }
